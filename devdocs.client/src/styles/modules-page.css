@@ -1,0 +1,81 @@
+.modules-page {
+  padding: 2rem 0;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.module-card {
+  background: var(--card, #18181b);
+  color: var(--foreground, #f8fafc);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.module-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-color: var(--primary, #a78bfa);
+}
+
+.module-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.module-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: rgba(147, 51, 234, 0.08);
+  margin-right: 0.75rem;
+  font-size: 1.5rem;
+  color: #a78bfa;
+}
+
+.module-badge {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--primary, #a78bfa);
+  color: #fff;
+}
+
+.module-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--foreground, #f8fafc);
+}
+
+.module-description {
+  color: var(--muted-foreground, #a1a1aa);
+  margin-bottom: 1rem;
+}
+
+.module-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: var(--muted-foreground, #a1a1aa);
+}
+
+.module-version {
+  font-weight: 500;
+}
+
+.module-update {
+  font-size: 0.85rem;
+} 

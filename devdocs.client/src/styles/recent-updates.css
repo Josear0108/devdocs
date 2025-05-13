@@ -1,0 +1,91 @@
+.recent-updates-card {
+  border: 1px solid var(--border);
+  background-color: rgba(15, 15, 15, 0.5);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.recent-updates-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.recent-updates-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.recent-updates-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.update-item {
+  display: flex;
+  padding: 1rem 1.5rem;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.update-item:last-child {
+  border-bottom: none;
+}
+
+.update-item:hover {
+  background-color: var(--accent);
+}
+
+.update-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  color: white;
+}
+
+.update-content {
+  flex: 1;
+}
+
+.update-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.update-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.update-badge {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  color: white;
+}
+
+.update-excerpt {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.update-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}

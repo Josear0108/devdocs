@@ -1,0 +1,16 @@
+.news-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.news-separator {
+  margin: 2rem 0;
+}
+
+@media (min-width: 1024px) {
+  .news-detail-layout {
+    grid-template-columns: 2fr 1fr;
+  }
+}

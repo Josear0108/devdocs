@@ -1,0 +1,119 @@
+.news-article {
+  max-width: 100%;
+}
+
+.news-article-header {
+  margin-bottom: 1.5rem;
+}
+
+.news-article-image-container {
+  width: 100%;
+  height: 18rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.news-article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.news-article-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.news-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.news-article-content {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.news-article-lead {
+  font-size: 1.125rem;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.news-article-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+}
+
+.news-article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
+}
+
+.news-article-content p {
+  margin-bottom: 1rem;
+}
+
+.news-article-content ul,
+.news-article-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.news-article-content li {
+  margin-bottom: 0.5rem;
+}
+
+.news-article-content blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.news-article-content blockquote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-style: normal;
+}
+
+.news-article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.news-article-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.news-article-action:hover {
+  background-color: var(--accent);
+}

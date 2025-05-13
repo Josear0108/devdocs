@@ -1,0 +1,65 @@
+.qr-generator {
+  padding: 2rem 0;
+}
+
+.qr-generator-content {
+  max-width: 480px;
+  margin: 2rem auto 0 auto;
+}
+
+.qr-generator-card {
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: var(--card-bg, #fff);
+}
+
+.qr-generator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.generate-button {
+  align-self: flex-end;
+  margin-top: 0.5rem;
+}
+
+.qr-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 120px;
+}
+
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qr-code {
+  width: 200px;
+  height: 200px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border, #e5e7eb);
+  background: #fff;
+}
+
+.download-button {
+  margin-top: 0.5rem;
+}
+
+.qr-placeholder {
+  color: var(--muted-foreground, #6b7280);
+  text-align: center;
+} 

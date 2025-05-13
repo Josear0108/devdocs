@@ -1,0 +1,85 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.button-default {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.button-default:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.button-outline {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.button-outline:hover:not(:disabled) {
+  background-color: var(--accent);
+}
+
+.button-ghost {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.button-ghost:hover:not(:disabled) {
+  background-color: var(--accent);
+}
+
+/* Sizes */
+.button-sm {
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.button-md {
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+}
+
+.button-lg {
+  height: 3rem;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+}
+
+/* Special buttons */
+.button-primary {
+  height: 3rem;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.button-purple {
+  background: linear-gradient(90deg, var(--purple) 0%, var(--purple-dark) 100%);
+  color: white;
+}
+
+.button-blue {
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-dark) 100%);
+  color: white;
+}
+
+.button-teal {
+  background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
+  color: white;
+}

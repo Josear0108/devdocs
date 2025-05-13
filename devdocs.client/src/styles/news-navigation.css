@@ -1,0 +1,29 @@
+.news-navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.news-nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.news-nav-button:hover {
+  background-color: var(--accent);
+}
+
+.news-prev-button {
+  padding-left: 0.75rem;
+}
+
+.news-next-button {
+  padding-right: 0.75rem;
+}

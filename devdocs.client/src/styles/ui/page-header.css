@@ -1,0 +1,19 @@
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header-content {
+  margin-bottom: 1rem;
+}
+
+.page-header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.page-header-description {
+  color: var(--muted-foreground);
+  font-size: 1rem;
+}

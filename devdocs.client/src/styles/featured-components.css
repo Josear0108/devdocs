@@ -1,0 +1,112 @@
+.featured-components {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.component-card-link {
+  display: block;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.component-card-link:hover {
+  transform: translateY(-2px);
+}
+
+.component-card {
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+  background-color: rgba(15, 15, 15, 0.5);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+}
+
+.component-card:hover {
+  border-color: rgba(147, 51, 234, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.component-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.component-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  color: white;
+}
+
+.component-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.component-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.component-description {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.component-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.component-version {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.component-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background: transparent;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.2s ease;
+}
+
+.component-card:hover .component-button {
+  opacity: 1;
+}
+
+.component-button:hover {
+  background-color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .featured-components {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

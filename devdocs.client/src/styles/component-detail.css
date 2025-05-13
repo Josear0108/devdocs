@@ -1,0 +1,101 @@
+.component-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.component-detail-main {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.component-section {
+  margin-bottom: 2rem;
+}
+
+.component-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.component-details {
+  display: grid;
+  gap: 1rem;
+}
+
+.component-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--accent);
+  border-radius: var(--radius);
+}
+
+.detail-label {
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.detail-value {
+  color: var(--foreground);
+}
+
+.component-example {
+  background-color: var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.component-detail-sidebar {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.component-sidebar-section {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.component-sidebar-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.component-sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.component-sidebar-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.component-sidebar-list li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-label {
+  color: var(--muted-foreground);
+}
+
+.sidebar-value {
+  font-weight: 500;
+  color: var(--foreground);
+} 
