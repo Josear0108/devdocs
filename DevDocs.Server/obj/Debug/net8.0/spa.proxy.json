@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:50233",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\Jose Arguello\\Desktop\\Cursos\\DevDocs\\DevDocs.Server\\..\\devdocs.client",
+"WorkingDirectory": "D:\\SYC\\React-repositories\\Publicaciones\\Tests\\devdocs\\DevDocs.Server\\..\\devdocs.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }
