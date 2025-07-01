@@ -8,8 +8,8 @@ import FeaturedComponents from "../components/sections/FeaturedComponents"
 import RecentUpdates from "../components/sections/RecentUpdates"
 import PopularTools from "../components/sections/PopularTools"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/Tabs"
-import { Card } from "../components/ui/Card"
-import { Button } from "../components/ui/Button"
+import { Card } from "../components/ui/card/Card"
+import { Button } from "../components/ui/button/Button"
 import "../styles/home-page.css"
 
 // Animación para la entrada de la página

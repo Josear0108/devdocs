@@ -1,6 +1,6 @@
 import type React from "react"
 import { Link } from "react-router-dom"
-import { Card } from "../ui/Card"
+import { Card } from "../ui/card/Card"
 import { newsData } from "../../data/news"
 import "../../styles/news-related.css"
 

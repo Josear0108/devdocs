@@ -1,7 +1,8 @@
 import { forwardRef } from "react"
 import { motion, type HTMLMotionProps } from "framer-motion"
+import "./button.css"
 
-/** Define aquí tus variantes y tamaños */
+/** Define aquï¿½ tus variantes y tamaï¿½os */
 type Variant = "default" | "outline" | "ghost"
 type Size = "sm" | "md" | "lg"
 
@@ -15,8 +16,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ({ children, variant = "default", size = "md", className = "", whileHover = { scale: 1.02 }, whileTap = { scale: 0.98 }, transition = { duration: 0.2 }, ...props }, ref) => {
         const btn = [
             "button",
-            `button--${variant}`,
-            `button--${size}`,
+            `button-${variant}`,
+            `button-${size}`,
             className
         ].filter(Boolean).join(" ")
 
@@ -27,7 +28,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 whileHover={whileHover}
                 whileTap={whileTap}
                 transition={transition}
-                {...props}  
+                {...props}
             >
                 {children}
             </motion.button>

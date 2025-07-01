@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Clock, Code, FileText } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/Avatar';
 import { Separator } from '../components/ui/Separator';
 import React from 'react';
 import './module-detail.css';
-import { Badge } from '../components/ui/Badge';
+import { Badge } from '../components/ui/badge/Badge';
 
 interface Module {
   id: string;

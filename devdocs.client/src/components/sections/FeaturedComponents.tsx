@@ -3,9 +3,9 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ArrowRight, Grid, Menu, User } from "react-feather"
-import { Card } from "../ui/Card"
-import { Badge } from "../ui/Badge"
-import { Button } from "../ui/Button"
+import { Card } from "../ui/card/Card"
+import { Badge } from "../ui/badge/Badge"
+import { Button } from "../ui/button/Button"
 import { componentsData } from "../../data/components"
 import "../../styles/featured-components.css"
 
