@@ -65,7 +65,7 @@ const FeaturedComponents = () => {
                 <h3 className="component-title">{component.name}</h3>
                 <p className="component-description">{component.description}</p>
                 <div className="component-footer">
-                  <span className="component-version">v{component.version}</span>
+                  <span className="component-version">v{component.lastUpdate}</span>
                   <Button className="component-button">
                     Ver <ArrowRight size={14} />
                   </Button>

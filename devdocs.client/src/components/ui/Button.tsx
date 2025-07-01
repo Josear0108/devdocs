@@ -1,32 +1,37 @@
-"use client"
+import { forwardRef } from "react"
+import { motion, type HTMLMotionProps } from "framer-motion"
 
-import { type ButtonHTMLAttributes, forwardRef } from "react"
-import { motion } from "framer-motion"
-import "../../styles/ui/button.css"
+/** Define aquí tus variantes y tamaños */
+type Variant = "default" | "outline" | "ghost"
+type Size = "sm" | "md" | "lg"
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost"
-  size?: "sm" | "md" | "lg"
-  className?: string
+export interface ButtonProps extends HTMLMotionProps<"button"> {
+    variant?: Variant
+    size?: Size
+    className?: string
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, variant = "default", size = "md", className = "", ...props }, ref) => {
-    const buttonClasses = ["button", `button-${variant}`, `button-${size}`, className].join(" ")
+    ({ children, variant = "default", size = "md", className = "", whileHover = { scale: 1.02 }, whileTap = { scale: 0.98 }, transition = { duration: 0.2 }, ...props }, ref) => {
+        const btn = [
+            "button",
+            `button--${variant}`,
+            `button--${size}`,
+            className
+        ].filter(Boolean).join(" ")
 
-    return (
-      <motion.button
-        ref={ref}
-        className={buttonClasses}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.2 }}
-        {...props}
-      >
-        {children}
-      </motion.button>
-    )
-  },
+        return (
+            <motion.button
+                ref={ref}
+                className={btn}
+                whileHover={whileHover}
+                whileTap={whileTap}
+                transition={transition}
+                {...props}  
+            >
+                {children}
+            </motion.button>
+        )
+    }
 )
-
 Button.displayName = "Button"

@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar"
 import MobileNav from "./MobileNav"
 import CommandMenu from "../ui/CommandMenu"
 import "../../styles/layout.css"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 
 const Layout = () => {
   useEffect(() => {
