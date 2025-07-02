@@ -13,6 +13,7 @@ export const QRForm = () => {
     const generateQRCode = useQRCodeStore(state => state.generateQRCode);
     const isLoading = useQRCodeStore(state => state.isLoading);
     const error = useQRCodeStore(state => state.error);
+    
 
     return (
         <div className={styles.qrForm}>

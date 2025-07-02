@@ -26,7 +26,8 @@ interface QRCodeState {
     // --- Estado de los Formularios ---
     option: 'URL' | 'VCARD';
     text: string;
-    activeView: 'informacion' | 'personalizacion';
+    // MODIFICAMOS EL TIPO PARA ACEPTAR LA NUEVA VISTA
+    activeView: 'informacion' | 'personalizacion' | 'preview';
     vcardData: VCardData;
 
     // --- Estado de Personalización ---
@@ -46,7 +47,8 @@ interface QRCodeState {
     // --- Adaptador para la Generación de QR ---
     qrCodeAdapter: IQRCodeAdapter | null;
     adapterCapabilities: IQRCodeAdapterCapabilities;
-    setActiveView: (view: 'informacion' | 'personalizacion') => void;
+    // MODIFICAMOS EL TIPO DE LA ACCIÓN
+    setActiveView: (view: 'informacion' | 'personalizacion' | 'preview') => void;
     // --- Acciones que los Componentes pueden Llamar ---
     setOption: (option: 'URL' | 'VCARD') => void;
     setText: (text: string) => void;
@@ -184,7 +186,13 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
                 ...styleOptions
             });
 
-            set({ isGenerated: true, isLoading: false });
+            // --- CAMBIO CLAVE AQUÍ ---
+            // Al generar el QR, te llevamos a la vista de personalización.
+            set({
+                isGenerated: true,
+                isLoading: false,
+                activeView: 'personalizacion'
+            });
 
         } catch (e) {
             set({ error: getErrorMessage(e), isLoading: false, isGenerated: false });

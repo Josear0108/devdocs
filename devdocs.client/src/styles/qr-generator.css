@@ -1,3 +1,64 @@
+/* Botones genéricos de acción para reutilizar */
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  height: 40px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.secondary-button {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.secondary-button:hover {
+  background-color: var(--accent);
+}
+/* Contenedor para la vista de previsualización */
+.qr-preview-layout {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  /* Reducimos ligeramente el padding interno para ganar espacio */
+  padding: 0.5rem 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; /* Centra el contenedor */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem; /* Espacio entre el header, QR y acciones */
+}
+
+.qr-preview-header {
+  text-align: center;
+}
+
+.qr-preview-header h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.qr-preview-header p {
+  color: var(--muted-foreground);
+}
+
+.qr-preview-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
+}
 /* src/styles/qr-generator.css */
 
 /* Contenedor principal de la página */
@@ -7,7 +68,8 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; /* Espacio entre header, stepper y grid */
+  /* Reducimos el espacio entre el stepper y el contenido */
+  gap: 1.5rem;
 }
 
 /* Header */

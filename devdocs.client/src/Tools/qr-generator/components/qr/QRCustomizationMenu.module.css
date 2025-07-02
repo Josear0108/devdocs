@@ -49,3 +49,47 @@
 .tabContent {
   padding-top: 1.5rem;
 }
+
+/* --- ACCIONES FOOTER PERSONALIZACIÓN --- */
+.actionsFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  height: 40px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.secondaryButton:hover {
+  background-color: var(--accent);
+}
+
+.primaryButton {
+  background: linear-gradient(90deg, var(--purple-light) 0%, var(--purple-dark) 100%);
+  color: white;
+  border: none;
+}
+
+.primaryButton:hover {
+  opacity: 0.9;
+}
