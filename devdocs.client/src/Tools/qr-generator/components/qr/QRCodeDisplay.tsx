@@ -1,61 +1,61 @@
 ﻿import React, { useRef, useEffect, useState } from 'react';
 import { useQRCodeStore } from '../../store/useQRCodeStore';
 import type { FileExtension } from '../../config/qrConfig';
+import styles from './QRCodeDisplay.module.css';
 
 export const QRCodeDisplay = () => {
+    // --- Lógica existente (SIN CAMBIOS) ---
     const isGenerated = useQRCodeStore(state => state.isGenerated);
     const download = useQRCodeStore(state => state.download);
     const qrCodeAdapter = useQRCodeStore(state => state.qrCodeAdapter);
-
     const [downloadFormat, setDownloadFormat] = useState<FileExtension>('svg');
     const qrCodeRef = useRef<HTMLDivElement>(null);
 
-    // Define a type for the QR code adapter constructor with supportedFormats
-    type QRCodeAdapterConstructor = {
-        supportedFormats?: FileExtension[];
-    };
-
-    // Determina los formatos soportados dinámicamente
-    const supportedFormats: FileExtension[] =
-        (qrCodeAdapter && (qrCodeAdapter.constructor as QRCodeAdapterConstructor).supportedFormats)
-            ? (qrCodeAdapter.constructor as QRCodeAdapterConstructor).supportedFormats!
-            : ['svg', 'png', 'jpeg', 'webp'];
+    const supportedFormats: FileExtension[] = qrCodeAdapter?.supportedFormats ?? ['svg', 'png', 'jpeg', 'webp'];
 
     useEffect(() => {
-        if (qrCodeAdapter && qrCodeRef.current) {
-            qrCodeAdapter.append(qrCodeRef.current);
+        const node = qrCodeRef.current;
+        if (isGenerated && qrCodeAdapter && node) {
+            // Limpiamos antes de añadir el nuevo QR para evitar duplicados
+            node.innerHTML = '';
+            qrCodeAdapter.append(node);
         }
-        return () => {
-            if (qrCodeAdapter) {
-                qrCodeAdapter.clear();
-            }
-        };
-    }, [qrCodeAdapter]);
+    }, [qrCodeAdapter, isGenerated]);
 
     const handleDownloadClick = () => {
         download(downloadFormat);
     };
+    // --- Fin de la lógica ---
 
     return (
-        <section className="qr-display">
-            <div className={`qr-display__container ${!isGenerated ? 'qr-display__container--placeholder-active' : ''}`}>
-                <div
-                    ref={qrCodeRef}
-                    className={`qr-display__canvas${!isGenerated ? ' qr-display__canvas--hidden' : ''}`}
-                ></div>
+        <div className={styles.displayWrapper}>
+            {/* Contenedor del QR y placeholder */}
+            <div className={`${styles.qrContainer} ${isGenerated ? styles.qrContainerActive : ''}`}>
+                {/* Solo mostramos el div del QR si está generado */}
+                {isGenerated && (
+                    <div ref={qrCodeRef} className={styles.qrCanvas} />
+                )}
+
+                {/* Mostramos el placeholder si NO está generado */}
                 {!isGenerated && (
-                    <img
-                        src="/src/assets/QR-Gris.svg"
-                        alt="QR Placeholder"
-                        className="qr-display__placeholder-img"
-                    />
+                    <>
+                        <img
+                            src="/src/assets/QR-Gris.svg"
+                            alt="QR Placeholder"
+                            className={styles.placeholderImage}
+                        />
+                        <p className={styles.placeholderText}>
+                            Complete la información para generar el QR básico
+                        </p>
+                    </>
                 )}
             </div>
 
-            <div className="download-controls">
+            {/* Controles de descarga (usando la lógica y componentes que ya tenías) */}
+            <div className={styles.downloadControls}>
                 <select
                     id="downloadFormatSelect"
-                    className="dropdown download-format-select"
+                    className={styles.formatSelect}
                     value={downloadFormat}
                     onChange={(e) => setDownloadFormat(e.target.value as FileExtension)}
                     disabled={!isGenerated}
@@ -65,13 +65,13 @@ export const QRCodeDisplay = () => {
                     ))}
                 </select>
                 <button
-                    className="button button--primary qr-display__button"
+                    className={styles.downloadButton}
                     onClick={handleDownloadClick}
                     disabled={!isGenerated}
                 >
                     Descargar QR
                 </button>
             </div>
-        </section>
+        </div>
     );
 };

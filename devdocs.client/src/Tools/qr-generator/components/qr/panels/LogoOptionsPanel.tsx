@@ -1,151 +1,98 @@
-// src/features/qr-generator/components/qr/panels/LogoOptionsPanel.tsx
-import React from 'react';
+import React, { useRef } from 'react';
 import { useQRCodeStore } from '../../../store/useQRCodeStore';
 import type { QRCodeStylingOptions } from '../../../config/qrConfig';
-
-// --- ANTES ---
-// El componente recibía 'currentStyleOptions' y 'onStyleChange' como props.
-// --- AHORA ---
-// El componente se conecta directamente al store para obtener los estilos del logo
-// y la función para actualizarlos. Ya no necesita props para esto.
+import { Upload } from 'react-feather';
+// Importamos ambos módulos de estilos
+import designStyles from './DesignOptionsPanel.module.css'; // Para reutilizar la estructura
+import logoStyles from './LogoOptionsPanel.module.css'; // Para estilos propios
 
 export const LogoOptionsPanel = () => {
-    // Obtenemos el estado y las acciones necesarias del store de Zustand.
-    // Seleccionamos solo lo que este panel necesita para optimizar re-renderizados.
-
+    // La lógica para obtener datos del store no cambia
     const styleOptions = useQRCodeStore(state => state.styleOptions);
     const setStyleOption = useQRCodeStore(state => state.setStyleOption);
     const isLoading = useQRCodeStore(state => state.isLoading);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // --- Manejadores de Eventos ---
-
-    // Manejador para las opciones anidadas dentro de 'imageOptions'
-    const handleImageOptionChange = (
-        key: keyof NonNullable<QRCodeStylingOptions['imageOptions']>,
-        value: string | number | boolean
-    ) => {
-        // Llama a la acción del store para actualizar el estado,
-        // fusionando la nueva opción con las existentes.
-        setStyleOption({
-            imageOptions: {
-                ...styleOptions.imageOptions,
-                [key]: value
-            }
-        });
+    // Tus manejadores de eventos no cambian
+    const handleImageOptionChange = (key: keyof NonNullable<QRCodeStylingOptions['imageOptions']>, value: string | number | boolean) => {
+        setStyleOption({ imageOptions: { ...styleOptions.imageOptions, [key]: value } });
     };
 
-    // Manejador para la subida del archivo de imagen
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = () => {
-                // 'image' es una propiedad de primer nivel en styleOptions, así que la seteamos directamente.
-                setStyleOption({ image: reader.result as string });
-            };
+            reader.onloadend = () => { setStyleOption({ image: reader.result as string }); };
             reader.readAsDataURL(file);
         } else {
-            // Si el usuario cancela la selección de archivo, limpiamos la imagen.
             setStyleOption({ image: undefined });
         }
     };
 
-    // Manejadores específicos con validación para los inputs numéricos,
-    // para evitar enviar valores incorrectos al store.
-    const handleLogoSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (value === '') {
-            handleImageOptionChange('imageSize', 0.3); // Revertir a un default si se borra
-            return;
-        }
-        const parsedValue = parseFloat(value);
-        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 1) {
-            handleImageOptionChange('imageSize', parsedValue);
-        }
-    };
-
-    const handleLogoMarginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (value === '') {
-            handleImageOptionChange('margin', 0); // Revertir a un default si se borra
-            return;
-        }
-        const parsedValue = parseInt(value, 10);
-        if (!isNaN(parsedValue) && parsedValue >= 0) {
-            handleImageOptionChange('margin', parsedValue);
-        }
-    };
-
     return (
-        <div className="tab-panel logo-options-panel">
-            <h4>Logo</h4>
-            <div className="customization-section">
-                <div className="form-group">
-                    <label htmlFor="logo-upload">Subir Logo (PNG, JPEG, SVG):</label>
-                    <input
-                        type="file"
-                        id="logo-upload"
-                        accept="image/png, image/jpeg, image/svg+xml"
-                        onChange={handleLogoUpload}
-                        disabled={isLoading}
-                    />
-                </div>
+        // Usamos .panelGrid del módulo de diseño para mantener la misma estructura de columnas
+        <div className={designStyles.panelGrid}>
+            <div className={designStyles.section}>
+                <h4 className={designStyles.sectionTitle}>Logo</h4>
 
-                {/* Muestra una vista previa del logo si se ha cargado */}
+                {/* Botón para subir archivo */}
+                <input
+                    type="file"
+                    accept="image/png, image/jpeg, image/svg+xml"
+                    ref={fileInputRef}
+                    onChange={handleLogoUpload}
+                    className={logoStyles.hiddenInput}
+                    disabled={isLoading}
+                />
+                <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className={logoStyles.uploadButton}
+                    disabled={isLoading}
+                >
+                    <Upload size={16} />
+                    {styleOptions.image ? 'Cambiar logo' : 'Subir logo'}
+                </button>
+
+                {/* Vista previa del logo */}
                 {styleOptions.image && (
-                    <div className="form-group" style={{ textAlign: 'center' }}>
-                        <img
-                            src={styleOptions.image}
-                            alt="Logo preview"
-                            style={{
-                                display: 'inline-block',
-                                maxWidth: '100px',
-                                maxHeight: '100px',
-                                margin: 'var(--spacing-sm, 0.5rem) 0',
-                                border: '1px solid var(--color-border-light, #eee)',
-                                borderRadius: 'var(--border-radius-sm, 4px)'
-                            }}
-                        />
+                    <div className={logoStyles.previewContainer}>
+                        <img src={styleOptions.image} alt="Vista previa del logo" className={logoStyles.previewImage} />
                     </div>
                 )}
+            </div>
 
-                <div className="form-group">
-                    <label htmlFor="logo-size">Tamaño del Logo (Proporción 0 a 1):</label>
+            <div className={designStyles.section}>
+                <h4 className={designStyles.sectionTitle}>Opciones del Logo</h4>
+                
+                {/* Controles de tamaño y margen */}
+                <div className={designStyles.formGroup}>
+                    <label htmlFor="logo-size" className={designStyles.label}>Tamaño:</label>
                     <input
-                        type="number"
-                        id="logo-size"
-                        min="0"
-                        max="1"
-                        step="0.05"
-                        // El valor se lee directamente del store, con un fallback seguro.
+                        type="number" id="logo-size" min="0" max="1" step="0.05"
                         value={styleOptions.imageOptions?.imageSize ?? 0.3}
-                        onChange={handleLogoSizeChange}
-                        disabled={isLoading}
+                        onChange={(e) => handleImageOptionChange('imageSize', parseFloat(e.target.value))}
+                        className={designStyles.input} disabled={isLoading}
                     />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="logo-margin">Margen del Logo (px):</label>
+                <div className={designStyles.formGroup}>
+                    <label htmlFor="logo-margin" className={designStyles.label}>Margen (px):</label>
                     <input
-                        type="number"
-                        id="logo-margin"
-                        min="0"
-                        step="1"
+                        type="number" id="logo-margin" min="0" step="1"
                         value={styleOptions.imageOptions?.margin ?? 0}
-                        onChange={handleLogoMarginChange}
-                        disabled={isLoading}
+                        onChange={(e) => handleImageOptionChange('margin', parseInt(e.target.value, 10))}
+                        className={designStyles.input} disabled={isLoading}
                     />
                 </div>
-
-                <div className="form-group checkbox-inline-group">
+                
+                {/* Checkbox */}
+                <div className={logoStyles.checkboxGroup}>
                     <input
-                        type="checkbox"
-                        id="logo-hideBackgroundDots"
+                        type="checkbox" id="logo-hideBackgroundDots"
                         checked={styleOptions.imageOptions?.hideBackgroundDots ?? true}
                         onChange={(e) => handleImageOptionChange('hideBackgroundDots', e.target.checked)}
                         disabled={isLoading}
                     />
-                    <label htmlFor="logo-hideBackgroundDots">Ocultar puntos detrás del logo</label>
+                    <label htmlFor="logo-hideBackgroundDots" className={designStyles.label}>Ocultar puntos detrás del logo</label>
                 </div>
             </div>
         </div>

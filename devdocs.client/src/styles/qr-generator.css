@@ -1,12 +1,13 @@
+/* src/styles/qr-generator.css */
 
-/* Contenedor general del módulo */
-.qr-generator-container {
+/* Contenedor principal de la página */
+.qr-generator-page {
+  padding: 2rem 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1rem;
-  gap: 1.5rem;
-  max-width: 1280px;
-  margin: 0 auto;
+  gap: 2.5rem; /* Espacio entre header, stepper y grid */
 }
 
 /* Header */
@@ -16,189 +17,78 @@
 .qr-generator-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #a259f7;
+  color: var(--primary);
   margin-bottom: 0.5rem;
 }
 .qr-generator-header p {
   font-size: 1.1rem;
   color: var(--muted-foreground, #6b7280);
 }
-
-/* Tabs/steps (puedes ajustar según tu componente real) */
-.qr-generator-tabs {
+/* Stepper de navegación (Información, Personalización, etc.) */
+.qr-stepper {
   display: flex;
   justify-content: center;
-  gap: 4rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  gap: 3rem;
 }
-.qr-generator-tab {
+
+.step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--color-text-light, #888);
-  font-size: 1rem;
-}
-.qr-generator-tab svg {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
-}
-
-/* Grid principal */
-.qr-generator-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-@media (max-width: 900px) {
-  .qr-generator-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Card estilo global */
-.qr-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 2rem;
-  border: 1px solid #ddd;
-}
-
-/* Formulario QR */
-.qr-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-.qr-form__title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-.qr-form__url-group,
-.qr-form__field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.qr-form__input {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  background: #fff;
-  transition: border-color 0.2s;
-}
-.qr-form__input:focus {
-  border-color: #a259f7;
-  outline: none;
-}
-.qr-form__submit {
-  width: 100%;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  gap: 0.75rem;
+  color: var(--muted-foreground);
   font-weight: 500;
-  color: #fff;
-  background: linear-gradient(90deg, #a259f7 60%, #c2a0fd 100%);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: filter 0.15s;
-}
-.qr-form__submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.qr-form__error {
-  color: #dc3545;
-  background: #f8d7da;
-  border: 1px solid #f5c2c7;
-  border-radius: 4px;
-  padding: 0.5rem;
-  font-size: 0.95rem;
-  margin-top: 0.5rem;
 }
 
-/* QR Preview */
-.qr-preview-box {
+.step-icon {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 240px;
-  border: 2px dashed #bbb;
-  border-radius: 1rem;
-  background: #faf9fb;
-}
-.qr-preview-placeholder {
-  color: #bbb;
-  font-size: 1rem;
-  text-align: center;
-  padding: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background-color: var(--card);
+  transition: all 0.3s ease;
 }
 
-.qr-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  min-height: 120px;
+/* Clase para el paso activo */
+.step.active .step-icon {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-.qr-code-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+.step.active span {
+  color: var(--primary);
 }
 
-.qr-code {
-  width: 200px;
-  height: 200px;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border, #e5e7eb);
-  background: #fff;
+.step.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.download-button {
-  margin-top: 0.5rem;
-}
-
-.qr-placeholder {
-  color: var(--muted-foreground, #6b7280);
-  text-align: center;
-}
-
-.qr-generator-container {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 1rem;
-  gap: 1.5rem;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.qr-generator-header {
-  margin-bottom: 2rem;
-}
-
-.qr-generator-grid {
+/* Layout principal de dos columnas */
+.qr-generator-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr; /* Columna izquierda más ancha */
   gap: 2rem;
+  align-items: flex-start; /* Alinea las tarjetas arriba */
 }
 
-@media (max-width: 900px) {
-  .qr-generator-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.qr-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+/* Tarjetas para las columnas */
+.qr-layout-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 2rem;
-  border: 1px solid #ddd;
+  width: 100%;
+  height: 100%; /* Asegura que la tarjeta ocupe el alto disponible */
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 960px) {
+  .qr-generator-layout {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
 }

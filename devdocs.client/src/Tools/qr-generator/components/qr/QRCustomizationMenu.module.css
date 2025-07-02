@@ -1,36 +1,51 @@
-.qrCustomization {
-  margin-top: 2rem;
-}
-
-.qrCustomizationTabs {
+/* Contenedor principal del menú de personalización */
+.wrapper {
   display: flex;
-  border-bottom: 1px solid var(--border, #e5e5e5);
-  margin-bottom: 2rem;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.tabButton {
-  padding: 0.5rem 1.25rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1rem;
-  color: var(--muted-foreground, #6b7280);
+/* Título de la sección */
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Barra que contiene las pestañas */
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Estilo de cada pestaña individual */
+.tabTrigger {
+  padding: 0.5rem 1rem;
   font-weight: 500;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -1px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px; /* Alinea el borde con el borde de la lista */
 }
 
-.tabButton:hover {
-  color: var(--primary, #9333ea);
+.tabTrigger:hover {
+  color: var(--foreground);
 }
 
-.active {
-  color: var(--primary, #9333ea);
-  border-bottom-color: var(--primary, #9333ea);
+/* Estilo para la pestaña activa */
+.tabTriggerActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
-.qrCustomizationContent {
-  /* Puedes agregar estilos para el panel aquí si lo necesitas */
+/* Contenido del panel que se muestra debajo de las pestañas */
+.tabContent {
+  padding-top: 1.5rem;
 }
