@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ArrowRight, FileText, Grid, Layers, PenTool } from "react-feather"
-import { Button } from "../ui/Button"
+import { Button } from "../ui/button/Button"
 import "../../styles/hero-section.css"
 
 // Animaciones para los elementos del hero
@@ -55,7 +55,7 @@ const HeroSection = () => {
 
         <motion.div variants={itemAnimation} className="hero-buttons">
           <Link to="/componentes">
-            <Button className="button-primary button-purple">
+            <Button className="button-primary button-purple" variant="default" size="md">
               Explorar Documentación
               <ArrowRight size={16} />
             </Button>

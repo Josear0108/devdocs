@@ -49,7 +49,7 @@ const ComponentsPage = () => {
           >
             <div className="component-card-header">
               <h3 className="component-title">{component.name}</h3>
-              <span className="component-version">v{component.version}</span>
+              <span className="component-version">v{component.lastUpdate}</span>
             </div>
             <p className="component-description">{component.description}</p>
             <div className="component-footer">

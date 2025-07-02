@@ -1,7 +1,7 @@
 import type React from "react"
 import { Calendar, Share2, ThumbsUp, MessageSquare, Bookmark } from "react-feather"
-import { Badge } from "../ui/Badge"
-import { Button } from "../ui/Button"
+import { Badge } from "../ui/badge/Badge"
+import { Button } from "../ui/button/Button"
 import type { NewsItem } from "../../types/news"
 import "../../styles/news-article.css"
 

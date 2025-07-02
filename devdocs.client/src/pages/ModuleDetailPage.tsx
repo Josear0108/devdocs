@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Badge, ChevronLeft, ChevronRight, Clock, Code, FileText } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { ChevronLeft, ChevronRight, Clock, Code, FileText } from 'lucide-react';
+import { Button } from '../components/ui/button/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/Avatar';
 import { Separator } from '../components/ui/Separator';
 import React from 'react';
 import './module-detail.css';
+import { Badge } from '../components/ui/badge/Badge';
 
 interface Module {
   id: string;
@@ -35,7 +36,6 @@ export default function ModuleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [module, setModule] = useState<Module | null>(null);
-  const [activeTab, setActiveTab] = useState('documentation');
 
   useEffect(() => {
     // Simulación de carga de datos
@@ -167,7 +167,7 @@ export const authConfig = {
         </div>
       </div>
 
-      <div className="module-content">
+      <div className="module-content"> 
         <div className="main-content">
           <Tabs defaultValue="documentation" className="w-full">
             <TabsList className="mb-4">

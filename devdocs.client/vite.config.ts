@@ -45,12 +45,7 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    build: {
-        rollupOptions: {
-            input: {
-                main: './src/main.tsx'
-            }
-        }
+    build: { 
     },
     server: {
         proxy: {

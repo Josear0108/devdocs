@@ -2,12 +2,9 @@
 
 import { useParams } from "react-router-dom"
 import { motion } from "framer-motion"
-import React from "react"
-
 import { PageHeader } from "../components/ui/PageHeader"
-import { Separator } from "../components/ui/Separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/Tabs"
-import { Card, CardContent } from "../components/ui/Card"
+import { Card, CardContent } from "../components/ui/card/Card"
 
 import { componentsData } from "../data/components"
 import type { Block, TabsBlock, TableBlock, Badge, ChangeItem } from "../types/component"

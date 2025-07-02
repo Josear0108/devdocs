@@ -1,9 +1,10 @@
 // src/features/qr-generator/pages/QRGeneratorPage.tsx
+// src/features/qr-generator/pages/QRGeneratorPage.tsx
 import { QRForm } from '../Tools/qr-generator/components/qr/QRForm'; 
 import { QRCustomizationMenu } from '../Tools/qr-generator/components/qr/QRCustomizationMenu';
 import { QRCodeDisplay } from '../Tools/qr-generator/components/qr/QRCodeDisplay';
 import { Dropdown } from '../Tools/qr-generator/components/common/Dropdown';
-import '../styles/qr-generator.css';
+import "../styles/qr-generator.css"
 
 
 export const QrGeneratorPage = () => {
