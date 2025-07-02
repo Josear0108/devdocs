@@ -1,23 +1,39 @@
+/* Contenedor principal del formulario */
+.qrForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espacio entre el título, el formulario y el botón */
+}
 
-/* src/Tools/qr-generator/components/qr/QRForm.module.css */
+/* Título de la sección: "Ingrese la URL" o "Ingrese los datos de contacto" */
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
 
-/* Contenedor para un grupo de label + input/select */
+/* Grupo que contiene un label y un input */
 .formGroup {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 
-/* Estilo para todas las etiquetas (label) */
+/* Estilo para las etiquetas (label) */
 .label {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--foreground);
 }
 
-/* Estilo para todos los campos de texto (input) y selectores (select) */
-.input, .select {
+.labelAsterisk {
+  color: var(--primary);
+  margin-left: 0.25rem;
+}
+
+/* Estilo para los campos de texto (input) */
+.input {
   width: 100%;
   height: 44px;
   padding: 0 1rem;
@@ -33,28 +49,44 @@
   color: var(--muted-foreground);
 }
 
-.input:focus, .select:focus {
+.input:focus {
   outline: none;
   border-color: var(--ring);
   box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
 }
 
-/* Estilo específico para el selector para añadir la flecha */
-.select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.75rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
+/* Botón principal para generar el QR */
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  height: 44px;
+  padding: 0 1.5rem;
+  font-size: 0.9rem;
+  background: linear-gradient(90deg, var(--purple-light) 0%, var(--purple-dark) 100%);
+  color: white;
+  border: none;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: 1rem; /* Espacio extra sobre el botón */
 }
 
-/* Estilo para un campo de input con error */
-.inputError {
-  border-color: #ef4444; /* Un color rojo para errores */
+.submitButton:hover:not(:disabled) {
+  opacity: 0.9;
 }
 
-.inputError:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); /* Un "glow" rojo al enfocar */
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mensaje de error */
+.error {
+  color: var(--destructive);
+  font-size: 0.875rem;
+  text-align: center;
+  margin-top: 0.5rem;
 }

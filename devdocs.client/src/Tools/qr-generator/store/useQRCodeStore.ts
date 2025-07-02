@@ -26,7 +26,7 @@ interface QRCodeState {
     // --- Estado de los Formularios ---
     option: 'URL' | 'VCARD';
     text: string;
-    activeView: 'informacion' | 'personalizacion'; // NUEVO: Estado para manejar la vista activa
+    activeView: 'informacion' | 'personalizacion';
     vcardData: VCardData;
 
     // --- Estado de Personalización ---
@@ -37,12 +37,15 @@ interface QRCodeState {
     isLoading: boolean;
     error: string | null;
 
+    // --- NUEVO ESTADO: Intento de generación ---
+    hasAttemptedGeneration: boolean;
+
     // --- Errores de Validación de Campos de VCard ---
     vcardFieldErrors: Partial<Record<keyof VCardData, string>>;
 
     // --- Adaptador para la Generación de QR ---
     qrCodeAdapter: IQRCodeAdapter | null;
-    adapterCapabilities: IQRCodeAdapterCapabilities; // NUEVO
+    adapterCapabilities: IQRCodeAdapterCapabilities;
     setActiveView: (view: 'informacion' | 'personalizacion') => void;
     // --- Acciones que los Componentes pueden Llamar ---
     setOption: (option: 'URL' | 'VCARD') => void;
@@ -87,7 +90,8 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
     error: null,
     vcardFieldErrors: {},
     qrCodeAdapter: null,
-    adapterCapabilities: DEFAULT_CAPABILITIES, // NUEVO
+    adapterCapabilities: DEFAULT_CAPABILITIES,
+    hasAttemptedGeneration: false,
 
     // ===================================
     //       ACCIONES DEL STORE
@@ -100,10 +104,12 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         });
     },
 
-    setOption: (option) => {
-        get().reset(); // Llama a la acción de reseteo para limpiar todo al cambiar de opción
-        set({ option });
-    },
+    setOption: (option) => set({
+        option,
+        isGenerated: false,
+        error: null,
+        hasAttemptedGeneration: false
+    }),
 
     setText: (text) => set({ text, isGenerated: false }), // Al editar, marcamos que el QR actual ya no es válido
 
@@ -148,7 +154,7 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
     },
 
     generateQRCode: async () => {
-        set({ isLoading: true, error: null });
+        set({ hasAttemptedGeneration: true, isLoading: true, error: null });
         const { option, text, vcardData, styleOptions, validateVcardFields, qrCodeAdapter } = get();
 
         if (!qrCodeAdapter) {

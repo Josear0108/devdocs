@@ -16,7 +16,6 @@ import ToolsPage from "./pages/ToolsPage"
 
 import { useQRCodeStore } from './Tools/qr-generator/store/useQRCodeStore';
 
-
 import { ClientQRCodeAdapter } from './Tools/qr-generator/adapters/ClientQRCode.adapter';
 //import { ApiQRCodeAdapter } from './Tools/qr-generator/adapters/ApiQRCode.Adapter';
 

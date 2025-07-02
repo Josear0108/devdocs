@@ -1,4 +1,3 @@
-// src/pages/QrGeneratorPage.tsx
 import { QRForm } from '../Tools/qr-generator/components/qr/QRForm';
 import { QRCodeDisplay } from '../Tools/qr-generator/components/qr/QRCodeDisplay';
 import { Dropdown } from '../Tools/qr-generator/components/common/Dropdown';
@@ -46,7 +45,7 @@ export const QrGeneratorPage = () => {
                     {activeView === 'informacion' ? (
                         <>
                             <Dropdown />
-                            <QRForm />
+                              <QRForm /> 
                         </>
                     ) : (
                         <QRCustomizationMenu />

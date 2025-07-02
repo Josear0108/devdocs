@@ -1,19 +1,10 @@
-/* src/Tools/qr-generator/components/common/Dropdown.module.css */
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem; /* Espacio antes de la siguiente sección */
+/* Contenedor del dropdown */
+.dropdownSection {
+  margin-bottom: 1.5rem; /* Espacio debajo del selector */
 }
 
-.label {
-  font-size: 0.875rem; /* 14px */
-  font-weight: 500;
-  color: var(--foreground);
-}
-
-.select {
+/* Estilo del elemento select */
+.dropdown {
   width: 100%;
   height: 44px;
   padding: 0 1rem;
@@ -22,16 +13,18 @@
   border-radius: var(--radius);
   color: var(--foreground);
   font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  
+  /* Flecha personalizada para el selector */
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.select:focus {
+.dropdown:focus {
   outline: none;
   border-color: var(--ring);
   box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
