@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import { useQRCodeStore } from '../../store/useQRCodeStore';
+﻿import { useQRCodeStore } from '../../store/useQRCodeStore';
 // Importamos el nuevo módulo de estilos
 import styles from './Dropdown.module.css'; 
 

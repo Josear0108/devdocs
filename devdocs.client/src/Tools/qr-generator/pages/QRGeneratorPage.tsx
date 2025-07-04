@@ -2,7 +2,7 @@
 import { QRForm } from '../components/qr/QRForm'; 
 import { QRCustomizationMenu } from '../components/qr/QRCustomizationMenu';
 import { QRCodeDisplay } from '../components/qr/QRCodeDisplay';
-import { Logo } from '../components/common/Logo';
+
 import { Dropdown } from '../components/common/Dropdown';
 
 
@@ -11,8 +11,7 @@ export const QRGeneratorPage = () => {
     
     return (
         <div className="qr-generator-layout">
-            <aside className="qr-generator-layout__sidebar">
-                <Logo />    
+            <aside className="qr-generator-layout__sidebar">   
                  <Dropdown /> 
                 <QRForm />
                 <QRCustomizationMenu />

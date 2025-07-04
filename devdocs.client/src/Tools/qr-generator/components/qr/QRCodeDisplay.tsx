@@ -1,4 +1,4 @@
-﻿import React, { useRef, useEffect, useState } from 'react';
+﻿import { useRef, useEffect, useState } from 'react';
 import { useQRCodeStore } from '../../store/useQRCodeStore';
 import type { FileExtension } from '../../config/qrConfig';
 import styles from './QRCodeDisplay.module.css';

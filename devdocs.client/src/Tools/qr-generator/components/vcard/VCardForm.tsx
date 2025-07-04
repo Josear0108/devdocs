@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from "framer-motion"
 import { useQRCodeStore } from '../../store/useQRCodeStore';
 import type { VCardData } from '../../types';

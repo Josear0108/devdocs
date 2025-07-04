@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import { motion } from "framer-motion"
+﻿import { motion } from "framer-motion"
 import { useQRCodeStore } from '../../store/useQRCodeStore';
 import { VCardForm } from '../vcard/VCardForm';
 import { ArrowRight } from 'react-feather';

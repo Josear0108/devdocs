@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import { useState } from 'react';
 import { DesignOptionsPanel } from './panels/DesignOptionsPanel';
 import { LogoOptionsPanel } from './panels/LogoOptionsPanel';
 import { FramesOptionsPanel } from './panels/FramesOptionsPanel';
@@ -8,13 +8,15 @@ import { ArrowLeft, Eye } from 'react-feather';
 import { motion } from "framer-motion"
 
 // Definimos los tipos para las pestañas activas
-type ActiveTab = 'diseño' | 'logo' | 'marcos';
+type ActiveTab = 'diseño' | 'marcos' | 'logo';
 
 export const QRCustomizationMenu = () => {
     // Estado local para manejar la pestaña activa
     const [activeTab, setActiveTab] = useState<ActiveTab>('diseño');
     const capabilities = useQRCodeStore(state => state.adapterCapabilities);
     const setActiveView = useQRCodeStore(state => state.setActiveView);
+
+
     // Si el adaptador no soporta ninguna personalización, no mostramos el menú
     if (!capabilities.customColors && !capabilities.customDots && !capabilities.margin && !capabilities.logo) {
         return null;
@@ -38,20 +40,20 @@ const itemAnimation = {
                     className={`${styles.tabTrigger} ${activeTab === 'diseño' ? styles.tabTriggerActive : ''}`}
                     onClick={() => setActiveTab('diseño')}
                 >
-                    Diseño
-                </button>
-                <button
-                    className={`${styles.tabTrigger} ${activeTab === 'logo' ? styles.tabTriggerActive : ''}`}
-                    onClick={() => setActiveTab('logo')}
-                >
-                    Logo
+                    Forma y Color
                 </button>
                 {/* Nueva pestaña para Marcos */}
                 <button
                     className={`${styles.tabTrigger} ${activeTab === 'marcos' ? styles.tabTriggerActive : ''}`}
                     onClick={() => setActiveTab('marcos')}
                 >
-                    Marcos
+                    Marcos y Etiquetas
+                </button>
+                 <button
+                    className={`${styles.tabTrigger} ${activeTab === 'logo' ? styles.tabTriggerActive : ''}`}
+                    onClick={() => setActiveTab('logo')}
+                >
+                    Logo Personalizado
                 </button>
             </div>
 

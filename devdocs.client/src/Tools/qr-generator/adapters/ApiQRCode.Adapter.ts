@@ -60,7 +60,7 @@ export class ApiQRCodeAdapter implements IQRCodeAdapter {
     private buildParams(options: Partial<QRCodeStylingOptions>, format: FileExtension): URLSearchParams {
         return new URLSearchParams({
             data: String(options.data ?? ''),
-            test: 'true',
+            test: 'false',
             size: String(options.width ?? 15),
             version: '1',
             format: format,

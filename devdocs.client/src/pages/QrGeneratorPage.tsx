@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { useQRCodeStore } from '../Tools/qr-generator/store/useQRCodeStore';
 import { QRForm } from '../Tools/qr-generator/components/qr/QRForm';
 import { QRCodeDisplay } from '../Tools/qr-generator/components/qr/QRCodeDisplay';
