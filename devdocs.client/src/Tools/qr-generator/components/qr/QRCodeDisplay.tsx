@@ -1,7 +1,7 @@
 ﻿import { useRef, useEffect, useState } from 'react';
-import { useQRCodeStore } from '../../store/useQRCodeStore';
 import type { FileExtension } from '../../config/qrConfig';
 import styles from './QRCodeDisplay.module.css';
+import { useQRCodeStore } from '../../store/useQRCodeStore';
 
 export const QRCodeDisplay = () => {
     // --- Lógica existente (SIN CAMBIOS) ---
@@ -69,7 +69,7 @@ export const QRCodeDisplay = () => {
             </div>
 
             {/* Controles de descarga (usando la lógica y componentes que ya tenías) */}
-            <div className={styles.downloadControls}>
+            {/* <div className={styles.downloadControls}>
                 <select
                     id="downloadFormatSelect"
                     className={styles.formatSelect}
@@ -88,7 +88,7 @@ export const QRCodeDisplay = () => {
                 >
                     Descargar QR
                 </button>
-            </div>
+            </div> */}
         </div>
     );
 };

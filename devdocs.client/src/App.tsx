@@ -14,9 +14,9 @@ import NotFoundPage from "./pages/NotFoundPage"
 import { QrGeneratorPage } from "./pages/QrGeneratorPage";
 import ToolsPage from "./pages/ToolsPage"
 
-import { useQRCodeStore } from './Tools/qr-generator/store/useQRCodeStore';
+import { useQRCodeStore } from './tools/qr-generator/store/useQRCodeStore';
 
-import { ClientQRCodeAdapter } from './Tools/qr-generator/adapters/ClientQRCode.adapter';
+import { ClientQRCodeAdapter } from './tools/qr-generator/adapters/ClientQRCode.adapter';
 //import { ApiQRCodeAdapter } from './Tools/qr-generator/adapters/ApiQRCode.Adapter';
 
 /*Inyecta el adaptador al store al iniciar la app */
