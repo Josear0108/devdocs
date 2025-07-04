@@ -62,12 +62,12 @@ const Sidebar = () => {
               <span>Inicio</span>
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="/noticias" className={({ isActive }) => (isActive ? "active" : "")}>
               <FileText size={16} />
               <span>Noticias</span>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
 
         <div className="sidebar-group">
@@ -79,12 +79,12 @@ const Sidebar = () => {
                 <span>Componentes</span>
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to="/modulos" className={({ isActive }) => (isActive ? "active" : "")}>
                 <Layers size={16} />
                 <span>Módulos</span>
               </NavLink>
-            </li>
+            </li> */}
             <li className="has-submenu">
               <NavLink to="/herramientas" className={({ isActive }) => (isActive ? "active" : "")}>
                 <PenTool size={16} />
@@ -97,7 +97,7 @@ const Sidebar = () => {
                     <span>Generador QR</span>
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink
                     to="/herramientas/generador-plantillas"
                     className={({ isActive }) => (isActive ? "active" : "")}
@@ -105,7 +105,7 @@ const Sidebar = () => {
                     <Package size={14} />
                     <span>Generador de Plantillas</span>
                   </NavLink>
-                </li>
+                </li> */}
               </ul>
             </li>
           </ul>
