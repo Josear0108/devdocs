@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\SYC\\React-repositories\\Publicaciones\\Tests\\devdocs\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0D295B74-EA13-41AF-B68D-F3073AE2B2A9}|devdocs.client\\devdocs.client.esproj|d:\\syc\\react-repositories\\publicaciones\\tests\\devdocs\\devdocs.client\\src\\pages\\componentdetailpage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{0D295B74-EA13-41AF-B68D-F3073AE2B2A9}|devdocs.client\\devdocs.client.esproj|solutionrelative:devdocs.client\\src\\pages\\componentdetailpage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ComponentDetailPage.tsx",
+              "DocumentMoniker": "D:\\SYC\\React-repositories\\Publicaciones\\Tests\\devdocs\\devdocs.client\\src\\pages\\ComponentDetailPage.tsx",
+              "RelativeDocumentMoniker": "devdocs.client\\src\\pages\\ComponentDetailPage.tsx",
+              "ToolTip": "D:\\SYC\\React-repositories\\Publicaciones\\Tests\\devdocs\\devdocs.client\\src\\pages\\ComponentDetailPage.tsx",
+              "RelativeToolTip": "devdocs.client\\src\\pages\\ComponentDetailPage.tsx",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAAALEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-06-11T20:08:13.583Z",
+              "EditorCaption": ""
             }
           ]
         }

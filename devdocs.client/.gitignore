@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Carpeta de objetos de compilación
+DevDocs.Server/obj/
+
+# Cache de assets
+DevDocs.Server.assets.cache

@@ -1,96 +1,118 @@
-"use client"
+import { useQRCodeStore } from '../Tools/qr-generator/store/useQRCodeStore';
+import { QRForm } from '../Tools/qr-generator/components/qr/QRForm';
+import { QRCodeDisplay } from '../Tools/qr-generator/components/qr/QRCodeDisplay';
+import { Dropdown } from '../Tools/qr-generator/components/common/Dropdown';
+import { QRCustomizationMenu } from '../Tools/qr-generator/components/qr/QRCustomizationMenu';
+import { Edit, Settings, Download, ArrowLeft } from 'react-feather';
+import '../styles/qr-generator.css';
 
-import { useState } from "react"
+ /* Agregar las animaciones de entrada y salida a los componentes de la página QR Generator */
 import { motion } from "framer-motion"
-import { PageHeader } from "../components/ui/PageHeader"
-import { Card } from "../components/ui/card/Card"
-import { Button } from "../components/ui/button/Button"
-import { Input } from "../components/ui/Input"
-import { Select } from "../components/ui/Select"
-import { Separator } from "../components/ui/Separator"
-import "../styles/qr-generator.css"
-
-const QrGeneratorPage = () => {
-  const [url, setUrl] = useState("")
-  const [size, setSize] = useState("200")
-  const [qrCode, setQrCode] = useState("")
-
-  const generateQR = () => {
-    if (!url) return
-
-    // Aquí iría la lógica para generar el código QR
-    // Por ahora, solo mostraremos un placeholder
-    setQrCode(`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}`)
-  }
-
-  return (
-    <motion.div
-      className="qr-generator"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <PageHeader
-        title="Generador de Códigos QR"
-        description="Crea códigos QR personalizados para tus URLs"
-      />
-
-      <div className="qr-generator-content">
-        <Card className="qr-generator-card">
-          <div className="qr-generator-form">
-            <div className="form-group">
-              <label htmlFor="url">URL</label>
-              <Input
-                id="url"
-                type="url"
-                placeholder="https://ejemplo.com"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="size">Tamaño</label>
-              <Select
-                id="size"
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              >
-                <option value="100">100x100</option>
-                <option value="200">200x200</option>
-                <option value="300">300x300</option>
-                <option value="400">400x400</option>
-              </Select>
-            </div>
-
-            <Button onClick={generateQR} className="generate-button">
-              Generar QR
-            </Button>
-          </div>
-
-          <Separator />
-
-          <div className="qr-result">
-            {qrCode ? (
-              <div className="qr-code-container">
-                <img src={qrCode} alt="Código QR generado" className="qr-code" />
-                <Button
-                  onClick={() => window.open(qrCode, "_blank")}
-                  className="download-button"
-                >
-                  Descargar QR
-                </Button>
-              </div>
-            ) : (
-              <div className="qr-placeholder">
-                <p>Ingresa una URL y haz clic en "Generar QR"</p>
-              </div>
-            )}
-          </div>
-        </Card>
-      </div>
-    </motion.div>
-  )
+// Animación para la entrada de la página
+const pageAnimation = {
+  hidden: { opacity: 0, y: 0 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+}
+// Animación para los elementos hijos
+const itemAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
 }
 
-export default QrGeneratorPage 
+
+export const QrGeneratorPage = () => {
+    // Obtenemos el estado y la acción del store
+    const activeView = useQRCodeStore(state => state.activeView);
+    const setActiveView = useQRCodeStore(state => state.setActiveView);
+    const isGenerated = useQRCodeStore(state => state.isGenerated);
+
+    return (
+        <motion.div className="qr-generator-page" initial="hidden" animate="visible" variants={pageAnimation}>
+            
+            <header className="qr-page-header">
+                <h1>Generador QR</h1>
+                <p>Crea códigos QR personalizados para contactos, URLs, texto y más con opciones de personalización avanzadas.</p>
+            </header>
+
+            {/* --- STEPPER (Siempre visible, con lógica de estado activo) --- */}
+            <nav className="qr-stepper">
+                <div 
+                    className={`step ${activeView === 'informacion' ? 'active' : ''}`}
+                    onClick={() => setActiveView('informacion')}
+                >
+                    <div className="step-icon"><Edit size={20} /></div>
+                    <span>Información</span>
+                </div>
+                <div 
+                    className={`step ${activeView === 'personalizacion' ? 'active' : ''} ${!isGenerated ? 'disabled' : ''}`}
+                    onClick={() => isGenerated && setActiveView('personalizacion')}
+                >
+                    <div className="step-icon"><Settings size={20} /></div>
+                    <span>Personalización</span>
+                </div>
+                <div 
+                    className={`step ${activeView === 'preview' ? 'active' : ''} ${!isGenerated ? 'disabled' : ''}`}
+                >
+                    <div className="step-icon"><Download size={20} /></div>
+                    <span>Descarga</span>
+                </div>
+            </nav>
+
+            {/* --- ÁREA DE CONTENIDO DINÁMICO --- */}
+            <motion.div className="qr-content-area" variants={itemAnimation}>
+                {activeView === 'preview' ? (
+                    // --- VISTA DE PREVISUALIZACIÓN ---
+                    <motion.div className="qr-preview-layout" variants={itemAnimation}>
+                        <div className="qr-preview-header">
+                            <h3>Previsualización final</h3>
+                            <p>Su código QR está listo para descargar</p>
+                        </div>
+                        
+                        <QRCodeDisplay />
+
+                        <div className="qr-preview-actions">
+                            <button 
+                                className="action-button secondary-button"
+                                onClick={() => setActiveView('personalizacion')}
+                            >
+                                <ArrowLeft size={16} />
+                                Volver a personalizar
+                            </button>
+                        </div>
+                    </motion.div>
+                ) : (
+                    // --- VISTA DE INFORMACIÓN Y PERSONALIZACIÓN (2 columnas) ---
+                    <div className="qr-generator-layout">
+                        <motion.div className="qr-layout-card" variants={itemAnimation}>
+                            {activeView === 'informacion' ? (
+                                <>
+                                    <Dropdown />
+                                    <QRForm />
+                                </>
+                            ) : (
+                                <QRCustomizationMenu />
+                            )}
+                        </motion.div>
+                        <motion.div className="qr-layout-card" variants={itemAnimation}>
+                            <QRCodeDisplay />
+                        </motion.div>
+                    </div>
+                )}
+            </motion.div>
+        </motion.div>
+    );
+};
+
+export default QrGeneratorPage;
