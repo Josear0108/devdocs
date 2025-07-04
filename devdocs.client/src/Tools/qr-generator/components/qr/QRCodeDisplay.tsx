@@ -8,11 +8,20 @@ export const QRCodeDisplay = () => {
     const isGenerated = useQRCodeStore(state => state.isGenerated);
     const download = useQRCodeStore(state => state.download);
     const qrCodeAdapter = useQRCodeStore(state => state.qrCodeAdapter);
+    const styleOptions = useQRCodeStore(state => state.styleOptions);
     const [downloadFormat, setDownloadFormat] = useState<FileExtension>('svg');
     const qrCodeRef = useRef<HTMLDivElement>(null);
 
-    const supportedFormats: FileExtension[] = qrCodeAdapter?.supportedFormats ?? ['svg', 'png', 'jpeg', 'webp'];
+      type QRCodeAdapterConstructor = {
+      supportedFormats?: FileExtension[];
+  };
 
+  // Determina los formatos soportados dinámicamente
+  const supportedFormats: FileExtension[] =
+      (qrCodeAdapter && (qrCodeAdapter.constructor as QRCodeAdapterConstructor).supportedFormats)
+          ? (qrCodeAdapter.constructor as QRCodeAdapterConstructor).supportedFormats!
+          : ['svg', 'png', 'jpeg', 'webp'];
+    
     useEffect(() => {
         const node = qrCodeRef.current;
         if (isGenerated && qrCodeAdapter && node) {
@@ -21,6 +30,14 @@ export const QRCodeDisplay = () => {
             qrCodeAdapter.append(node);
         }
     }, [qrCodeAdapter, isGenerated]);
+
+     // Su misión es vigilar los cambios en los estilos y actualizar el QR.
+    useEffect(() => {
+        if (qrCodeAdapter && isGenerated) {
+            // Le ordena al adaptador que se redibuje con la nueva configuración.
+            qrCodeAdapter.update(styleOptions);
+        }
+    }, [styleOptions, qrCodeAdapter, isGenerated]); // Se activa si los estilos cambian
 
     const handleDownloadClick = () => {
         download(downloadFormat);

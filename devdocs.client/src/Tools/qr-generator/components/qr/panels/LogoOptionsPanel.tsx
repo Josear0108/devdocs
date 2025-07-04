@@ -5,7 +5,17 @@ import { Upload } from 'react-feather';
 // Importamos ambos módulos de estilos
 import designStyles from './DesignOptionsPanel.module.css'; // Para reutilizar la estructura
 import logoStyles from './LogoOptionsPanel.module.css'; // Para estilos propios
+import { motion } from "framer-motion"
 
+
+const itemAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+}
 export const LogoOptionsPanel = () => {
     // La lógica para obtener datos del store no cambia
     const styleOptions = useQRCodeStore(state => state.styleOptions);
@@ -31,7 +41,7 @@ export const LogoOptionsPanel = () => {
 
     return (
         // Usamos .panelGrid del módulo de diseño para mantener la misma estructura de columnas
-        <div className={designStyles.panelGrid}>
+        <motion.div className={designStyles.panelGrid} variants={itemAnimation}>
             <div className={designStyles.section}>
                 <h4 className={designStyles.sectionTitle}>Logo</h4>
 
@@ -95,6 +105,6 @@ export const LogoOptionsPanel = () => {
                     <label htmlFor="logo-hideBackgroundDots" className={designStyles.label}>Ocultar puntos detrás del logo</label>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

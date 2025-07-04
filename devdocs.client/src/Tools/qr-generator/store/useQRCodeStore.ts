@@ -102,7 +102,7 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
     setQRCodeAdapter: (adapter) => {
         set({
             qrCodeAdapter: adapter,
-            adapterCapabilities: adapter.capabilities // Leemos las capacidades del adaptador inyectado
+            adapterCapabilities: adapter.capabilities
         });
     },
 
@@ -113,24 +113,14 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         hasAttemptedGeneration: false
     }),
 
-    setText: (text) => set({ text, isGenerated: false }), // Al editar, marcamos que el QR actual ya no es válido
+    setText: (text) => set({ text, isGenerated: false }),
 
     setVcardData: (data) => set({ vcardData: data, isGenerated: false }),
 
     setStyleOption: async (newOption) => {
-        const { isGenerated, styleOptions, qrCodeAdapter } = get();
-        if (!qrCodeAdapter) return;
+        const { styleOptions } = get();
         const newStyles = { ...styleOptions, ...newOption };
         set({ styleOptions: newStyles });
-
-        if (isGenerated) {
-            try {
-                await qrCodeAdapter.update(newStyles);
-            } catch (e) {
-                // CORRECCIÓN: Se usa la función helper para el error
-                set({ error: `Error al actualizar el estilo: ${getErrorMessage(e)}` });
-            }
-        }
     },
 
     reset: () => set({
@@ -170,14 +160,12 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
             if (option === 'URL') {
                 if (!text.trim()) throw new Error(ERROR_MESSAGES.EMPTY_URL);
                 dataToEncode = text.trim();
-            } else { // VCard
-                // Validación de campos requeridos...
+            } else {
                 const errors = validateVcardFields();
                 if (Object.keys(errors).length > 0) {
                     set({ isLoading: false });
                     throw new Error(ERROR_MESSAGES.REQUIRED_VCARD_FIELDS);
                 }
-
                 dataToEncode = formatVCard(vcardData);
             }
 
@@ -185,9 +173,6 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
                 data: dataToEncode,
                 ...styleOptions
             });
-
-            // --- CAMBIO CLAVE AQUÍ ---
-            // Al generar el QR, te llevamos a la vista de personalización.
             set({
                 isGenerated: true,
                 isLoading: false,
@@ -199,19 +184,19 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         }
     },
     
-    download: async (format: FileExtension) => {
-        const { isGenerated, qrCodeAdapter } = get();
-        if (!isGenerated || !qrCodeAdapter) {
-            set({ error: "No hay QR para descargar o el adaptador no está listo." });
-            return;
-        }
-        try {
-            await qrCodeAdapter.download(format);
-        } catch (e) {
-            // CORRECCIÓN: Se usa la función helper para el error
-            set({ error: `Ocurrió un error al descargar: ${getErrorMessage(e)}` });
-        }
-    },
+  download: async (format: FileExtension) => {
+    const { isGenerated, qrCodeAdapter } = get();
+    if (!isGenerated || !qrCodeAdapter) {
+        set({ error: "No hay QR para descargar o el adaptador no está listo." });
+        return;
+    }
+    try {
+        await qrCodeAdapter.download(format);
+    } catch (e) {
+        // CORRECCIÓN: Se usa la función helper para el error
+        set({ error: `Ocurrió un error al descargar: ${getErrorMessage(e)}` });
+    }
+},
         setActiveView: (view) => set({ activeView: view }),
     // ===================================
     //       MANEJO DE ERRORES DE VCARD
@@ -223,4 +208,5 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         })),
 
     clearVcardFieldErrors: () => set({ vcardFieldErrors: {} }),
+
 }));

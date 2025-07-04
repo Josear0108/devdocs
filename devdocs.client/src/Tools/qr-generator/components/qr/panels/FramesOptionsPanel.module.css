@@ -1,12 +1,5 @@
 /* src/Tools/qr-generator/components/qr/panels/FramesOptionsPanel.module.css */
 
-.panelWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Reutilizaremos este layout de dos columnas */
 .panelGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -48,4 +41,23 @@
   background-color: var(--background);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus, .select:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+/* --- ESTA ES LA PARTE QUE FALTABA --- */
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from "framer-motion"
 import { useQRCodeStore } from '../../store/useQRCodeStore';
 import type { VCardData } from '../../types';
 import { INITIAL_REQUIRED_FIELDS } from '../../config/constants';
@@ -12,7 +13,14 @@ export const VCardForm = () => {
     const isLoading = useQRCodeStore(state => state.isLoading);
     const vcardFieldErrors = useQRCodeStore(state => state.vcardFieldErrors);
     const hasAttemptedGeneration = useQRCodeStore(state => state.hasAttemptedGeneration);
-
+const itemAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+}
     if (!vcardData) {
         return <div>Cargando...</div>;
     }
@@ -53,7 +61,7 @@ export const VCardForm = () => {
     );
 
     return (
-        <div className={styles.vcardContainer}>
+        <motion.div className={styles.vcardContainer} variants={itemAnimation}>
             {renderFormField('firstName', 'Nombre', 'text', true)}
             {renderFormField('lastName', 'Apellido', 'text', true)}
             {renderFormField('company', 'Empresa')}
@@ -64,6 +72,6 @@ export const VCardForm = () => {
             {renderFormField('city', 'Ciudad')}
             {renderFormField('country', 'País')}
             {renderFormField('website', 'Sitio Web', 'url')}
-        </div>
+        </motion.div>
     );
 };

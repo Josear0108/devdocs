@@ -58,7 +58,7 @@ export interface QRCodeStylingOptions {
         gradient?: Gradient;
     };
     backgroundOptions?: {
-        round?: number; // Nueva opci�n
+        round?: number; // Nueva opción
         color?: string;
         gradient?: Gradient;
     };
@@ -69,56 +69,56 @@ export const DEFAULT_QR_CONFIG: QRCodeStylingOptions = {
     // Dimensiones base (requeridas)
     width: 300,
     height: 300,
-    margin: 10, // A�adido: margin general del QR
+    margin: 10, // Añadido: margin general del QR
 
-    // Configuraci�n b�sica
-    type: "svg" as DrawType,
-    data: "initial_qr_data_placeholder",  // Valor inicial vac�o, se actualizar� con datos reales
-    shape: "square" as ShapeType, // A�adido: forma expl�cita
+    // Configuración básica
+    type: "canvas" as DrawType,
+    data: "initial_qr_data_placeholder",  // Valor inicial vacio, se actualizara con datos reales
+    shape: "square" as ShapeType, // Añadido: forma explicita
 
     // Opciones del QR
     qrOptions: {
-        typeNumber: 0, // 0 permite auto-detecci�n
-        errorCorrectionLevel: 'M', // Balance entre correcci�n y densidad
-        mode: 'Byte' as Mode // A�adido: modo expl�cito
+        typeNumber: 0, // 0 permite auto-detección
+        errorCorrectionLevel: 'M', // Balance entre corrección y densidad
+        mode: 'Byte' as Mode // Añadido: modo explicito
     },
 
     // Opciones de imagen (logo)
     imageOptions: {
         hideBackgroundDots: true, // Mejora visibilidad del logo
-        imageSize: 0.4, // 40% del tama�o del QR
-        margin: 5, // Margen espec�fico para la imagen
+        imageSize: 0.4, // 40% del tamaño del QR
+        margin: 5, // Margen especifico para la imagen
         crossOrigin: "anonymous",
-        saveAsBlob: false // Especificado expl�citamente
+        saveAsBlob: false // Especificado explicitamente
     },
 
     // Opciones de puntos
     dotsOptions: {
         type: "square" as DotType,
         color: "#000000",
-        gradient: undefined, // Expl�citamente undefined si no se usa
-        roundSize: false // Especificado expl�citamente
+        gradient: undefined, // Explicitamente undefined si no se usa
+        roundSize: false // Especificado explicitamente
     },
 
     // Opciones de esquinas cuadradas
     cornersSquareOptions: {
         type: "square" as CornerSquareType,
         color: "#000000",
-        gradient: undefined // Expl�citamente undefined si no se usa
+        gradient: undefined // Explicitamente undefined si no se usa
     },
 
     // Opciones de puntos de esquina
     cornersDotOptions: {
         type: "square" as CornerDotType,
         color: "#000000",
-        gradient: undefined // Expl�citamente undefined si no se usa
+        gradient: undefined // Explicitamente undefined si no se usa
     },
 
     // Opciones de fondo
     backgroundOptions: {
         color: "#FFFFFF",
         round: 0, // A�adido: sin redondeo por defecto
-        gradient: undefined // Expl�citamente undefined si no se usa
+        gradient: undefined // Explicitamente undefined si no se usa
     }
 };
 
@@ -132,7 +132,7 @@ export const QR_CORNER_SQUARE_TYPES_ARRAY: ReadonlyArray<CornerSquareType> = [
 ];
 
 export const QR_CORNER_DOT_TYPES_ARRAY: ReadonlyArray<CornerDotType> = [
-    "dot", "square" // Puedes a�adir los de DotType si son aplicables
+    "dot", "square" // Puedes añadir los de DotType si son aplicables
 ];
 
 export const QR_ERROR_CORRECTION_LEVELS: ReadonlyArray<ErrorCorrectionLevel> = [

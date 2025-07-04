@@ -8,6 +8,32 @@ import { QRCustomizationMenu } from '../Tools/qr-generator/components/qr/QRCusto
 import { Edit, Settings, Download, ArrowLeft } from 'react-feather';
 import '../styles/qr-generator.css';
 
+ /* Agregar las animaciones de entrada y salida a los componentes de la página QR Generator */
+import { motion } from "framer-motion"
+// Animación para la entrada de la página
+const pageAnimation = {
+  hidden: { opacity: 0, y: 0 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+}
+// Animación para los elementos hijos
+const itemAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+}
+
+
 export const QrGeneratorPage = () => {
     // Obtenemos el estado y la acción del store
     const activeView = useQRCodeStore(state => state.activeView);
@@ -15,8 +41,8 @@ export const QrGeneratorPage = () => {
     const isGenerated = useQRCodeStore(state => state.isGenerated);
 
     return (
-        <div className="qr-generator-page">
-            {/* --- ENCABEZADO (Siempre visible) --- */}
+        <motion.div className="qr-generator-page" initial="hidden" animate="visible" variants={pageAnimation}>
+            
             <header className="qr-page-header">
                 <h1>Generador QR</h1>
                 <p>Crea códigos QR personalizados para contactos, URLs, texto y más con opciones de personalización avanzadas.</p>
@@ -47,16 +73,15 @@ export const QrGeneratorPage = () => {
             </nav>
 
             {/* --- ÁREA DE CONTENIDO DINÁMICO --- */}
-            <div className="qr-content-area">
+            <motion.div className="qr-content-area" variants={itemAnimation}>
                 {activeView === 'preview' ? (
                     // --- VISTA DE PREVISUALIZACIÓN ---
-                    <div className="qr-preview-layout">
+                    <motion.div className="qr-preview-layout" variants={itemAnimation}>
                         <div className="qr-preview-header">
                             <h3>Previsualización final</h3>
                             <p>Su código QR está listo para descargar</p>
                         </div>
-
-                        {/* El componente QRCodeDisplay ya contiene el botón de descarga */}
+                        
                         <QRCodeDisplay />
 
                         <div className="qr-preview-actions">
@@ -68,11 +93,11 @@ export const QrGeneratorPage = () => {
                                 Volver a personalizar
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 ) : (
                     // --- VISTA DE INFORMACIÓN Y PERSONALIZACIÓN (2 columnas) ---
                     <div className="qr-generator-layout">
-                        <div className="qr-layout-card">
+                        <motion.div className="qr-layout-card" variants={itemAnimation}>
                             {activeView === 'informacion' ? (
                                 <>
                                     <Dropdown />
@@ -81,14 +106,14 @@ export const QrGeneratorPage = () => {
                             ) : (
                                 <QRCustomizationMenu />
                             )}
-                        </div>
-                        <div className="qr-layout-card">
+                        </motion.div>
+                        <motion.div className="qr-layout-card" variants={itemAnimation}>
                             <QRCodeDisplay />
-                        </div>
+                        </motion.div>
                     </div>
                 )}
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 
