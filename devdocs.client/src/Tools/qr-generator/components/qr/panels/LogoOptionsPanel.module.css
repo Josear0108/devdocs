@@ -1,0 +1,53 @@
+/* Estilo para el botón personalizado de "Subir Logo" */
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  height: 40px;
+  width: 100%; /* Ocupa todo el ancho disponible */
+  border-radius: var(--radius);
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.uploadButton:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* El input de tipo "file" real estará oculto */
+.hiddenInput {
+  display: none;
+}
+
+/* Contenedor para la vista previa de la imagen */
+.previewContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* Estilo para la imagen de vista previa */
+.previewImage {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  object-fit: contain;
+}
+
+/* Grupo para el checkbox */
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem; /* Pequeño margen superior */
+}
