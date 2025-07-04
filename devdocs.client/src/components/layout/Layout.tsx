@@ -1,26 +1,37 @@
 "use client"
 
-import React from "react";
-import Sidebar from "./Sidebar";
-import MobileNav from "./MobileNav";
-import CommandMenu from "../ui/CommandMenu";
-import "../../styles/layout.css";
-import { useIsMobile } from "../../../hooks/use-mobile";
+import { Outlet } from "react-router-dom"
+import { motion } from "framer-motion"
+import Sidebar from "./Sidebar"
+import MobileNav from "./MobileNav"
+import CommandMenu from "../ui/CommandMenu"
+import "../../styles/layout.css"
+import { useEffect } from "react"
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
- 
-  const isMobile = useIsMobile();
+const Layout = () => {
+  useEffect(() => {
+    const main = document.querySelector('.main-content');
+    if (main) main.scrollTop = 0;
+  }, []);
 
   return (
-    <div className="layout">
-      {!isMobile ? <Sidebar /> : <MobileNav />}
-
-      <div className="main-content">
-        <main className="content-wrapper">{children}</main>
+    <div className="app-container">
+      <MobileNav />
+      <div className="app-content">
+        <Sidebar />
+        <motion.main
+          className="main-content"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Outlet />
+        </motion.main>
       </div>
       <CommandMenu />
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
