@@ -1,9 +1,9 @@
 ﻿import { motion } from "framer-motion"
-import { useQRCodeStore } from '../../store/useQRCodeStore';
-import { VCardForm } from '../vcard/VCardForm';
 import { ArrowRight } from 'react-feather';
 // Importamos el nuevo módulo de estilos
 import styles from './QRForm.module.css';
+import { useQRCodeStore } from "../../store/useQRCodeStore";
+import { VCardForm } from "../vcard/VCardForm";
 
 
 export const QRForm = () => {
