@@ -1,0 +1,95 @@
+/* Contenedor principal del menú de personalización */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Título de la sección */
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Barra que contiene las pestañas */
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Estilo de cada pestaña individual */
+.tabTrigger {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px; /* Alinea el borde con el borde de la lista */
+}
+
+.tabTrigger:hover {
+  color: var(--foreground);
+}
+
+/* Estilo para la pestaña activa */
+.tabTriggerActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* Contenido del panel que se muestra debajo de las pestañas */
+.tabContent {
+  padding-top: 1.5rem;
+}
+
+/* --- ACCIONES FOOTER PERSONALIZACIÓN --- */
+.actionsFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  height: 40px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.secondaryButton:hover {
+  background-color: var(--accent);
+}
+
+.primaryButton {
+  background: linear-gradient(90deg, var(--purple-light) 0%, var(--purple-dark) 100%);
+  color: white;
+  border: none;
+}
+
+.primaryButton:hover {
+  opacity: 0.9;
+}

@@ -1,7 +1,7 @@
 import type React from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, ArrowRight } from "react-feather"
-import { Button } from "../ui/Button"
+import { Button } from "../ui/button/Button"
 import { newsData } from "../../data/news"
 import "../../styles/news-navigation.css"
 
