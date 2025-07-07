@@ -18,6 +18,7 @@ import {
 } from "react-feather"
 import ThemeToggle from "../ui/ThemeToggle"
 import "../../styles/sidebar.css"
+import { docMenu, mainMenu } from "../../config/menuConfig"
 
 const sidebarAnimation = {
   hidden: { x: -280 },
@@ -56,58 +57,45 @@ const Sidebar = () => {
 
       <nav className="sidebar-nav">
         <ul className="sidebar-nav-list">
-          <li>
-            <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>
-              <Home size={16} />
-              <span>Inicio</span>
-            </NavLink>
-          </li>
-          {/* <li>
-            <NavLink to="/noticias" className={({ isActive }) => (isActive ? "active" : "")}>
-              <FileText size={16} />
-              <span>Noticias</span>
-            </NavLink>
-          </li> */}
+          {mainMenu.map(({ label, to, icon: Icon }) => (
+            <li key={to}>
+              <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
+                <Icon size={16} />
+                <span>{label}</span>
+              </NavLink>
+            </li>
+          ))}
         </ul>
 
         <div className="sidebar-group">
           <h3 className="sidebar-group-title">Documentación</h3>
           <ul className="sidebar-nav-list">
-            <li>
-              <NavLink to="/componentes" className={({ isActive }) => (isActive ? "active" : "")}>
-                <Grid size={16} />
-                <span>Componentes</span>
-              </NavLink>
-            </li>
-            {/* <li>
-              <NavLink to="/modulos" className={({ isActive }) => (isActive ? "active" : "")}>
-                <Layers size={16} />
-                <span>Módulos</span>
-              </NavLink>
-            </li> */}
-            <li className="has-submenu">
-              <NavLink to="/herramientas" className={({ isActive }) => (isActive ? "active" : "")}>
-                <PenTool size={16} />
-                <span>Herramientas</span>
-              </NavLink>
-              <ul className="sidebar-submenu">
-                <li>
-                  <NavLink to="/herramientas/generador-qr" className={({ isActive }) => (isActive ? "active" : "")}>
-                    <Code size={14} />
-                    <span>Generador QR</span>
+            {docMenu.map(({ label, to, icon: Icon, submenu }) =>
+              submenu ? (
+                <li className="has-submenu" key={to}>
+                  <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
+                    <Icon size={16} />
+                    <span>{label}</span>
+                  </NavLink>
+                  <ul className="sidebar-submenu">
+                    {submenu.map(({ label, to, icon: SubIcon }) => (
+                      <li key={to}>
+                        <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
+                          <SubIcon size={14} />
+                          <span>{label}</span>
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={to}>
+                  <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
+                    <Icon size={16} />
+                    <span>{label}</span>
                   </NavLink>
                 </li>
-                {/* <li>
-                  <NavLink
-                    to="/herramientas/generador-plantillas"
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                  >
-                    <Package size={14} />
-                    <span>Generador de Plantillas</span>
-                  </NavLink>
-                </li> */}
-              </ul>
-            </li>
+              ))}
           </ul>
         </div>
       </nav>

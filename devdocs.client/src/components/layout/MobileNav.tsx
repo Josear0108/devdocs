@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, FileText, Home, FileText as Newspaper, Grid, Layers, PenTool, Package, Code } from "react-feather"
 import ThemeToggle from "../ui/ThemeToggle"
 import "../../styles/mobile-nav.css"
+import { mainMenu, docMenu } from "../../config/menuConfig"
 
 const menuAnimation = {
   hidden: { x: "-100%" },
@@ -64,48 +65,41 @@ const MobileNav = () => {
             </div>
             <nav className="mobile-menu-content">
               <ul className="mobile-menu-list">
-                <li>
-                  <NavLink to="/" onClick={toggleMenu}>
-                    <Home size={16} />
-                    <span>Inicio</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/noticias" onClick={toggleMenu}>
-                    <Newspaper size={16} />
-                    <span>Noticias</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/componentes" onClick={toggleMenu}>
-                    <Grid size={16} />
-                    <span>Componentes</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/modulos" onClick={toggleMenu}>
-                    <Layers size={16} />
-                    <span>Módulos</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/herramientas" onClick={toggleMenu}>
-                    <PenTool size={16} />
-                    <span>Herramientas</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/herramientas/generador-qr" onClick={toggleMenu}>
-                    <Code size={16} />
-                    <span>Generador QR</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/herramientas/generador-plantillas" onClick={toggleMenu}>
-                    <Package size={16} />
-                    <span>Generador de Plantillas</span>
-                  </NavLink>
-                </li>
+                {mainMenu.map(({ label, to, icon: Icon }) => (
+                  <li key={to}>
+                    <NavLink to={to} onClick={toggleMenu}>
+                      <Icon size={16} />
+                      <span>{label}</span>
+                    </NavLink>
+                  </li>
+                ))}
+                {docMenu.map(({ label, to, icon: Icon, submenu }) =>
+                  submenu ? (
+                    <li key={to}>
+                      <NavLink to={to} onClick={toggleMenu}>
+                        <Icon size={16} />
+                        <span>{label}</span>
+                      </NavLink>
+                      <ul className="mobile-submenu">
+                        {submenu.map(({ label, to, icon: SubIcon }) => (
+                          <li key={to}>
+                            <NavLink to={to} onClick={toggleMenu}>
+                              <SubIcon size={16} />
+                              <span>{label}</span>
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ) : (
+                    <li key={to}>
+                      <NavLink to={to} onClick={toggleMenu}>
+                        <Icon size={16} />
+                        <span>{label}</span>
+                      </NavLink>
+                    </li>
+                  )
+                )}
               </ul>
             </nav>
           </motion.div>
