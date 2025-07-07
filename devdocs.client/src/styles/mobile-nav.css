@@ -21,6 +21,12 @@
   gap: 0.75rem;
 }
 
+.mobile-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .mobile-menu-button {
   display: flex;
   align-items: center;
@@ -125,3 +131,4 @@
     display: block;
   }
 }
+ 
