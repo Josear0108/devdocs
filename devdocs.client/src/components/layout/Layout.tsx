@@ -7,8 +7,11 @@ import MobileNav from "./MobileNav"
 import CommandMenu from "../ui/CommandMenu"
 import "../../styles/layout.css"
 import { useEffect } from "react"
+import { useIsMobile } from "../../../hooks/use-mobile"
 
 const Layout = () => {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const main = document.querySelector('.main-content');
     if (main) main.scrollTop = 0;
@@ -18,7 +21,7 @@ const Layout = () => {
     <div className="app-container">
       <MobileNav />
       <div className="app-content">
-        <Sidebar />
+        {!isMobile && <Sidebar />}
         <motion.main
           className="main-content"
           initial={{ opacity: 0 }}
