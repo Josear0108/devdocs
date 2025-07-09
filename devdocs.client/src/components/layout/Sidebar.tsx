@@ -4,13 +4,7 @@ import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
-  Home,
   FileText,
-  Grid,
-  //Layers,
-  PenTool,
-  // Package,
-  Code,
   Settings,
   HelpCircle,
   GitHub,

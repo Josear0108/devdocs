@@ -35,7 +35,7 @@ function App() {
           <Route path="modulos" element={<ModulesPage />} />
           <Route path="modulos/:slug" element={<ModuleDetailPage />} />
           <Route path="herramientas" element={<ToolsPage />} />
-       <Route path="herramientas/generador-qr" element={<QrGeneratorPage />} /> 
+          <Route path="herramientas/generador-qr" element={<QrGeneratorPage />} />
           <Route path="noticias" element={<NewsPage />} />
           <Route path="noticias/:slug" element={<NewsDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />

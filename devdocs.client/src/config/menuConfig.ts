@@ -1,11 +1,8 @@
 import type { FC } from "react"
 import {
     Home,
-    FileText,
     Grid,
-    Layers,
     PenTool,
-    Package,
     Code,
 } from "react-feather"
 

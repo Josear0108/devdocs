@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, FileText, Home, FileText as Newspaper, Grid, Layers, PenTool, Package, Code } from "react-feather"
+import { Menu, X, FileText } from "react-feather"
 import ThemeToggle from "../ui/ThemeToggle"
 import "../../styles/mobile-nav.css"
 import { mainMenu, docMenu } from "../../config/menuConfig"
