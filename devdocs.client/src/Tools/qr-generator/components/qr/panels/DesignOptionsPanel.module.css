@@ -1,46 +1,49 @@
-/* Layout principal para el panel de diseño */
+/* Layout principal para el panel. Es un grid que se adapta automáticamente */
 .panelGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-  gap: 2rem 1.5rem; /* Espacio vertical y horizontal */
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
 }
 
-/* Contenedor para cada sección de personalización (Puntos, Esquinas, etc.) */
+/* Contenedor para cada sección (Puntos, Esquinas, etc.) */
 .section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem; /* Espacio entre el título y los controles */
 }
 
-/* Título de cada sección (h4) */
 .sectionTitle {
   font-size: 1rem;
   font-weight: 600;
   color: var(--foreground);
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem; 
   border-bottom: 1px solid var(--border);
 }
 
-/* Grupo para un label + input/select */
-.formGroup {
+/* Grupo de controles dentro de una sección */
+.controlsGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos controles por fila dentro de una sección */
+  gap: 1rem 1.5rem;
+}
+
+/* Contenedor para un solo control (label + input) */
+.formControl {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column; /* Label arriba, input abajo */
+  gap: 0.25rem;
 }
 
 .label {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--muted-foreground);
-  flex-shrink: 0; /* Evita que el label se encoja */
 }
 
-/* Estilo para los inputs y selects del panel */
 .input, .select {
-  width: 100%;
-  max-width: 150px; /* Ancho máximo para los controles */
-  height: 40px;
+  width: 100%; 
+  height: 38px;
   padding: 0 0.75rem;
   background-color: var(--background);
   border: 1px solid var(--border);
@@ -49,7 +52,105 @@
   font-size: 0.875rem;
 }
 
+
 .input[type="color"] {
-  padding: 0.25rem; /* Padding especial para el input de color */
+  padding: 0.25rem;
   height: 40px;
+  min-width: 50px; /* Asegura un ancho mínimo para el picker */
+}
+
+/* Contenedor para los botones "Sólido" / "Gradiente" */
+.fillTypeSelector {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.fillTypeSelector button {
+  flex-grow: 1;
+  padding: 0.5px;
+  background-color: transparent;
+  border: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.fillTypeSelector button:hover {
+  background-color: var(--accent);
+}
+
+.fillTypeSelector .fillTypeActive {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+/* Panel que agrupa todos los controles de gradiente */
+.gradientControls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--background);
+}
+
+/* Grid para los dos selectores de color del gradiente */
+.gradientColorPickers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Estilo para la barra de rango (rotación) */
+.rangeInput {
+  width: 100%;
+  cursor: pointer;
+}
+
+.gradientToggle {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    color: var(--muted-foreground);
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    transition: all 0.2s;
+}
+
+.gradientToggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.gradientControls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: var(--radius);
+}
+
+.range {
+    width: 100%;
+}
+
+/* --- Mejoras para pantallas pequeñas --- */
+@media (max-width: 768px) {
+  .panelGrid {
+    /* En móviles muy pequeños, forzamos una sola columna para todo */
+    grid-template-columns: 1fr;
+  }
+
+  .controlsGroup {
+    /* Dentro de cada sección, los controles también se apilan en una columna */
+    grid-template-columns: 1fr;
+  }
 }

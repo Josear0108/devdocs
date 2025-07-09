@@ -1,8 +1,8 @@
 // Estos son los tipos exactos de la libreria 
 type DrawType = "canvas" | "svg";
 type DotType = "dots" | "rounded" | "classy" | "classy-rounded" | "square" | "extra-rounded";
-type CornerDotType = "dot" | "square" | DotType; // Correcto seg�n la librer�a
-type CornerSquareType = "dot" | "square" | "extra-rounded" | DotType; // Correcto seg�n la librer�a
+type CornerDotType = "dot" | "square" | DotType; // Correcto segn la librera
+type CornerSquareType = "dot" | "square" | "extra-rounded" | DotType; // Correcto segn la librera
 type ShapeType = "square" | "circle";
 type ErrorCorrectionLevel = "L" | "M" | "Q" | "H";
 type Mode = "Numeric" | "Alphanumeric" | "Byte" | "Kanji";
@@ -35,7 +35,7 @@ export interface QRCodeStylingOptions {
         errorCorrectionLevel?: ErrorCorrectionLevel;
     };
     imageOptions?: {
-        saveAsBlob?: boolean; // Nueva opci�n
+        saveAsBlob?: boolean; // Nueva opcin
         hideBackgroundDots?: boolean;
         imageSize?: number;
         crossOrigin?: string;
@@ -45,7 +45,7 @@ export interface QRCodeStylingOptions {
         type?: DotType;
         color?: string;
         gradient?: Gradient;
-        roundSize?: boolean; // Nueva opci�n
+        roundSize?: boolean; // Nueva opcin
     };
     cornersSquareOptions?: {
         type?: CornerSquareType;
@@ -117,7 +117,7 @@ export const DEFAULT_QR_CONFIG: QRCodeStylingOptions = {
     // Opciones de fondo
     backgroundOptions: {
         color: "#FFFFFF",
-        round: 0, // A�adido: sin redondeo por defecto
+        round: 0, // Aadido: sin redondeo por defecto
         gradient: undefined // Explicitamente undefined si no se usa
     }
 };

@@ -38,20 +38,20 @@ export const QRCustomizationMenu = () => {
                     className={`${styles.tabTrigger} ${activeTab === 'diseño' ? styles.tabTriggerActive : ''}`}
                     onClick={() => setActiveTab('diseño')}
                 >
-                    Diseño
+                    Forma y Color
+                </button>
+                   {/* Nueva pestaña para Marcos */}
+                <button
+                    className={`${styles.tabTrigger} ${activeTab === 'marcos' ? styles.tabTriggerActive : ''}`}
+                    onClick={() => setActiveTab('marcos')}
+                >
+                    Marcos y Etiquetas
                 </button>
                 <button
                     className={`${styles.tabTrigger} ${activeTab === 'logo' ? styles.tabTriggerActive : ''}`}
                     onClick={() => setActiveTab('logo')}
                 >
-                    Logo
-                </button>
-                {/* Nueva pestaña para Marcos */}
-                <button
-                    className={`${styles.tabTrigger} ${activeTab === 'marcos' ? styles.tabTriggerActive : ''}`}
-                    onClick={() => setActiveTab('marcos')}
-                >
-                    Marcos
+                    Logo Personalizado
                 </button>
             </div>
 

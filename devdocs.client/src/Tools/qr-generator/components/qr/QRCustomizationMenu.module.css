@@ -2,7 +2,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  height: 100%;
 }
 
 /* Título de la sección */
@@ -48,6 +48,14 @@
 /* Contenido del panel que se muestra debajo de las pestañas */
 .tabContent {
   padding-top: 1.5rem;
+  flex-grow: 1; 
+  /* Ocultamos el scroll por defecto */
+  overflow-y: hidden; 
+}
+
+/* Nueva clase para aplicar el scroll solo cuando sea necesario */
+.tabContentScrollable {
+  overflow-y: auto;
 }
 
 /* --- ACCIONES FOOTER PERSONALIZACIÓN --- */
@@ -55,10 +63,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 0; 
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
-}
+  flex-shrink: 0; 
+  }
 
 .actionButton {
   display: inline-flex;
