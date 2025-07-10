@@ -2,6 +2,7 @@
 import type { ComponentItem } from "../types/component"
 
 export const componentsData: ComponentItem[] = [
+  //card componente carga de archivos
   {
     id: "button",
     name: "Cargue de archivos",
@@ -9,6 +10,7 @@ export const componentsData: ComponentItem[] = [
     description: "Componente React ligero y personalizable para subir archivos con validación, drag & drop y feedback visual, ideal para flujos documentales empresariales.",
     lastUpdate: "2023-12-15",
     tabs: [
+      // Inicio de pestaña Documentación
       {
         id: "documentation",
         label: "Documentación",
@@ -42,13 +44,13 @@ export const componentsData: ComponentItem[] = [
               {
                 type: "code",
                 language: "bash",
-                code: "npm install @acme/ui-components"
+                code: "npm install edesk-components@0.0.0"
               }
             ]
           }
         ]
       },
-
+// Inicio de pestaña Casos de Uso
       {
         id: "useCases",
         label: "Casos de Uso",
@@ -59,13 +61,13 @@ export const componentsData: ComponentItem[] = [
               {
                 type: "text",
                 content:
-                  "El componente Button se puede utilizar en múltiples contextos: formularios, barras de navegación, tarjetas de producto, etc."
+                  "El componente Cargue de Archivos se puede utilizar en múltiples contextos."
               }
             ]
           }
         ]
       },
-
+//Inicio de pestaña Código
       {
         id: "code",
         label: "Código",
@@ -76,6 +78,7 @@ export const componentsData: ComponentItem[] = [
               {
                 type: "tabs",
                 tabs: [
+                  // Sub-Pestaña de Código del Componente
                   {
                     id: "component",
                     label: "Componente",
@@ -90,6 +93,7 @@ export const Button = ({ children }) => (
                       }
                     ]
                   },
+                  // Sub-Pestaña de Código de Uso 
                   {
                     id: "usage",
                     label: "Uso",
@@ -104,6 +108,7 @@ export const Button = ({ children }) => (
                       }
                     ]
                   },
+                  //Sub-Pestaña de Código de Pruebas 
                   {
                     id: "tests",
                     label: "Pruebas",
@@ -125,7 +130,7 @@ it("renderiza el botón", () => {
           }
         ]
       },
-
+// Inicio de pestaña Versiones
       {
         id: "versions",
         label: "Versiones",
@@ -136,6 +141,7 @@ it("renderiza el botón", () => {
               {
                 type: "tabs",
                 tabs: [
+                  // Sub-Pestaña de Historial
                   {
                     id: "historial",
                     label: "Historial",
@@ -159,6 +165,7 @@ it("renderiza el botón", () => {
                       }
                     ]
                   },
+                  // Sub-Pestaña de Migración
                   {
                     id: "migration",
                     label: "Guía de Migración",

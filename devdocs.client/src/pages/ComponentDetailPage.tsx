@@ -13,6 +13,8 @@ import "../styles/component-detail.css"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 
+import FileUploadExample from "../components/Example_components/FileUpload/FileUpload";
+
 
 const pageAnimation = {
   hidden: { opacity: 0 },
@@ -195,6 +197,11 @@ const ComponentDetailPage = () => {
           ))}
         </Tabs>
       </motion.div>
+      {component.id === 'button' && ( // 'button' es el ID que le diste en components.ts
+        <motion.div variants={itemAnimation}>
+          <FileUploadExample />
+        </motion.div>
+      )}
     </motion.div>
   )
 }
