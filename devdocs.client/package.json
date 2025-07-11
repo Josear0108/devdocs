@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",
-    "edesk-components": "^0.0.0",
+    "edesk-components": "^0.0.5",
     "framer-motion": "^12.11.0",
     "lucide-react": "^0.510.0",
     "qr-code-styling": "^1.9.2",

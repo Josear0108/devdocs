@@ -24,7 +24,7 @@ const FileUploadExample = () => {
       <section className="example-section">
         <h2 className="example-section-title">Ejemplo 2: Tipo Button</h2>
         <FileUploadContainer
-          type="button"
+          type="Button"
           title="Adjuntar archivo"
           uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
           encryptedPath="ruta-cifrada-de-ejemplo"
@@ -37,7 +37,7 @@ const FileUploadExample = () => {
       <section className="example-section">
         <h2 className="example-section-title">Ejemplo 3: Tipo DragOff (sin drag & drop)</h2>
         <FileUploadContainer
-          type="dragOff"
+          type="DragOff"
           title="Seleccionar documentos"
           subtitle="Haz clic para seleccionar archivos"
           showExtensions
