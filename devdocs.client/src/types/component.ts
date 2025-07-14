@@ -1,4 +1,4 @@
-// types/component.ts
+// src/types/component.ts
 
 /** Un bloque cualquiera de contenido */
 export type Block =
@@ -7,7 +7,12 @@ export type Block =
   | CodeBlock
   | TabsBlock
   | TableBlock
+  | LiveExampleBlock;
 
+/** Bloque de ejemplo interactivo */
+export interface LiveExampleBlock {
+  type: "live-example";
+}
 /** Bloque de párrafo simple */
 export interface TextBlock {
   type: "text"
@@ -72,6 +77,45 @@ export interface Tab {
   sections: Section[]
 }
 
+// --- Nuevos Tipos para la Documentación Interactiva ---
+
+/** Define un control para el Playground */
+export interface PlaygroundControl {
+  prop: string; // Nombre de la prop que controla
+  label: string;
+  type: 'radio' | 'text' | 'boolean' | 'number';
+  options?: string[]; // Para 'radio'
+  defaultValue: string | number | boolean;
+  // Condiciones para mostrar/ocultar el control
+  showWhen?: {
+    prop: string; // Nombre de la prop que debe cumplir la condición
+    value: string | number | boolean; // Valor que debe tener
+  };
+  // Condiciones para habilitar/deshabilitar el control
+  enableWhen?: {
+    prop: string;
+    value: string | number | boolean;
+  };
+}
+
+/** Define una receta para un caso de uso */
+export interface Recipe {
+  id: string;
+  icon: string; // Podríamos usar un componente o un string para el ícono
+  title: string;
+  description: string;
+  code: string;
+  props: Record<string, string | number | boolean>; // Valores de las props para esta receta
+}
+
+/** Define un nodo para el diagrama de arquitectura */
+export interface ArchNode {
+  id: string;
+  label: string;
+  type: 'Caso de Uso' | 'UI' | 'Lógica central';
+  description: string;
+}
+
 /** Tu componente ahora con pestañas y secciones de blocks */
 export interface ComponentItem {
   id: string
@@ -79,5 +123,14 @@ export interface ComponentItem {
   category: string
   description: string
   lastUpdate: string
-  tabs: Tab[]
+  tabs: Tab[],
+  // Nuevas propiedades
+  playground?: {
+    controls: PlaygroundControl[];
+  };
+  recipes?: Recipe[];
+  architecture?: {
+    nodes: ArchNode[];
+    connections: { from: string, to: string }[];
+  };
 }

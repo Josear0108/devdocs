@@ -1,191 +1,350 @@
-
 import type { ComponentItem } from "../types/component"
 
 export const componentsData: ComponentItem[] = [
   //card componente carga de archivos
   {
-    id: "button",
+    id: "file-upload",
     name: "Cargue de archivos",
     category: "Básico",
     description: "Componente React ligero y personalizable para subir archivos con validación, drag & drop y feedback visual, ideal para flujos documentales empresariales.",
-    lastUpdate: "2023-12-15",
+    lastUpdate: "2025-07-11",
     tabs: [
-      // Inicio de pestaña Documentación
       {
-        id: "documentation",
-        label: "Documentación",
+        id: 'installation',
+        label: 'Instalación',
         sections: [
           {
-            title: "Descripción",
+            title: 'Instalación',
             blocks: [
               {
-                type: "text",
-                content:
-                  "FileUploadContainer es un componente React reutilizable para la carga de archivos, con soporte para validación, drag & drop, feedback visual y personalización. Está diseñado para integrarse fácilmente en flujos de carga documental en aplicaciones empresariales."
+                type: 'text',
+                content: 'Para integrar el componente en tu proyecto, instala la librería utilizando npm. Se recomienda usar la versión especificada para asegurar la compatibilidad con esta documentación.'
+              },
+              {
+                type: 'code',
+                language: 'bash',
+                code: 'npm install edesk-components@0.0.5'
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        id: 'description',
+        label: 'Descripción General',
+        sections: [
           {
-            title: "Instalación y dependencias",
+            title: 'Descripción General',
             blocks: [
               {
-                type: "list",
+                type: 'text',
+                content: 'FileUploadContainer es un componente de React diseñado para gestionar la carga de archivos de manera robusta y personalizable. Provee una interfaz de usuario completa que soporta la selección de archivos mediante un explorador, la funcionalidad de "arrastrar y soltar" (drag and drop), y la visualización del estado de la carga. Su arquitectura interna está desacoplada, lo que facilita su mantenimiento y extensibilidad.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'dependencies',
+        label: 'Dependencias y Requisitos',
+        sections: [
+          {
+            title: 'Dependencias y Requisitos',
+            blocks: [
+              {
+                type: 'text',
+                content: 'Para el correcto funcionamiento del componente, tu proyecto debe cumplir con los siguientes requisitos:'
+              },
+              {
+                type: 'text',
+                content: 'Peer Dependencies: La librería ha sido construida sobre React. Asegúrate de que tu proyecto tenga instaladas las siguientes dependencias:'
+              },
+              {
+                type: 'list',
                 items: [
-                  "React 17+ o 18+",
-                  "Material UI Icons",
-                  "El hook useFileUpload y los estilos CSS del proyecto"
+                  'react: ^19.0.0 o compatible.',
+                  'react-dom: ^19.0.0 o compatible.'
                 ]
-              }
-            ]
-          },
-          {
-            title: "Instalación",
-            blocks: [
+              },
               {
-                type: "code",
-                language: "bash",
-                code: "npm install edesk-components@0.0.0"
-              }
-            ]
-          }
-        ]
-      },
-// Inicio de pestaña Casos de Uso
-      {
-        id: "useCases",
-        label: "Casos de Uso",
-        sections: [
-          {
-            title: "Ejemplos comunes",
-            blocks: [
+                type: 'text',
+                content: 'Estilos CSS: El componente requiere la importación de su hoja de estilos para un correcto renderizado visual. Debes incluir la siguiente línea en el punto de entrada de tu aplicación (como App.tsx o main.tsx):'
+              },
               {
-                type: "text",
-                content:
-                  "El componente Cargue de Archivos se puede utilizar en múltiples contextos."
+                type: 'code',
+                language: 'javascript',
+                code: "import 'edesk-components/dist/style.css';"
+              },
+              {
+                type: 'text',
+                content: 'Iconos: Para la visualización de iconos, el componente utiliza @mui/icons-material. Asegúrate de que esta dependencia esté resuelta en tu proyecto si no planeas sobreescribir los iconos por defecto.'
               }
             ]
           }
         ]
       },
-//Inicio de pestaña Código
       {
-        id: "code",
-        label: "Código",
+        id: 'api',
+        label: 'API de Propiedades',
         sections: [
           {
-            title: "Código Fuente",
+            title: 'API de Propiedades (Props)',
             blocks: [
               {
-                type: "tabs",
-                tabs: [
-                  // Sub-Pestaña de Código del Componente
-                  {
-                    id: "component",
-                    label: "Componente",
-                    blocks: [
-                      {
-                        type: "code",
-                        language: "tsx",
-                        code: `import * as React from "react"
-export const Button = ({ children }) => (
-  <button className="btn">{children}</button>
-)`
-                      }
-                    ]
-                  },
-                  // Sub-Pestaña de Código de Uso 
-                  {
-                    id: "usage",
-                    label: "Uso",
-                    blocks: [
-                      {
-                        type: "code",
-                        language: "tsx",
-                        code: `<Button>Botón Primario</Button>
-<Button variant="outline">Botón Outline</Button>
-<Button variant="ghost">Botón Ghost</Button>
-<Button variant="link">Botón Link</Button>`
-                      }
-                    ]
-                  },
-                  //Sub-Pestaña de Código de Pruebas 
-                  {
-                    id: "tests",
-                    label: "Pruebas",
-                    blocks: [
-                      {
-                        type: "code",
-                        language: "ts",
-                        code: `import { render } from "@testing-library/react"
-it("renderiza el botón", () => {
-  const { getByText } = render(<Button>Click</Button>)
-  expect(getByText("Click")).toBeTruthy()
-})`
-                      }
-                    ]
-                  }
+                type: 'text',
+                content: 'El componente se configura a través de un conjunto de propiedades. A continuación se detallan todas las props disponibles, agrupadas por su función.'
+              },
+              {
+                type: 'text',
+                content: 'Configuración Esencial (Obligatorias) - Estas propiedades son críticas para la funcionalidad básica del servicio de carga:'
+              },
+              {
+                type: 'table',
+                columns: ['Propiedad', 'Tipo', 'Descripción'],
+                rows: [
+                  ['uploadUrl', 'string', 'URL del endpoint del servicio de carga al cual se enviarán los archivos.'],
+                  ['encryptedPath', 'string', 'Ruta o identificador cifrado requerido por el backend para el procesamiento del archivo.'],
+                  ['maxFileSize', 'number', 'Tamaño máximo permitido por archivo, definido en bytes. Ejemplo: 5 * 1024 * 1024 para 5 MB.'],
+                  ['acceptedFileTypes', 'string[]', 'Array de cadenas de texto con las extensiones de archivo permitidas, sin incluir el punto. Ejemplo: [\'pdf\', \'docx\', \'jpg\'].']
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Configuración de Comportamiento y Límites - Estas props controlan la interacción del usuario y establecen límites en la carga:'
+              },
+              {
+                type: 'table',
+                columns: ['Propiedad', 'Tipo', 'Por Defecto', 'Descripción'],
+                rows: [
+                  ['disabled', 'boolean', 'false', 'Deshabilita toda interacción con el componente.'],
+                  ['multiSelectFile', 'boolean', 'true', 'Permite al usuario seleccionar múltiples archivos simultáneamente desde el explorador.'],
+                  ['maxFiles', 'number', 'undefined', 'Limita el número total de archivos que se pueden adjuntar.'],
+                  ['minSelectFile', 'number', 'undefined', 'Define el número mínimo de archivos que deben ser seleccionados en una sola operación.'],
+                  ['onClose', '() => void', 'undefined', 'Callback que se invoca al hacer clic en el botón de cierre (requiere showCloseButton: true).']
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Configuración Visual y de UI - Estas props permiten personalizar la apariencia y los textos del componente:'
+              },
+              {
+                type: 'table',
+                columns: ['Propiedad', 'Tipo', 'Por Defecto', 'Descripción'],
+                rows: [
+                  ['type', 'string', '\'Large\'', 'Define el modo de renderizado. Opciones: \'Large\' (área de drag-and-drop), \'DragOff\' (sin drag-and-drop), \'Button\' (solo botón).'],
+                  ['title', 'string', '\'Subir archivo\'', 'Texto del título principal del componente.'],
+                  ['subtitle', 'string', 'undefined', 'Texto secundario o de instrucción.'],
+                  ['showCloseButton', 'boolean', 'false', 'Controla la visibilidad del botón de cierre (X).'],
+                  ['showExtensions', 'boolean', 'false', 'Muestra un texto informativo con los tipos de archivo y tamaño permitidos.'],
+                  ['allowedExtensionsText', 'string', 'undefined', 'Permite definir un texto personalizado para la línea de extensiones.'],
+                  ['iconComponent', 'React.ReactNode', 'CloudUploadIcon', 'Permite reemplazar el icono por defecto con un componente de React personalizado.'],
+                  ['hideIcon', 'boolean', 'false', 'Oculta el icono principal en todas las variantes del componente.'],
+                  ['unstyled', 'boolean', 'false', 'Elimina todos los estilos por defecto para permitir una personalización completa vía CSS.'],
+                  ['className', 'string', 'undefined', 'Asigna una clase CSS al contenedor raíz del componente.'],
+                  ['style', 'React.CSSProperties', 'undefined', 'Aplica estilos en línea al contenedor raíz.']
                 ]
               }
             ]
           }
         ]
       },
-// Inicio de pestaña Versiones
       {
-        id: "versions",
-        label: "Versiones",
+        id: 'implementation',
+        label: 'Guía de Implementación',
         sections: [
           {
-            title: "Historial de Versiones",
+            title: 'Guía de Implementación',
             blocks: [
               {
-                type: "tabs",
-                tabs: [
-                  // Sub-Pestaña de Historial
-                  {
-                    id: "historial",
-                    label: "Historial",
-                    blocks: [
-                      {
-                        type: "table",
-                        columns: ["Versión", "Fecha", "Cambios", "Tipo"],
-                        rows: [
-                          [
-                            "v1.2.0",
-                            "14/12/2023",
-                            [
-                              { text: "Añadido tamaño `xl` …", badge: { label: "Nueva Característica", color: "#28a745" } },
-                              { text: "Mejora ARIA", badge: { label: "Mejora", color: "#007bff" } },
-                              { text: "Corrección iconos", badge: { label: "Corrección", color: "#fd7e14" } }
-                            ],            // 👉 es ChangeItem[], ahora aceptado
-                            { label: "Compatible", color: "#28a745" }  // 👉 es Badge
-                          ],
-                          // …
-                        ]
-                      }
-                    ]
-                  },
-                  // Sub-Pestaña de Migración
-                  {
-                    id: "migration",
-                    label: "Guía de Migración",
-                    blocks: [
-                      {
-                        type: "list",
-                        items: [
-                          "Renombrar `variant='danger'` a `variant='destructive'`",
-                          "Reemplazar `size='icon'` por `<IconButton />`"
-                        ]
-                      }
-                    ]
-                  }
+                type: 'text',
+                content: 'A continuación, un ejemplo de uso estándar del componente dentro de una aplicación de React.'
+              },
+              {
+                type: 'code',
+                language: 'typescript',
+                code: `import React from 'react';
+import { FileUploadContainer } from 'edesk-components';
+import 'edesk-components/dist/style.css';
+
+// Componente de ejemplo que integra el cargador de archivos.
+const FormularioDeDocumentos = () => {
+
+    // Define las propiedades de configuración en un objeto para mayor claridad.
+    const fileUploadConfig = {
+        uploadUrl: "https://api.tu-servicio.com/files/upload",
+        encryptedPath: "a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4",
+        maxFileSize: 10 * 1024 * 1024, // 10 MB
+        acceptedFileTypes: ['pdf', 'xml', 'docx'],
+    };
+
+    return (
+        <div style={{ maxWidth: '650px', margin: 'auto' }}>
+            <h2>Carga de Facturas y Documentos</h2>
+            <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
+
+            <FileUploadContainer
+                {...fileUploadConfig}
+                type="Large"
+                title="Arrastre sus documentos o haga clic aquí"
+                subtitle="Formatos permitidos: PDF, DOCX, XML"
+                maxFiles={5}
+                showExtensions={true}
+            />
+        </div>
+    );
+};
+
+export default FormularioDeDocumentos;`
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'recommendations',
+        label: 'Recomendaciones',
+        sections: [
+          {
+            title: 'Recomendaciones y Puntos Clave',
+            blocks: [
+              {
+                type: 'text',
+                content: 'Lo más importante: Las cuatro props de la Configuración Esencial (uploadUrl, encryptedPath, maxFileSize, acceptedFileTypes) son fundamentales. Sin ellas, el componente no funcionará correctamente.'
+              },
+              {
+                type: 'text',
+                content: 'Manejo de Errores: El componente gestiona internamente los mensajes de error de validación (ej: "Extensión no permitida", "Tamaño máximo superado") y los muestra en la UI.'
+              },
+              {
+                type: 'list',
+                items: [
+                  'Valida siempre el formato de la URL del servicio de carga antes de pasar la prop.',
+                  'Asegúrate de que el encryptedPath sea válido y esté autorizado por el backend.',
+                  'Considera implementar validación adicional en el lado del cliente para mejorar la experiencia del usuario.',
+                  'Usa los callbacks de eventos para manejar el estado de la carga en tu aplicación.',
+                  'Personaliza los mensajes de error para que sean coherentes con el resto de tu aplicación.'
                 ]
               }
             ]
           }
         ]
       }
-    ]
+    ],
+    playground: {
+      controls: [
+        { prop: 'type', label: 'Tipo de Componente', type: 'radio', options: ['Large', 'DragOff', 'Button'], defaultValue: 'Large' },
+        { prop: 'title', label: 'Título', type: 'text', defaultValue: 'Documento de identificación' },
+        { prop: 'subtitle', label: 'Subtítulo', type: 'text', defaultValue: 'Arrastra y suelta archivos PDF aquí o haz clic para seleccionar' },
+        { prop: 'allowedExtensionsText', label: 'Texto de Extensiones', type: 'text', defaultValue: 'Formatos permitidos: PDF, JPG, PNG', showWhen: { prop: 'showExtensions', value: true } },
+        { prop: 'disabled', label: 'Deshabilitado', type: 'boolean', defaultValue: false },
+        { prop: 'showExtensions', label: 'Mostrar Extensiones', type: 'boolean', defaultValue: true },
+        { prop: 'showCloseButton', label: 'Mostrar Botón Cerrar', type: 'boolean', defaultValue: false },
+        { prop: 'multiSelectFile', label: 'Selección Múltiple', type: 'boolean', defaultValue: true },
+        { prop: 'maxFiles', label: 'Máximo de Archivos', type: 'number', defaultValue: 5, enableWhen: { prop: 'multiSelectFile', value: true } },
+        { prop: 'minSelectFile', label: 'Mínimo de Archivos', type: 'number', defaultValue: 1, enableWhen: { prop: 'multiSelectFile', value: true } },
+        { prop: 'maxFileSize', label: 'Tamaño Máximo (MB)', type: 'number', defaultValue: 10 },
+      ]
+    },
+    recipes: [
+      {
+        id: 'recipe-1',
+        icon: 'user-circle',
+        title: 'Imagen de perfil única',
+        description: 'Configuración para subir una única imagen de perfil con validación de tipo y tamaño.',
+        props: {
+          type: 'Button',
+          title: 'Sube tu foto de perfil',
+          subtitle: 'Solo imágenes JPG o PNG',
+          maxFiles: 1,
+          multiSelectFile: false,
+          showExtensions: true,
+          allowedExtensionsText: 'Formatos permitidos: JPG, PNG'
+        },
+        code: `<FileUploadContainer
+  type="Button"
+  title="Sube tu foto de perfil"
+  subtitle="Solo imágenes JPG o PNG"
+  maxFiles={1}
+  multiSelectFile={false}
+  showExtensions={true}
+  allowedExtensionsText="Formatos permitidos: JPG, PNG"
+  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+  encryptedPath="ruta-cifrada-de-ejemplo"
+  maxFileSize={5242880} // 5MB
+  acceptedFileTypes={['jpg', 'jpeg', 'png']}
+/>`
+      },
+      {
+        id: 'recipe-2',
+        icon: 'file-alt',
+        title: 'Múltiples documentos',
+        description: 'Área para arrastrar múltiples documentos PDF y Word con visualización de extensiones.',
+        props: {
+          type: 'Large',
+          title: 'Sube tus documentos',
+          subtitle: 'Arrastra y suelta archivos aquí o haz clic para seleccionar',
+          maxFiles: 10,
+          showExtensions: true,
+          allowedExtensionsText: 'Formatos permitidos: PDF, DOC, DOCX'
+        },
+        code: `<FileUploadContainer
+  type="Large"
+  title="Sube tus documentos"
+  subtitle="Arrastra y suelta archivos aquí o haz clic para seleccionar"
+  maxFiles={10}
+  showExtensions={true}
+  allowedExtensionsText="Formatos permitidos: PDF, DOC, DOCX"
+  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+  encryptedPath="ruta-cifrada-de-ejemplo"
+  maxFileSize={10485760} // 10MB
+  acceptedFileTypes={['pdf', 'doc', 'docx']}
+/>`
+      },
+      {
+        id: 'recipe-3',
+        icon: 'exclamation-triangle',
+        title: 'Sin Drag & Drop',
+        description: 'Configuración para subir archivos sin funcionalidad de arrastrar y soltar.',
+        props: {
+          type: 'DragOff',
+          title: 'Seleccionar documentos',
+          subtitle: 'Haz clic para seleccionar archivos',
+          maxFiles: 3,
+          showExtensions: true,
+          allowedExtensionsText: 'Formatos permitidos: PDF, DOCX',
+          minSelectFile: 1
+        },
+        code: `<FileUploadContainer
+  type="DragOff"
+  title="Seleccionar documentos"
+  subtitle="Haz clic para seleccionar archivos"
+  maxFiles={3}
+  showExtensions={true}
+  allowedExtensionsText="Formatos permitidos: PDF, DOCX"
+  minSelectFile={1}
+  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+  encryptedPath="ruta-cifrada-de-ejemplo"
+  maxFileSize={10485760} // 10MB
+  acceptedFileTypes={['pdf', 'docx']}
+/>`
+      }
+    ],
+    architecture: {
+      nodes: [
+        { id: 'drag-handler', label: 'useDragAndDrop', type: 'Caso de Uso', description: 'Maneja la lógica de arrastrar y soltar, activando los estados visuales correspondientes.' },
+        { id: 'validation-utils', label: 'EdeskFileValidationUtils', type: 'Caso de Uso', description: 'Valida los archivos según su tamaño, extensión y el límite configurado.' },
+        { id: 'file-list-ui', label: 'AnimatedFileList', type: 'UI', description: 'Componente de UI que renderiza la lista de archivos seleccionados con animaciones.' },
+        { id: 'main-container', label: 'FileUploadContainer', type: 'UI', description: 'El componente principal que orquesta la UI y la lógica de alto nivel.' },
+        { id: 'core-logic', label: 'Core Logic', type: 'Lógica central', description: 'Gestiona el estado interno, las props y la comunicación entre los casos de uso y la UI.' }
+      ],
+      connections: [
+        { from: 'drag-handler', to: 'core-logic' },
+        { from: 'validation-utils', to: 'core-logic' },
+        { from: 'file-list-ui', to: 'core-logic' },
+        { from: 'main-container', to: 'core-logic' },
+      ]
+    }
   }
-  // — aquí tus demás componentes —
 ]
+  // — aquí tus demás componentes —
+
