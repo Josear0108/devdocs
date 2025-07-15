@@ -1,10 +1,12 @@
 import type { ComponentItem } from "../types/component"
+import { FileUploadContainer } from "edesk-components";
 
 export const componentsData: ComponentItem[] = [
   //card componente carga de archivos
   {
     id: "file-upload",
     name: "Cargue de archivos",
+    component: FileUploadContainer,
     category: "Básico",
     description: "Componente React ligero y personalizable para subir archivos con validación, drag & drop y feedback visual, ideal para flujos documentales empresariales.",
     lastUpdate: "2025-07-11",

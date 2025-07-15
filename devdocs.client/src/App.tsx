@@ -4,8 +4,6 @@ import { Routes, Route } from "react-router-dom"
 import { AnimatePresence } from "framer-motion"
 import Layout from "./components/layout/Layout"
 import HomePage from "./pages/HomePage"
-import ComponentDetailPage from "./pages/ComponentDetailPage"
-import ComponentsPage from "./pages/ComponentsPage"
 import ModuleDetailPage from "./pages/ModuleDetailPage"
 import ModulesPage from "./pages/ModulesPage"
 import NewsDetailPage from "./pages/NewsDetailPage"
@@ -17,6 +15,8 @@ import ToolsPage from "./pages/ToolsPage"
 import { useQRCodeStore } from './tools/qr-generator/store/useQRCodeStore';
 
 import { ClientQRCodeAdapter } from './tools/qr-generator/adapters/ClientQRCode.adapter';
+import ComponentDetailPage from "./pages/components/DetailPage"
+import ComponentsPage from "./pages/components/Page"
 //import { ApiQRCodeAdapter } from './tools/qr-generator/adapters/ApiQRCode.Adapter';
 
 /*Inyecta el adaptador al store al iniciar la app */

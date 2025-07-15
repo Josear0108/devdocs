@@ -119,7 +119,8 @@ export interface ArchNode {
 /** Tu componente ahora con pestañas y secciones de blocks */
 export interface ComponentItem {
   id: string
-  name: string
+  name: string,
+  component: React.ComponentType<any>,
   category: string
   description: string
   lastUpdate: string

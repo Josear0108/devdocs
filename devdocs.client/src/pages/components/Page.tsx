@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { PageHeader } from "../components/ui/PageHeader"
-import { componentsData } from "../data/components"
-import "../styles/components-page.css"
+import "../../styles/components-page.css"
 import { useNavigate } from "react-router-dom"
+import { PageHeader } from "../../components/ui/PageHeader"
+import { componentsData } from "../../data/components"
 
 const pageAnimation = {
   hidden: { opacity: 0 },
