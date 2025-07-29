@@ -30,10 +30,6 @@
   grid-template-rows: auto auto;
   gap: 2rem;
   background-color: var(--card);
-  padding: 1.5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  min-height: 600px;
 }
 
 .playground-visual-panel {
@@ -70,7 +66,7 @@
   background-color: var(--muted);
   padding: 1.5rem;
   border-radius: var(--radius);
-  max-height: 600px;
+  max-height: 750px;
   overflow-y: auto;
 }
 
@@ -153,8 +149,25 @@
   background-color: var(--accent);
 }
 
+
+/* Radio button custom styles */
 .radio-group input[type="radio"] {
   margin: 0;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* For browsers that don't support accent-color, fallback with pseudo-elements */
+.radio-group input[type="radio"]::-webkit-radio {
+  accent-color: var(--primary);
+}
+
+/* Optional: Make the radio circle larger and more visible */
+.radio-group input[type="radio"]:before,
+.radio-group input[type="radio"]:after {
+  transform: scale(1.2);
 }
 
 /* Toggle Switch */
@@ -402,7 +415,6 @@ input:checked + .toggle-slider:before {
 
 /* Documentation Tabs */
 .documentation-tabs {
-  margin-top: 2rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--card);
@@ -427,6 +439,7 @@ input:checked + .toggle-slider:before {
   transition: all 0.2s ease;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
+  width: 100%;
 }
 
 .tab-button:hover {
@@ -442,7 +455,6 @@ input:checked + .toggle-slider:before {
 
 .tab-content {
   padding: 2rem;
-  max-height: 70vh;
   overflow-y: auto;
 }
 
@@ -606,11 +618,11 @@ input:checked + .toggle-slider:before {
   }
 }
 
-/* Mejoras visuales adicionales */
+/* Mejoras visuales adicionales
 .playground-visual-panel > * {
   width: 100%;
   max-width: 500px;
-}
+} */
 
 /* Animaciones suaves para cambios de estado */
 .control-item {

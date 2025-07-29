@@ -12,26 +12,74 @@ export const componentsData: ComponentItem[] = [
     lastUpdate: "2025-07-11",
     tabs: [
       {
+        id: 'playground',
+        label: 'Playground',
+        sections: [
+          
+        ]
+      },
+      {
         id: 'installation',
         label: 'Instalación',
         sections: [
           {
-            title: 'Instalación',
+            title: 'Descarga',
             blocks: [
-              {
-                type: 'text',
-                content: 'Para integrar el componente en tu proyecto, instala la librería utilizando npm. Se recomienda usar la versión especificada para asegurar la compatibilidad con esta documentación.'
-              },
               {
                 type: 'code',
                 language: 'bash',
                 code: 'npm install edesk-components@0.0.5'
               }
             ]
-          }
+          },
+          {
+            title: 'Importación',
+            blocks: [
+              {
+                type: 'code',
+                language: 'javascript',
+                code: 'import { FileUploadContainer } from "edesk-components";'
+              }
+            ]
+          }, 
+          /*{
+            title: 'Dependencias',
+            blocks: [
+                {
+                type: 'text',
+                content: 'Para el correcto funcionamiento del componente, tu proyecto debe cumplir con los siguientes requisitos:'
+              },
+              {
+                type: 'text',
+                content: 'Peer Dependencies: La librería ha sido construida sobre React. Asegúrate de que tu proyecto tenga instaladas las siguientes dependencias:'
+              },
+              {
+                type: 'list',
+                items: [
+                  'react: ^19.0.0 o compatible.',
+                  'react-dom: ^19.0.0 o compatible.'
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Estilos CSS: El componente requiere la importación de su hoja de estilos para un correcto renderizado visual. Debes incluir la siguiente línea en el punto de entrada de tu aplicación (como App.tsx o main.tsx):'
+              },
+              {
+                type: 'code',
+                language: 'javascript',
+                code: "import 'edesk-components/dist/style.css';"
+              },
+              {
+                type: 'text',
+                content: 'Iconos: Para la visualización de iconos, el componente utiliza @mui/icons-material. Asegúrate de que esta dependencia esté resuelta en tu proyecto si no planeas sobreescribir los iconos por defecto.'
+              }
+            ]
+          },*/
+          
+
         ]
       },
-      {
+     /* {
         id: 'description',
         label: 'Descripción General',
         sections: [
@@ -45,7 +93,7 @@ export const componentsData: ComponentItem[] = [
             ]
           }
         ]
-      },
+      }, 
       {
         id: 'dependencies',
         label: 'Dependencias y Requisitos',
@@ -84,7 +132,7 @@ export const componentsData: ComponentItem[] = [
             ]
           }
         ]
-      },
+      },*/
       {
         id: 'api',
         label: 'API de Propiedades',
@@ -119,9 +167,9 @@ export const componentsData: ComponentItem[] = [
                 columns: ['Propiedad', 'Tipo', 'Por Defecto', 'Descripción'],
                 rows: [
                   ['disabled', 'boolean', 'false', 'Deshabilita toda interacción con el componente.'],
-                  ['multiSelectFile', 'boolean', 'true', 'Permite al usuario seleccionar múltiples archivos simultáneamente desde el explorador.'],
+                  ['multiSelectFile', 'boolean', 'true', 'Permite al usuario seleccionar múltiples archivos simultáneamente, Sí es false solo podran cargar un archivo desde el explorador.'],
                   ['maxFiles', 'number', 'undefined', 'Limita el número total de archivos que se pueden adjuntar.'],
-                  ['minSelectFile', 'number', 'undefined', 'Define el número mínimo de archivos que deben ser seleccionados en una sola operación.'],
+                  ['minSelectFile', 'number', 'undefined', 'Define el número mínimo de archivos que deben ser adjuntados.'],
                   ['onClose', '() => void', 'undefined', 'Callback que se invoca al hacer clic en el botón de cierre (requiere showCloseButton: true).']
                 ]
               },
@@ -138,12 +186,33 @@ export const componentsData: ComponentItem[] = [
                   ['subtitle', 'string', 'undefined', 'Texto secundario o de instrucción.'],
                   ['showCloseButton', 'boolean', 'false', 'Controla la visibilidad del botón de cierre (X).'],
                   ['showExtensions', 'boolean', 'false', 'Muestra un texto informativo con los tipos de archivo y tamaño permitidos.'],
-                  ['allowedExtensionsText', 'string', 'undefined', 'Permite definir un texto personalizado para la línea de extensiones.'],
+                  ['allowedExtensionsText', 'string', 'undefined', 'Permite definir un texto personalizado para la línea de extensiones (requiere showExtensions: true).'],
                   ['iconComponent', 'React.ReactNode', 'CloudUploadIcon', 'Permite reemplazar el icono por defecto con un componente de React personalizado.'],
                   ['hideIcon', 'boolean', 'false', 'Oculta el icono principal en todas las variantes del componente.'],
                   ['unstyled', 'boolean', 'false', 'Elimina todos los estilos por defecto para permitir una personalización completa vía CSS.'],
                   ['className', 'string', 'undefined', 'Asigna una clase CSS al contenedor raíz del componente.'],
                   ['style', 'React.CSSProperties', 'undefined', 'Aplica estilos en línea al contenedor raíz.']
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Variables CSS globales del componenete:'
+              },
+              {
+                type: 'table',
+                columns: ['Variable CSS', 'Descripción', 'Por Defecto'],
+                rows: [
+                  ['--edesk-primary', 'Color principal', '#007FFF' ],
+                  ['--edesk-primary-light', 'Color del hover', '#f3f9ff'],
+                  ['--edesk-bg-file', 'Color de fondo para los archivos cargados', '#CEE3F9'],
+                  ['--edesk-border-radius', 'Radio del borde', '10px'],
+                  ['--edesk-border-radius-pill', 'Radio del borde de los archivos cargados', '30px'],
+                  ['--edesk-border-width', 'Grosor del borde', '2px'],
+                  ['--edesk-bg-error', 'Color de fondo para el error', '#ffeaea'],
+                  ['--edesk-text-error', 'Color de texto para el error', '#d32f2f'],
+                  ['--edesk-font-main', 'Tipo de fuente', 'Roboto, sans-serif'],
+                  ['--edesk-button-type-width', 'ancho para el tipo boton', '300px'],
+                  ['--edesk-container-width', 'ancho para el tipo Large y DragOff', '650px'],
                 ]
               }
             ]
@@ -165,38 +234,38 @@ export const componentsData: ComponentItem[] = [
                 type: 'code',
                 language: 'typescript',
                 code: `import React from 'react';
-import { FileUploadContainer } from 'edesk-components';
-import 'edesk-components/dist/style.css';
+                        import { FileUploadContainer } from 'edesk-components';
+                        import 'edesk-components/dist/style.css';
 
-// Componente de ejemplo que integra el cargador de archivos.
-const FormularioDeDocumentos = () => {
+                        // Componente de ejemplo que integra el cargador de archivos.
+                        const FormularioDeDocumentos = () => {
 
-    // Define las propiedades de configuración en un objeto para mayor claridad.
-    const fileUploadConfig = {
-        uploadUrl: "https://api.tu-servicio.com/files/upload",
-        encryptedPath: "a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4",
-        maxFileSize: 10 * 1024 * 1024, // 10 MB
-        acceptedFileTypes: ['pdf', 'xml', 'docx'],
-    };
+                            // Define las propiedades de configuración en un objeto para mayor claridad.
+                            const fileUploadConfig = {
+                                uploadUrl: "https://api.tu-servicio.com/files/upload",
+                                encryptedPath: "a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4",
+                                maxFileSize: 10 * 1024 * 1024, // 10 MB
+                                acceptedFileTypes: ['pdf', 'xml', 'docx'],
+                            };
 
-    return (
-        <div style={{ maxWidth: '650px', margin: 'auto' }}>
-            <h2>Carga de Facturas y Documentos</h2>
-            <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
+                            return (
+                                <div style={{ maxWidth: '650px', margin: 'auto' }}>
+                                    <h2>Carga de Facturas y Documentos</h2>
+                                    <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
 
-            <FileUploadContainer
-                {...fileUploadConfig}
-                type="Large"
-                title="Arrastre sus documentos o haga clic aquí"
-                subtitle="Formatos permitidos: PDF, DOCX, XML"
-                maxFiles={5}
-                showExtensions={true}
-            />
-        </div>
-    );
-};
+                                    <FileUploadContainer
+                                        {...fileUploadConfig}
+                                        type="Large"
+                                        title="Arrastre sus documentos o haga clic aquí"
+                                        subtitle="Formatos permitidos: PDF, DOCX, XML"
+                                        maxFiles={5}
+                                        showExtensions={true}
+                                    />
+                                </div>
+                            );
+                        };
 
-export default FormularioDeDocumentos;`
+                        export default FormularioDeDocumentos;`
               }
             ]
           }
@@ -263,18 +332,18 @@ export default FormularioDeDocumentos;`
           allowedExtensionsText: 'Formatos permitidos: JPG, PNG'
         },
         code: `<FileUploadContainer
-  type="Button"
-  title="Sube tu foto de perfil"
-  subtitle="Solo imágenes JPG o PNG"
-  maxFiles={1}
-  multiSelectFile={false}
-  showExtensions={true}
-  allowedExtensionsText="Formatos permitidos: JPG, PNG"
-  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-  encryptedPath="ruta-cifrada-de-ejemplo"
-  maxFileSize={5242880} // 5MB
-  acceptedFileTypes={['jpg', 'jpeg', 'png']}
-/>`
+                type="Button"
+                title="Sube tu foto de perfil"
+                subtitle="Solo imágenes JPG o PNG"
+                maxFiles={1}
+                multiSelectFile={false}
+                showExtensions={true}
+                allowedExtensionsText="Formatos permitidos: JPG, PNG"
+                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+                encryptedPath="ruta-cifrada-de-ejemplo"
+                maxFileSize={5242880} // 5MB
+                acceptedFileTypes={['jpg', 'jpeg', 'png']}
+              />`
       },
       {
         id: 'recipe-2',
@@ -290,17 +359,17 @@ export default FormularioDeDocumentos;`
           allowedExtensionsText: 'Formatos permitidos: PDF, DOC, DOCX'
         },
         code: `<FileUploadContainer
-  type="Large"
-  title="Sube tus documentos"
-  subtitle="Arrastra y suelta archivos aquí o haz clic para seleccionar"
-  maxFiles={10}
-  showExtensions={true}
-  allowedExtensionsText="Formatos permitidos: PDF, DOC, DOCX"
-  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-  encryptedPath="ruta-cifrada-de-ejemplo"
-  maxFileSize={10485760} // 10MB
-  acceptedFileTypes={['pdf', 'doc', 'docx']}
-/>`
+                type="Large"
+                title="Sube tus documentos"
+                subtitle="Arrastra y suelta archivos aquí o haz clic para seleccionar"
+                maxFiles={10}
+                showExtensions={true}
+                allowedExtensionsText="Formatos permitidos: PDF, DOC, DOCX"
+                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+                encryptedPath="ruta-cifrada-de-ejemplo"
+                maxFileSize={10485760} // 10MB
+                acceptedFileTypes={['pdf', 'doc', 'docx']}
+              />`
       },
       {
         id: 'recipe-3',
@@ -317,18 +386,18 @@ export default FormularioDeDocumentos;`
           minSelectFile: 1
         },
         code: `<FileUploadContainer
-  type="DragOff"
-  title="Seleccionar documentos"
-  subtitle="Haz clic para seleccionar archivos"
-  maxFiles={3}
-  showExtensions={true}
-  allowedExtensionsText="Formatos permitidos: PDF, DOCX"
-  minSelectFile={1}
-  uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-  encryptedPath="ruta-cifrada-de-ejemplo"
-  maxFileSize={10485760} // 10MB
-  acceptedFileTypes={['pdf', 'docx']}
-/>`
+                type="DragOff"
+                title="Seleccionar documentos"
+                subtitle="Haz clic para seleccionar archivos"
+                maxFiles={3}
+                showExtensions={true}
+                allowedExtensionsText="Formatos permitidos: PDF, DOCX"
+                minSelectFile={1}
+                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+                encryptedPath="ruta-cifrada-de-ejemplo"
+                maxFileSize={10485760} // 10MB
+                acceptedFileTypes={['pdf', 'docx']}
+              />`
       }
     ],
     architecture: {

@@ -49,9 +49,21 @@ const ComponentRecipes: React.FC<ComponentRecipesProps> = ({ recipes, onApplyRec
 
 interface TabsProps {
   tabs: ComponentItem['tabs'];
+  playground?: ComponentItem['playground'];
+  recipes?: Recipe[];
+  playgroundComponent?: any;
+  playgroundProps?: ComponentProps<any>;
+  onPlaygroundPropsChange?: (props: ComponentProps<any>) => void;
 }
 
-const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
+const DocumentationTabs: React.FC<TabsProps> = ({
+  tabs,
+  playground,
+  recipes,
+  playgroundComponent,
+  playgroundProps,
+  onPlaygroundPropsChange
+}) => {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || '');
 
   if (!tabs || tabs.length === 0) {
@@ -64,7 +76,6 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
     switch (block.type) {
       case 'text':
         return <p key={index} className="doc-text">{block.content}</p>;
-
       case 'code':
         return (
           <div key={index} className="code-block-wrapper">
@@ -74,7 +85,6 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
             <CopyButton text={block.code} />
           </div>
         );
-
       case 'list':
         return (
           <ul key={index} className="doc-list">
@@ -83,7 +93,6 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
             ))}
           </ul>
         );
-
       case 'table':
         return (
           <div key={index} className="doc-table-wrapper">
@@ -107,7 +116,6 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
             </table>
           </div>
         );
-
       default:
         return null;
     }
@@ -115,7 +123,7 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
 
   return (
     <div className="documentation-tabs">
-      <div className="tabs-header">
+      <div className="tabs-header no-scroll-tabs">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -128,12 +136,31 @@ const DocumentationTabs: React.FC<TabsProps> = ({ tabs }) => {
       </div>
 
       <div className="tab-content">
-        {activeTabData?.sections?.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="doc-section">
-            <h2 className="doc-section-title">{section.title}</h2>
-            {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
-          </div>
-        ))}
+        {activeTab === 'playground' ? (
+          <>
+            {playground && playgroundComponent && (
+              <Playground
+                component={playgroundComponent}
+                controls={playground.controls}
+                onPropsChange={onPlaygroundPropsChange || (() => {})}
+                initialProps={playgroundProps}
+              />
+            )}
+            {recipes && recipes.length > 0 && (
+              <ComponentRecipes
+                recipes={recipes}
+                onApplyRecipe={onPlaygroundPropsChange!}
+              />
+            )}
+          </>
+        ) : (
+          activeTabData?.sections?.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="doc-section">
+              <h2 className="doc-section-title">{section.title}</h2>
+              {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
@@ -189,29 +216,17 @@ const ComponentDetailPage = () => {
       transition={{ duration: 0.3 }}
     >
       <PageHeader title={component.name} description={component.description} />
-
-      {component.playground && (
-        <Playground
-          component={ component.component}
-          controls={component.playground.controls}
-          onPropsChange={setPlaygroundProps}
-          initialProps={playgroundProps}
-        />
-      )}
-
-      {component.recipes && (
-        <ComponentRecipes
-          recipes={component.recipes}
-          onApplyRecipe={setPlaygroundProps}
-        />
-      )}
-
       {component.tabs && component.tabs.length > 0 && (
-        <DocumentationTabs tabs={component.tabs} />
+        <DocumentationTabs
+          tabs={component.tabs}
+          playground={component.playground}
+          recipes={component.recipes}
+          playgroundComponent={component.component}
+          playgroundProps={playgroundProps}
+          onPlaygroundPropsChange={setPlaygroundProps}
+        />
       )}
-
       {/* Aquí podrías añadir el componente de Arquitectura en el futuro */}
-
     </motion.div>
   )
 }
