@@ -1,3 +1,4 @@
+import React from "react";
 import { FileUploadContainer } from "edesk-components";
 import { cssVars, defaultProps as componentDefaultProps, maxFileSizeUnit, acceptedFileTypesPlaceholder, getMaxFileSizeValue, propSerializers } from '../../config/playgrounds/file-upload.config';
 import { useState, useEffect } from "react";
@@ -6,9 +7,9 @@ import type { PlaygroundControl } from "../../types/component";
 
 /**
  * Define la estructura de las props que el componente de ejemplo puede recibir.
- * Es un objeto donde cada clave es el nombre de una prop y su valor puede ser string, number o boolean.
+ * Es un objeto donde cada clave es el nombre de una prop y su valor puede ser string, number, boolean o string[].
  */
-type ComponentProps = Record<string, string | number | boolean>;
+type ComponentProps = Record<string, string | number | boolean | string[]>;
 
 // --- Componentes Internos de la Página ---
 
@@ -25,13 +26,25 @@ interface PlaygroundProps {
     initialProps: ComponentProps;
 }
 
-const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initialProps }) => {
+const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () => {}, initialProps }) => {
     // Estado interno para gestionar las props del playground, estrictamente tipado.
-    const [props, setProps] = useState<ComponentProps>({ ...componentDefaultProps, ...initialProps });
+    const [props, setProps] = useState<ComponentProps>({
+        ...componentDefaultProps,
+        ...initialProps,
+        acceptedFileTypes: Array.isArray(componentDefaultProps.acceptedFileTypes)
+            ? componentDefaultProps.acceptedFileTypes.join(', ')
+            : componentDefaultProps.acceptedFileTypes,
+    });
 
     // Efecto para sincronizar el estado si las props iniciales cambian (ej. al aplicar una receta).
     useEffect(() => {
-        setProps({ ...componentDefaultProps, ...initialProps });
+        setProps({
+            ...componentDefaultProps,
+            ...initialProps,
+            acceptedFileTypes: Array.isArray(componentDefaultProps.acceptedFileTypes)
+                ? componentDefaultProps.acceptedFileTypes.join(', ')
+                : componentDefaultProps.acceptedFileTypes,
+        });
     }, [initialProps]);
 
     /**
@@ -41,7 +54,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
      */
     const handleControlChange = (prop: string, value: string | number | boolean) => {
         // Permitir que los inputs number puedan ser string vacío
-        let newValue: string | number | boolean = value;
+        let newValue: string | number | boolean | string[] = value;
         // Si el control es de tipo number y el valor es string vacío, guardar como ""
         const control = controls.find(c => c.prop === prop);
         if (control && control.type === 'number') {
@@ -52,6 +65,10 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
                 const parsed = parseInt(value, 10);
                 newValue = isNaN(parsed) ? '' : parsed;
             }
+        }
+        // Si el control es acceptedFileTypes, siempre guardar como string
+        if (prop === 'acceptedFileTypes' && Array.isArray(value)) {
+            newValue = value.join(', ');
         }
         const newProps = { ...props, [prop]: newValue };
         setProps(newProps);
@@ -94,7 +111,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
             ...(acceptedFileTypesInput.length === 0 ? { acceptedFileTypes: `{${JSON.stringify(componentDefaultProps.acceptedFileTypes)}}` } : {})
         };
         // Mostrar maxFileSize convertido y comentado la unidad original
-        if (allProps.maxFileSize) {
+        if (allProps.maxFileSize && (typeof allProps.maxFileSize === 'string' || typeof allProps.maxFileSize === 'number')) {
             const original = allProps.maxFileSize;
             const converted = getMaxFileSizeValue(original);
             allProps.maxFileSize = `${converted} // ${original}${maxFileSizeUnit}`;
@@ -102,7 +119,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
 
         // Solo incluir variables CSS modificadas
         const styleVars = Object.entries(cssVarsState)
-            .filter(([_, value]) => value && value.trim() !== '')
+            .filter(([, value]) => value && value.trim() !== '')
             .reduce((acc, [key, value]) => {
                 // Convertir --primary-color => primaryColor
                 const jsKey = key.replace(/^--/, '').replace(/-([a-z])/g, (_, l) => l.toUpperCase());
@@ -196,7 +213,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
                                 ? visualProps.acceptedFileTypes
                                 : componentDefaultProps.acceptedFileTypes}
                             {...visualProps}
-                            maxFileSize={getMaxFileSizeValue(props.maxFileSize)}
+                            maxFileSize={typeof props.maxFileSize === 'string' || typeof props.maxFileSize === 'number' ? getMaxFileSizeValue(props.maxFileSize) : getMaxFileSizeValue(componentDefaultProps.maxFileSize)}
                         />
                     );
                 })()}
@@ -230,10 +247,16 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
                             // Encontrar el control showExtensions y allowedExtensionsText
                             const showExtCtrl = controls.find(c => c.prop === 'showExtensions');
                             const allowedExtCtrl = controls.find(c => c.prop === 'allowedExtensionsText');
-                            const result: JSX.Element[] = [];
+                            const result: React.JSX.Element[] = [];
                             filteredControls.filter(isControlVisible).forEach(control => {
                                 const isEnabled = isControlEnabled(control);
                                 const controlClass = `control-item ${!isEnabled ? 'disabled' : ''}`;
+                                let inputNumberValue: string | number = '';
+                                if (control.type === 'number') {
+                                    if (typeof props[control.prop] === 'number' || typeof props[control.prop] === 'string') {
+                                        inputNumberValue = props[control.prop] as string | number;
+                                    }
+                                }
                                 result.push(
                                     <div key={control.prop} className={controlClass}>
                                         <label>{control.label}</label>
@@ -266,7 +289,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
                                             <input
                                                 type="number"
                                                 min="1"
-                                                value={props[control.prop] === undefined || props[control.prop] === null ? '' : props[control.prop]}
+                                                value={inputNumberValue}
                                                 onChange={(e) => handleControlChange(control.prop, e.target.value)}
                                                 disabled={!isEnabled}
                                             />
