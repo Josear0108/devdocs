@@ -1,4 +1,5 @@
 import { FileUploadContainer } from "edesk-components";
+import { cssVars, defaultProps as componentDefaultProps, maxFileSizeUnit, acceptedFileTypesPlaceholder, getMaxFileSizeValue, propSerializers } from '../../config/playgrounds/file-upload.config';
 import { useState, useEffect } from "react";
 import { CopyButton } from "../../components/ui/CopyButton";
 import type { PlaygroundControl } from "../../types/component";
@@ -26,11 +27,11 @@ interface PlaygroundProps {
 
 const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initialProps }) => {
     // Estado interno para gestionar las props del playground, estrictamente tipado.
-    const [props, setProps] = useState<ComponentProps>(initialProps);
+    const [props, setProps] = useState<ComponentProps>({ ...componentDefaultProps, ...initialProps });
 
     // Efecto para sincronizar el estado si las props iniciales cambian (ej. al aplicar una receta).
     useEffect(() => {
-        setProps(initialProps);
+        setProps({ ...componentDefaultProps, ...initialProps });
     }, [initialProps]);
 
     /**
@@ -39,11 +40,25 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
      * @param value - El nuevo valor para la prop.
      */
     const handleControlChange = (prop: string, value: string | number | boolean) => {
-        const newProps = { ...props, [prop]: value };
+        // Permitir que los inputs number puedan ser string vacío
+        let newValue: string | number | boolean = value;
+        // Si el control es de tipo number y el valor es string vacío, guardar como ""
+        const control = controls.find(c => c.prop === prop);
+        if (control && control.type === 'number') {
+            if (value === '') {
+                newValue = '';
+            } else if (typeof value === 'string' && value !== '') {
+                // Solo convertir a número si no está vacío
+                const parsed = parseInt(value, 10);
+                newValue = isNaN(parsed) ? '' : parsed;
+            }
+        }
+        const newProps = { ...props, [prop]: newValue };
         setProps(newProps);
         onPropsChange(newProps);
     };
 
+    /*
     /**
      * Determina si un control debe ser visible basado en sus condiciones
      */
@@ -56,6 +71,8 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
      * Determina si un control debe estar habilitado basado en sus condiciones
      */
     const isControlEnabled = (control: PlaygroundControl): boolean => {
+        // Si el control es minFiles o maxFiles, siempre está habilitado
+        if (control.prop === 'minSelectFile' || control.prop === 'maxFiles') return true;
         if (!control.enableWhen) return true;
         return props[control.enableWhen.prop] === control.enableWhen.value;
     };
@@ -66,26 +83,48 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange, initia
      */
     const generateCodeString = (): string => {
         // Incluir props obligatorias que no están en los controles
-        const requiredProps = {
-            uploadUrl: '"https://cargue.sycpruebas.com/servicioweb.svc"',
-            encryptedPath: '"ruta-cifrada-de-ejemplo"',
-            acceptedFileTypes: "['pdf', 'jpg', 'png', 'docx']"
-        };
-
         const allProps = { ...props };
-        // Convertir maxFileSize de MB a bytes para el código mostrado
+        // Solo incluir acceptedFileTypes obligatoria si el input está vacío
+        const acceptedFileTypesInput = typeof allProps.acceptedFileTypes === 'string'
+            ? allProps.acceptedFileTypes.split(',').map(v => v.trim()).filter(Boolean)
+            : [];
+        const requiredProps = {
+            uploadUrl: JSON.stringify(componentDefaultProps.uploadUrl),
+            encryptedPath: JSON.stringify(componentDefaultProps.encryptedPath),
+            ...(acceptedFileTypesInput.length === 0 ? { acceptedFileTypes: `{${JSON.stringify(componentDefaultProps.acceptedFileTypes)}}` } : {})
+        };
+        // Mostrar maxFileSize convertido y comentado la unidad original
         if (allProps.maxFileSize) {
-            allProps.maxFileSize = `${(allProps.maxFileSize as number) * 1024 * 1024} // ${allProps.maxFileSize}MB`;
+            const original = allProps.maxFileSize;
+            const converted = getMaxFileSizeValue(original);
+            allProps.maxFileSize = `${converted} // ${original}${maxFileSizeUnit}`;
         }
 
-        return `<FileUploadContainer
-${Object.entries(allProps)
+        // Solo incluir variables CSS modificadas
+        const styleVars = Object.entries(cssVarsState)
+            .filter(([_, value]) => value && value.trim() !== '')
+            .reduce((acc, [key, value]) => {
+                // Convertir --primary-color => primaryColor
+                const jsKey = key.replace(/^--/, '').replace(/-([a-z])/g, (_, l) => l.toUpperCase());
+                acc[jsKey] = value;
+                return acc;
+            }, {} as Record<string, string>);
+
+        let styleProp = '';
+        if (Object.keys(styleVars).length > 0) {
+            styleProp = `  style={${JSON.stringify(styleVars)}}`;
+        }
+
+        const propsString = [
+            ...Object.entries(allProps)
                 .map(([key, value]) => {
+                    if (propSerializers[key]) {
+                        return propSerializers[key](value, allProps);
+                    }
                     if (typeof value === 'string') {
                         return `  ${key}="${value}"`;
                     }
                     if (typeof value === 'boolean') {
-                        // Solo mostrar la prop booleana si es true, como es común en React.
                         return value ? `  ${key}` : '';
                     }
                     if (typeof value === 'number') {
@@ -93,88 +132,238 @@ ${Object.entries(allProps)
                     }
                     return '';
                 })
-                .filter(Boolean) // Filtra las props vacías (ej. booleanos en false)
-                .concat(
-                    Object.entries(requiredProps).map(([key, value]) => `  ${key}=${value}`)
-                )
-                .join('\n')}
-/>`;
+                .filter(Boolean),
+            ...Object.entries(requiredProps).map(([key, value]) => `  ${key}=${value}`),
+            styleProp
+        ].filter(Boolean).join('\n');
+
+        return `<FileUploadContainer\n${propsString}\n/>`;
     };
+    // Variables globales de CSS a mostrar y editar (importadas)
+
+    // Estado para las variables CSS editables
+    const [cssVarsState, setCssVarsState] = useState<Record<string, string>>(() => {
+        if (typeof window === 'undefined') return {};
+        const initial: Record<string, string> = {};
+        cssVars.forEach((name) => {
+            initial[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        });
+        return initial;
+    });
+
+    // Actualiza la variable CSS global y el estado local, forzando re-render
+    const handleCssVarChange = (name: string, value: string) => {
+        setCssVarsState((prev) => {
+            const updated = { ...prev, [name]: value };
+            if (typeof window !== 'undefined') {
+                document.documentElement.style.setProperty(name, value);
+            }
+            return updated;
+        });
+    };
+
+    // Sincroniza el estado local con los valores globales si cambian (ej. recarga)
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const updated: Record<string, string> = {};
+        cssVars.forEach((name) => {
+            updated[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        });
+        setCssVarsState(updated);
+    }, []);
+
+    // Estado para la tab activa en el panel de controles
+    const [activeTab, setActiveTab] = useState<'props' | 'css'>('props');
 
     return (
         <div className="playground-grid">
             {/* Panel de Visualización */}
             <div className="playground-visual-panel">
-                <FileUploadContainer
-                    uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-                    encryptedPath="ruta-cifrada-de-ejemplo"
-                    acceptedFileTypes={['pdf', 'jpg', 'png', 'docx']}
-                    {...props}
-                    maxFileSize={((props.maxFileSize as number) || 10) * 1024 * 1024} // Convertir MB a bytes (debe ir después de ...props)
-                />
+                {(() => {
+                    // Convertir acceptedFileTypes a array si es string
+                    const visualProps = { ...props };
+                    if (typeof visualProps.acceptedFileTypes === 'string') {
+                        visualProps.acceptedFileTypes = visualProps.acceptedFileTypes
+                            .split(',')
+                            .map((v: string) => v.trim())
+                            .filter(Boolean);
+                    }
+                    return (
+                        <FileUploadContainer
+                            uploadUrl={componentDefaultProps.uploadUrl}
+                            encryptedPath={componentDefaultProps.encryptedPath}
+                            acceptedFileTypes={visualProps.acceptedFileTypes && Array.isArray(visualProps.acceptedFileTypes) && visualProps.acceptedFileTypes.length > 0
+                                ? visualProps.acceptedFileTypes
+                                : componentDefaultProps.acceptedFileTypes}
+                            {...visualProps}
+                            maxFileSize={getMaxFileSizeValue(props.maxFileSize)}
+                        />
+                    );
+                })()}
             </div>
 
-            {/* Panel de Controles */}
-            <div className="playground-controls-panel">
-                <h3 className="panel-title">Controles</h3>
-                <div className="controls-grid">
-                    {controls
-                        .filter(control => isControlVisible(control))
-                        .map(control => {
-                            const isEnabled = isControlEnabled(control);
-                            const controlClass = `control-item ${!isEnabled ? 'disabled' : ''}`;
 
-                            return (
-                                <div key={control.prop} className={controlClass}>
-                                    <label>{control.label}</label>
-                                    {control.type === 'radio' && control.options && (
-                                        <div className="radio-group">
-                                            {control.options.map(opt => (
-                                                <label key={opt}>
-                                                    <input
-                                                        type="radio"
-                                                        name={control.prop}
-                                                        value={opt}
-                                                        checked={props[control.prop] === opt}
-                                                        onChange={() => handleControlChange(control.prop, opt)}
-                                                        disabled={!isEnabled}
-                                                    />
-                                                    {opt}
-                                                </label>
-                                            ))}
-                                        </div>
-                                    )}
-                                    {control.type === 'text' && (
-                                        <input
-                                            type="text"
-                                            value={String(props[control.prop] || '')}
-                                            onChange={(e) => handleControlChange(control.prop, e.target.value)}
-                                            disabled={!isEnabled}
-                                        />
-                                    )}
-                                    {control.type === 'number' && (
-                                        <input
-                                            type="number"
-                                            value={Number(props[control.prop] || 0)}
-                                            onChange={(e) => handleControlChange(control.prop, parseInt(e.target.value, 10) || 0)}
-                                            disabled={!isEnabled}
-                                        />
-                                    )}
-                                    {control.type === 'boolean' && (
-                                        <label className="toggle-switch">
+            {/* Panel de Controles con Tabs */}
+            <div className="playground-controls-panel">
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                    <button
+                        type="button"
+                        className={`tab-button${activeTab === 'props' ? ' active' : ''}`}
+                        onClick={() => setActiveTab('props')}
+                    >
+                        Props
+                    </button>
+                    <button
+                        type="button"
+                        className={`tab-button${activeTab === 'css' ? ' active' : ''}`}
+                        onClick={() => setActiveTab('css')}
+                    >
+                        CSS
+                    </button>
+                </div>
+
+                {activeTab === 'props' && (
+                    <div className="controls-grid">
+                        {(() => {
+                            // Filtrar controles excepto acceptedFileTypes y allowedExtensionsText
+                            const filteredControls = controls.filter(control => control.prop !== 'acceptedFileTypes' && control.prop !== 'allowedExtensionsText');
+                            // Encontrar el control showExtensions y allowedExtensionsText
+                            const showExtCtrl = controls.find(c => c.prop === 'showExtensions');
+                            const allowedExtCtrl = controls.find(c => c.prop === 'allowedExtensionsText');
+                            const result: JSX.Element[] = [];
+                            filteredControls.filter(isControlVisible).forEach(control => {
+                                const isEnabled = isControlEnabled(control);
+                                const controlClass = `control-item ${!isEnabled ? 'disabled' : ''}`;
+                                result.push(
+                                    <div key={control.prop} className={controlClass}>
+                                        <label>{control.label}</label>
+                                        {control.type === 'radio' && control.options && (
+                                            <div className="radio-group">
+                                                {control.options.map(opt => (
+                                                    <label key={opt}>
+                                                        <input
+                                                            type="radio"
+                                                            name={control.prop}
+                                                            value={opt}
+                                                            checked={props[control.prop] === opt}
+                                                            onChange={() => handleControlChange(control.prop, opt)}
+                                                            disabled={!isEnabled}
+                                                        />
+                                                        {opt}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {control.type === 'text' && (
                                             <input
-                                                type="checkbox"
-                                                checked={Boolean(props[control.prop])}
-                                                onChange={(e) => handleControlChange(control.prop, e.target.checked)}
+                                                type="text"
+                                                value={String(props[control.prop] || '')}
+                                                onChange={(e) => handleControlChange(control.prop, e.target.value)}
                                                 disabled={!isEnabled}
                                             />
-                                            <span className="toggle-slider"></span>
-                                        </label>
-                                    )}
-                                </div>
-                            );
-                        })}
-                </div>
+                                        )}
+                                        {control.type === 'number' && (
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                value={props[control.prop] === undefined || props[control.prop] === null ? '' : props[control.prop]}
+                                                onChange={(e) => handleControlChange(control.prop, e.target.value)}
+                                                disabled={!isEnabled}
+                                            />
+                                        )}
+                                        {control.type === 'boolean' && (
+                                            <label className="toggle-switch">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={Boolean(props[control.prop])}
+                                                    onChange={(e) => handleControlChange(control.prop, e.target.checked)}
+                                                    disabled={!isEnabled}
+                                                />
+                                                <span className="toggle-slider"></span>
+                                            </label>
+                                        )}
+                                    </div>
+                                );
+                                // Si este es el control showExtensions, renderizar allowedExtensionsText justo después
+                                if (showExtCtrl && allowedExtCtrl && control.prop === showExtCtrl.prop) {
+                                    const isEnabledAllowed = isControlEnabled(allowedExtCtrl);
+                                    const allowedClass = `control-item ${!isEnabledAllowed ? 'disabled' : ''}`;
+                                    result.push(
+                                        <div key={allowedExtCtrl.prop} className={allowedClass}>
+                                            <label htmlFor="allowedExtensionsText-input">Texto de extensiones</label>
+                                            <input
+                                                id="allowedExtensionsText-input"
+                                                type="text"
+                                                value={String(props[allowedExtCtrl.prop] || '')}
+                                                onChange={e => handleControlChange(allowedExtCtrl.prop, e.target.value)}
+                                                disabled={!isEnabledAllowed}
+                                            />
+                                        </div>
+                                    );
+                                }
+                            });
+                            return result;
+                        })()}
+                        {/* Control para acceptedFileTypes SIEMPRE visible */}
+                        <div className="control-item">
+                            <label htmlFor="acceptedFileTypes-input">Extensiones permitidas</label>
+                        <input
+                            id="acceptedFileTypes-input"
+                            type="text"
+                            value={typeof props.acceptedFileTypes === 'string' ? props.acceptedFileTypes : (Array.isArray(props.acceptedFileTypes) ? props.acceptedFileTypes.join(', ') : '')}
+                            onChange={e => handleControlChange('acceptedFileTypes', e.target.value)}
+                            placeholder={acceptedFileTypesPlaceholder}
+                        />
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'css' && (
+                    <div className="css-vars-panel">
+                        <div className="controls-grid">
+                            {cssVars.map((varName) => {
+                                const isColor = /color|bg|primary|error/i.test(varName);
+                                const value = cssVarsState[varName] || '';
+                                const defaultValue = (typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue(varName).trim() : '') || '';
+                                const isModified = value !== defaultValue;
+                                let colorValue = value;
+                                if (isColor && /^#[0-9a-fA-F]{3,8}$/.test(value.trim())) {
+                                    colorValue = value.trim();
+                                } else if (isColor && value.startsWith('rgb')) {
+                                    const rgb = value.match(/\d+/g);
+                                    if (rgb && (rgb.length === 3 || rgb.length === 4)) {
+                                        colorValue = '#' + rgb.slice(0,3).map(x => (+x).toString(16).padStart(2, '0')).join('');
+                                    }
+                                }
+                                return (
+                                    <div key={varName} className="control-item">
+                                        <label style={{ fontWeight: 500 }}><code>{varName}</code></label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            {isColor ? (
+                                                <input
+                                                    type="color"
+                                                    value={/^#[0-9a-fA-F]{6}$/.test(colorValue) ? colorValue : '#000000'}
+                                                    onChange={e => handleCssVarChange(varName, e.target.value)}
+                                                    style={{ width: 40, height: 24, verticalAlign: 'middle' }}
+                                                />
+                                            ) : null}
+                                            <input
+                                                type="text"
+                                                value={value}
+                                                onChange={e => handleCssVarChange(varName, e.target.value)}
+                                                style={{ width: isColor ? 'calc(100% - 90px)' : '100%', fontWeight: isModified ? 'bold' : 'normal', color: isModified ? '#007fff' : undefined }}
+                                            />
+                                            {isModified && (
+                                                <span style={{ fontSize: '0.85em', color: '#d32f2f' }}>
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Panel de Código en Vivo */}
