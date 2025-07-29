@@ -56,6 +56,7 @@ interface QRCodeState {
     setStyleOption: (newOption: Partial<QRCodeStylingOptions>) => Promise<void>;
     generateQRCode: () => Promise<void>;
     reset: () => void;
+    resetStyleOptions: () => Promise<void>;
     download: (format: FileExtension) => Promise<void>;
 
     // --- Acciones para Manejar Errores de VCard ---
@@ -131,6 +132,41 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         error: null,
         vcardFieldErrors: {},
     }),
+
+    resetStyleOptions: async () => {
+        const { qrCodeAdapter } = get();
+        const defaultStyles: Partial<QRCodeStylingOptions> = {
+            dotsOptions: { ...DEFAULT_QR_CONFIG.dotsOptions },
+            backgroundOptions: { ...DEFAULT_QR_CONFIG.backgroundOptions },
+            cornersSquareOptions: { ...DEFAULT_QR_CONFIG.cornersSquareOptions },
+            cornersDotOptions: { ...DEFAULT_QR_CONFIG.cornersDotOptions },
+            imageOptions: { ...DEFAULT_QR_CONFIG.imageOptions },
+            qrOptions: { ...DEFAULT_QR_CONFIG.qrOptions },
+            margin: DEFAULT_QR_CONFIG.margin,
+            image: DEFAULT_QR_CONFIG.image,
+        };
+        
+        set({ styleOptions: defaultStyles });
+        
+        // Si hay un QR generado, actualizarlo con los estilos por defecto
+        if (qrCodeAdapter && get().isGenerated) {
+            const { option, text, vcardData } = get();
+            let dataToEncode: string | null = null;
+            
+            if (option === 'URL') {
+                dataToEncode = text.trim();
+            } else {
+                dataToEncode = formatVCard(vcardData);
+            }
+            
+            if (dataToEncode) {
+                await qrCodeAdapter.update({
+                    data: dataToEncode,
+                    ...defaultStyles
+                });
+            }
+        }
+    },
 
     validateVcardFields: () => {
         const { vcardData } = get();

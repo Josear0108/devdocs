@@ -115,7 +115,7 @@
   transition: all 0.3s ease;
 }
 
-/* Clase para el paso activo */
+/* Clase para el  activo */
 .step.active .step-icon {
   border-color: var(--primary);
   color: var(--primary);
@@ -127,6 +127,7 @@
 
 .step.disabled {
   cursor: not-allowed;
+  background: transparent;
   opacity: 0.5;
 }
 

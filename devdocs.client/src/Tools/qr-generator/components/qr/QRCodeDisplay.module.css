@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Clave para empujar los controles hacia abajo */
+  justify-content: space-between; 
   gap: 1.5rem;
   height: 100%;
   text-align: center;
@@ -119,4 +119,30 @@
   width: 100% !important;
   height: 100% !important;
   object-fit: contain;
+}
+
+/* Botón de reset con estilo similar al stepper */
+.resetButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 280px; /* Coincide con el max-width del qrContainer */
+  height: 36px;
+  padding: 0 1rem;
+  margin-top: 0.75rem; /* Espacio reducido desde el QR */
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resetButton:hover {
+  background-color: var(--primary);
+  color: white;
 }

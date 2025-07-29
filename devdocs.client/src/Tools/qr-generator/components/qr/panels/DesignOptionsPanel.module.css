@@ -14,7 +14,6 @@
 
 .sectionTitle {
   font-size: 1rem;
-  font-weight: 600;
   color: var(--foreground);
   padding-bottom: 0.5rem;
   margin-bottom: 0.25rem; 
@@ -70,12 +69,14 @@
 
 .fillTypeSelector button {
   flex-grow: 1;
-  padding: 0.5px;
+  padding: 0.3rem 0.4rem; /* Padding más compacto */
   background-color: transparent;
   border: none;
   color: var(--muted-foreground);
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 0.75rem; /* Texto más pequeño */
+  font-weight: 400; 
 }
 
 .fillTypeSelector button:hover {
@@ -83,9 +84,10 @@
 }
 
 .fillTypeSelector .fillTypeActive {
-  background-color: var(--primary);
-  color: white;
-  font-weight: 600;
+  background-color: var(--primary-muted, rgba(147, 51, 234, 0.1)); /* Color morado más sutil */
+  color: var(--primary);
+  font-weight: 500; /* Menos prominente que antes */
+  border: 1px solid var(--primary-muted, rgba(147, 51, 234, 0.3));
 }
 
 /* Panel que agrupa todos los controles de gradiente */
