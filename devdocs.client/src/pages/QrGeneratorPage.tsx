@@ -40,6 +40,7 @@ export const QrGeneratorPage = () => {
     const setActiveView = useQRCodeStore(state => state.setActiveView);
     const qrCodeAdapter = useQRCodeStore(state => state.qrCodeAdapter);
     const isGenerated = useQRCodeStore(state => state.isGenerated);
+    const hasVisitedPreview = useQRCodeStore(state => state.hasVisitedPreview);
     const [downloadFormat, setDownloadFormat] = useState<FileExtension>('svg');
     const download = useQRCodeStore(state => state.download);
 
@@ -57,6 +58,29 @@ export const QrGeneratorPage = () => {
         download(downloadFormat);
     };
 
+    const handleStepNavigation = (targetView: 'informacion' | 'personalizacion' | 'preview') => {
+        switch (targetView) {
+            case 'informacion':
+                // Siempre permite ir a información
+                setActiveView('informacion');
+                break;
+            case 'personalizacion':
+                // Solo permite ir a personalización si hay un QR generado
+                if (isGenerated) {
+                    setActiveView('personalizacion');
+                }
+                break;
+            case 'preview':
+                // Solo permite ir a preview si hay QR generado Y ya ha visitado preview antes
+                if (isGenerated && hasVisitedPreview) {
+                    setActiveView('preview');
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <motion.div className="qr-generator-page" initial="hidden" animate="visible" variants={pageAnimation}>
 
@@ -69,20 +93,21 @@ export const QrGeneratorPage = () => {
             <nav className="qr-stepper">
                 <div
                     className={`step ${activeView === 'informacion' ? 'active' : ''}`}
-                    onClick={() => setActiveView('informacion')}
+                    onClick={() => handleStepNavigation('informacion')}
                 >
                     <div className="step-icon"><Edit size={20} /></div>
                     <span>Información</span>
                 </div>
                 <div
                     className={`step ${activeView === 'personalizacion' ? 'active' : ''} ${!isGenerated ? 'disabled' : ''}`}
-                    onClick={() => isGenerated && setActiveView('personalizacion')}
+                    onClick={() => handleStepNavigation('personalizacion')}
                 >
                     <div className="step-icon"><Settings size={20} /></div>
                     <span>Personalización</span>
                 </div>
                 <div
-                    className={`step ${activeView === 'preview' ? 'active' : ''} ${!isGenerated ? 'disabled' : ''}`}
+                    className={`step ${activeView === 'preview' ? 'active' : ''} ${!isGenerated || !hasVisitedPreview ? 'disabled' : ''}`}
+                    onClick={() => handleStepNavigation('preview')}
                 >
                     <div className="step-icon"><Download size={20} /></div>
                     <span>Descarga</span>

@@ -101,6 +101,17 @@
   gap: 0.75rem;
   color: var(--muted-foreground);
   font-weight: 500;
+  cursor: pointer; /* Indica que es clickeable */
+  transition: all 0.3s ease; /* Suaviza las transiciones */
+}
+
+.step:hover:not(.disabled) {
+  color: var(--primary);
+}
+
+.step:hover:not(.disabled) .step-icon {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .step-icon {
@@ -129,6 +140,7 @@
   cursor: not-allowed;
   background: transparent;
   opacity: 0.5;
+  pointer-events: none; /* Previene la interacción */
 }
 
 /* Layout principal de dos columnas */

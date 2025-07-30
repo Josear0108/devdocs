@@ -40,6 +40,7 @@ interface QRCodeState {
 
     // --- NUEVO ESTADO: Intento de generación ---
     hasAttemptedGeneration: boolean;
+    hasVisitedPreview: boolean;
 
     // --- Errores de Validación de Campos de VCard ---
     vcardFieldErrors: Partial<Record<keyof VCardData, string>>;
@@ -95,6 +96,7 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
     qrCodeAdapter: null,
     adapterCapabilities: DEFAULT_CAPABILITIES,
     hasAttemptedGeneration: false,
+    hasVisitedPreview: false,
 
     // ===================================
     //       ACCIONES DEL STORE
@@ -111,7 +113,8 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         option,
         isGenerated: false,
         error: null,
-        hasAttemptedGeneration: false
+        hasAttemptedGeneration: false,
+        hasVisitedPreview: false
     }),
 
     setText: (text) => set({ text, isGenerated: false }),
@@ -131,6 +134,7 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         isLoading: false,
         error: null,
         vcardFieldErrors: {},
+        hasVisitedPreview: false,
     }),
 
     resetStyleOptions: async () => {
@@ -233,7 +237,13 @@ export const useQRCodeStore = create<QRCodeState>((set, get) => ({
         set({ error: `Ocurrió un error al descargar: ${getErrorMessage(e)}` });
     }
 },
-        setActiveView: (view) => set({ activeView: view }),
+        setActiveView: (view) => {
+            set({ activeView: view });
+            // Marcar que ha visitado preview cuando va a esa vista
+            if (view === 'preview') {
+                set({ hasVisitedPreview: true });
+            }
+        },
     // ===================================
     //       MANEJO DE ERRORES DE VCARD
     // ===================================
