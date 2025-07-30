@@ -15,7 +15,7 @@ export const componentsData: ComponentItem[] = [
         id: 'playground',
         label: 'Playground',
         sections: [
-          
+
         ]
       },
       {
@@ -41,7 +41,7 @@ export const componentsData: ComponentItem[] = [
                 code: 'import { FileUploadContainer } from "edesk-components";'
               }
             ]
-          }, 
+          },
           /*{
             title: 'Dependencias',
             blocks: [
@@ -75,64 +75,64 @@ export const componentsData: ComponentItem[] = [
               }
             ]
           },*/
-          
+
 
         ]
       },
-     /* {
-        id: 'description',
-        label: 'Descripción General',
-        sections: [
-          {
-            title: 'Descripción General',
-            blocks: [
-              {
-                type: 'text',
-                content: 'FileUploadContainer es un componente de React diseñado para gestionar la carga de archivos de manera robusta y personalizable. Provee una interfaz de usuario completa que soporta la selección de archivos mediante un explorador, la funcionalidad de "arrastrar y soltar" (drag and drop), y la visualización del estado de la carga. Su arquitectura interna está desacoplada, lo que facilita su mantenimiento y extensibilidad.'
-              }
-            ]
-          }
-        ]
-      }, 
-      {
-        id: 'dependencies',
-        label: 'Dependencias y Requisitos',
-        sections: [
-          {
-            title: 'Dependencias y Requisitos',
-            blocks: [
-              {
-                type: 'text',
-                content: 'Para el correcto funcionamiento del componente, tu proyecto debe cumplir con los siguientes requisitos:'
-              },
-              {
-                type: 'text',
-                content: 'Peer Dependencies: La librería ha sido construida sobre React. Asegúrate de que tu proyecto tenga instaladas las siguientes dependencias:'
-              },
-              {
-                type: 'list',
-                items: [
-                  'react: ^19.0.0 o compatible.',
-                  'react-dom: ^19.0.0 o compatible.'
-                ]
-              },
-              {
-                type: 'text',
-                content: 'Estilos CSS: El componente requiere la importación de su hoja de estilos para un correcto renderizado visual. Debes incluir la siguiente línea en el punto de entrada de tu aplicación (como App.tsx o main.tsx):'
-              },
-              {
-                type: 'code',
-                language: 'javascript',
-                code: "import 'edesk-components/dist/style.css';"
-              },
-              {
-                type: 'text',
-                content: 'Iconos: Para la visualización de iconos, el componente utiliza @mui/icons-material. Asegúrate de que esta dependencia esté resuelta en tu proyecto si no planeas sobreescribir los iconos por defecto.'
-              }
-            ]
-          }
-        ]
-      },*/
+      /* {
+         id: 'description',
+         label: 'Descripción General',
+         sections: [
+           {
+             title: 'Descripción General',
+             blocks: [
+               {
+                 type: 'text',
+                 content: 'FileUploadContainer es un componente de React diseñado para gestionar la carga de archivos de manera robusta y personalizable. Provee una interfaz de usuario completa que soporta la selección de archivos mediante un explorador, la funcionalidad de "arrastrar y soltar" (drag and drop), y la visualización del estado de la carga. Su arquitectura interna está desacoplada, lo que facilita su mantenimiento y extensibilidad.'
+               }
+             ]
+           }
+         ]
+       }, 
+       {
+         id: 'dependencies',
+         label: 'Dependencias y Requisitos',
+         sections: [
+           {
+             title: 'Dependencias y Requisitos',
+             blocks: [
+               {
+                 type: 'text',
+                 content: 'Para el correcto funcionamiento del componente, tu proyecto debe cumplir con los siguientes requisitos:'
+               },
+               {
+                 type: 'text',
+                 content: 'Peer Dependencies: La librería ha sido construida sobre React. Asegúrate de que tu proyecto tenga instaladas las siguientes dependencias:'
+               },
+               {
+                 type: 'list',
+                 items: [
+                   'react: ^19.0.0 o compatible.',
+                   'react-dom: ^19.0.0 o compatible.'
+                 ]
+               },
+               {
+                 type: 'text',
+                 content: 'Estilos CSS: El componente requiere la importación de su hoja de estilos para un correcto renderizado visual. Debes incluir la siguiente línea en el punto de entrada de tu aplicación (como App.tsx o main.tsx):'
+               },
+               {
+                 type: 'code',
+                 language: 'javascript',
+                 code: "import 'edesk-components/dist/style.css';"
+               },
+               {
+                 type: 'text',
+                 content: 'Iconos: Para la visualización de iconos, el componente utiliza @mui/icons-material. Asegúrate de que esta dependencia esté resuelta en tu proyecto si no planeas sobreescribir los iconos por defecto.'
+               }
+             ]
+           }
+         ]
+       },*/
       {
         id: 'api',
         label: 'API de Propiedades',
@@ -202,7 +202,7 @@ export const componentsData: ComponentItem[] = [
                 type: 'table',
                 columns: ['Variable CSS', 'Descripción', 'Por Defecto'],
                 rows: [
-                  ['--edesk-primary', 'Color principal', '#007FFF' ],
+                  ['--edesk-primary', 'Color principal', '#007FFF'],
                   ['--edesk-primary-light', 'Color del hover', '#f3f9ff'],
                   ['--edesk-bg-file', 'Color de fondo para los archivos cargados', '#CEE3F9'],
                   ['--edesk-border-radius', 'Radio del borde', '10px'],
@@ -233,39 +233,40 @@ export const componentsData: ComponentItem[] = [
               {
                 type: 'code',
                 language: 'typescript',
-                code: `import React from 'react';
-                        import { FileUploadContainer } from 'edesk-components';
-                        import 'edesk-components/dist/style.css';
+                code: `
+import React from 'react';
+import { FileUploadContainer } from 'edesk-components';
+import 'edesk-components/dist/style.css';
 
-                        // Componente de ejemplo que integra el cargador de archivos.
-                        const FormularioDeDocumentos = () => {
+// Componente de ejemplo que integra el cargador de archivos.
+const FormularioDeDocumentos = () => {
 
-                            // Define las propiedades de configuración en un objeto para mayor claridad.
-                            const fileUploadConfig = {
-                                uploadUrl: "https://api.tu-servicio.com/files/upload",
-                                encryptedPath: "a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4",
-                                maxFileSize: 10 * 1024 * 1024, // 10 MB
-                                acceptedFileTypes: ['pdf', 'xml', 'docx'],
-                            };
+    // Define las propiedades de configuración en un objeto para mayor claridad.
+    const fileUploadConfig = {
+        uploadUrl: "https://api.tu-servicio.com/files/upload",
+        encryptedPath: "a1b2c3d4-e5f6-a1b2-c3d4-e5f6a1b2c3d4",
+        maxFileSize: 10 * 1024 * 1024, // 10 MB
+        acceptedFileTypes: ['pdf', 'xml', 'docx'],
+    };
 
-                            return (
-                                <div style={{ maxWidth: '650px', margin: 'auto' }}>
-                                    <h2>Carga de Facturas y Documentos</h2>
-                                    <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
+    return (
+        <div style={{ maxWidth: '650px', margin: 'auto' }}>
+            <h2>Carga de Facturas y Documentos</h2>
+            <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
 
-                                    <FileUploadContainer
-                                        {...fileUploadConfig}
-                                        type="Large"
-                                        title="Arrastre sus documentos o haga clic aquí"
-                                        subtitle="Formatos permitidos: PDF, DOCX, XML"
-                                        maxFiles={5}
-                                        showExtensions={true}
-                                    />
-                                </div>
-                            );
-                        };
+            <FileUploadContainer
+                {...fileUploadConfig}
+                type="Large"
+                title="Arrastre sus documentos o haga clic aquí"
+                subtitle="Formatos permitidos: PDF, DOCX, XML"
+                maxFiles={5}
+                showExtensions={true}
+            />
+        </div>
+    );
+};
 
-                        export default FormularioDeDocumentos;`
+export default FormularioDeDocumentos;`
               }
             ]
           }
@@ -417,5 +418,5 @@ export const componentsData: ComponentItem[] = [
     }
   }
 ]
-  // — aquí tus demás componentes —
+// — aquí tus demás componentes —
 

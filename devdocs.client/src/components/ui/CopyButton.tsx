@@ -9,10 +9,10 @@ interface CopyButtonProps {
   size?: number;
 }
 
-export const CopyButton: React.FC<CopyButtonProps> = ({ 
-  text, 
-  className = '', 
-  size = 16 
+export const CopyButton: React.FC<CopyButtonProps> = ({
+  text,
+  className = '',
+  size = 16
 }) => {
   const { copy, isCopied } = useCopy();
 

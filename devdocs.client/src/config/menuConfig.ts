@@ -4,13 +4,15 @@ import {
     Grid,
     PenTool,
     Code,
+    BookOpen,
+    FileText,
 } from "react-feather"
 
 export interface MenuItem {
-  label: string
-  to: string
-  icon: FC<any> 
-  submenu?: MenuItem[]
+    label: string
+    to: string
+    icon: FC<any>
+    submenu?: MenuItem[]
 }
 
 export const mainMenu: MenuItem[] = [
@@ -19,14 +21,19 @@ export const mainMenu: MenuItem[] = [
         to: "/",
         icon: Home,
     },
-    // {
-    //     label: "Noticias",
-    //     to: "/noticias",
-    //     icon: FileText,
-    // },
+    {
+        label: "Noticias",
+        to: "/noticias",
+        icon: FileText,
+    },
 ]
 
 export const docMenu: MenuItem[] = [
+    {
+        label: "Plantilla Legacy",
+        to: "/plantilla-legacy",
+        icon: BookOpen,
+    },
     {
         label: "Componentes",
         to: "/componentes",

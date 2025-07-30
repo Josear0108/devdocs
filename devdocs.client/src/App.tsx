@@ -17,6 +17,7 @@ import { useQRCodeStore } from './tools/qr-generator/store/useQRCodeStore';
 import { ClientQRCodeAdapter } from './tools/qr-generator/adapters/ClientQRCode.adapter';
 import ComponentDetailPage from "./pages/components/DetailPage"
 import ComponentsPage from "./pages/components/Page"
+import PlantillaLegacy from "./pages/plantilla-legacy/Page"
 //import { ApiQRCodeAdapter } from './tools/qr-generator/adapters/ApiQRCode.Adapter';
 
 /*Inyecta el adaptador al store al iniciar la app */
@@ -34,6 +35,7 @@ function App() {
           <Route path="componentes/:slug" element={<ComponentDetailPage />} />
           <Route path="modulos" element={<ModulesPage />} />
           <Route path="modulos/:slug" element={<ModuleDetailPage />} />
+          <Route path="plantilla-legacy" element={<PlantillaLegacy />} />
           <Route path="herramientas" element={<ToolsPage />} />
           <Route path="herramientas/generador-qr" element={<QrGeneratorPage />} />
           <Route path="noticias" element={<NewsPage />} />

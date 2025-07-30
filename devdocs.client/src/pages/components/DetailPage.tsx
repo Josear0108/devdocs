@@ -142,7 +142,7 @@ const DocumentationTabs: React.FC<TabsProps> = ({
               <Playground
                 component={playgroundComponent}
                 controls={playground.controls}
-                onPropsChange={onPlaygroundPropsChange || (() => {})}
+                onPropsChange={onPlaygroundPropsChange || (() => { })}
                 initialProps={playgroundProps}
               />
             )}
