@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Clock, Code, FileText } from 'lucide-react';
 import { Button } from '../components/ui/button/Button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
+import { Tabs } from '../components/ui/TabsEdesk';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card/Card';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/Avatar';
 import { Separator } from '../components/ui/Separator';
@@ -169,89 +169,91 @@ export const authConfig = {
 
       <div className="module-content"> 
         <div className="main-content">
-          <Tabs defaultValue="documentation" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="documentation">
+          <Tabs defaultActiveId="documentation" orientation="horizontal">
+            <Tabs.List className="mb-4">
+              <Tabs.Trigger tabId="documentation">
                 <FileText className="h-4 w-4 mr-2" />
                 Documentación
-              </TabsTrigger>
-              <TabsTrigger value="implementation">
+              </Tabs.Trigger>
+              <Tabs.Trigger tabId="implementation">
                 <Code className="h-4 w-4 mr-2" />
                 Implementación
-              </TabsTrigger>
-              <TabsTrigger value="history">
+              </Tabs.Trigger>
+              <Tabs.Trigger tabId="history">
                 <Clock className="h-4 w-4 mr-2" />
                 Historial
-              </TabsTrigger>
-            </TabsList>
+              </Tabs.Trigger>
+            </Tabs.List>
 
-            <TabsContent value="documentation" className="mt-0">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="prose prose-invert max-w-none">
-                    {module.documentation.split('\n').map((line, index) => {
-                      if (line.startsWith('#')) {
-                        const level = line.match(/^#+/)?.[0].length || 1;
-                        const text = line.replace(/^#+\s*/, '');
-                        return React.createElement(`h${level}`, { key: index }, text);
-                      }
-                      if (line.startsWith('```')) {
-                        return <pre key={index}><code>{line.replace(/^```/, '')}</code></pre>;
-                      }
-                      return <p key={index}>{line}</p>;
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+            <Tabs.Panels>
+              <Tabs.Panel tabId="documentation" className="mt-0">
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="prose prose-invert max-w-none">
+                      {module.documentation.split('\n').map((line, index) => {
+                        if (line.startsWith('#')) {
+                          const level = line.match(/^#+/)?.[0].length || 1;
+                          const text = line.replace(/^#+\s*/, '');
+                          return React.createElement(`h${level}`, { key: index }, text);
+                        }
+                        if (line.startsWith('```')) {
+                          return <pre key={index}><code>{line.replace(/^```/, '')}</code></pre>;
+                        }
+                        return <p key={index}>{line}</p>;
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Tabs.Panel>
 
-            <TabsContent value="implementation" className="mt-0">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="prose prose-invert max-w-none">
-                    {module.implementation.split('\n').map((line, index) => {
-                      if (line.startsWith('#')) {
-                        const level = line.match(/^#+/)?.[0].length || 1;
-                        const text = line.replace(/^#+\s*/, '');
-                        return React.createElement(`h${level}`, { key: index }, text);
-                      }
-                      if (line.startsWith('```')) {
-                        return <pre key={index}><code>{line.replace(/^```/, '')}</code></pre>;
-                      }
-                      return <p key={index}>{line}</p>;
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+              <Tabs.Panel tabId="implementation" className="mt-0">
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="prose prose-invert max-w-none">
+                      {module.implementation.split('\n').map((line, index) => {
+                        if (line.startsWith('#')) {
+                          const level = line.match(/^#+/)?.[0].length || 1;
+                          const text = line.replace(/^#+\s*/, '');
+                          return React.createElement(`h${level}`, { key: index }, text);
+                        }
+                        if (line.startsWith('```')) {
+                          return <pre key={index}><code>{line.replace(/^```/, '')}</code></pre>;
+                        }
+                        return <p key={index}>{line}</p>;
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Tabs.Panel>
 
-            <TabsContent value="history" className="mt-0">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="version-history">
-                    {module.versionHistory.map((version, index) => (
-                      <div key={index} className="version-item">
-                        <div className="version-header">
-                          <div className="version-info">
-                            <h3 className="version-number">v{version.version}</h3>
-                            <span className="version-date">{version.date}</span>
+              <Tabs.Panel tabId="history" className="mt-0">
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="version-history">
+                      {module.versionHistory.map((version, index) => (
+                        <div key={index} className="version-item">
+                          <div className="version-header">
+                            <div className="version-info">
+                              <h3 className="version-number">v{version.version}</h3>
+                              <span className="version-date">{version.date}</span>
+                            </div>
+                            <Badge variant="outline" className="version-author">
+                              {version.author}
+                            </Badge>
                           </div>
-                          <Badge variant="outline" className="version-author">
-                            {version.author}
-                          </Badge>
+                          <ul className="version-changes">
+                            {version.changes.map((change, changeIndex) => (
+                              <li key={changeIndex}>{change}</li>
+                            ))}
+                          </ul>
+                          {index < module.versionHistory.length - 1 && <Separator className="my-4" />}
                         </div>
-                        <ul className="version-changes">
-                          {version.changes.map((change, changeIndex) => (
-                            <li key={changeIndex}>{change}</li>
-                          ))}
-                        </ul>
-                        {index < module.versionHistory.length - 1 && <Separator className="my-4" />}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Tabs.Panel>
+            </Tabs.Panels>
           </Tabs>
         </div>
 

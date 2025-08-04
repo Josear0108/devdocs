@@ -124,6 +124,7 @@ export interface ComponentItem {
   category: string
   description: string
   lastUpdate: string
+  type?: 'component' | 'guide' // Nueva propiedad para determinar orientación
   tabs: Tab[],
   // Nuevas propiedades
   playground?: {

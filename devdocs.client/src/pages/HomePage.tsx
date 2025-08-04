@@ -7,7 +7,7 @@ import HeroSection from "../components/sections/HeroSection"
 import FeaturedComponents from "../components/sections/FeaturedComponents"
 import RecentUpdates from "../components/sections/RecentUpdates"
 import PopularTools from "../components/sections/PopularTools"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/Tabs"
+import { Tabs } from "../components/ui/TabsEdesk"
 import { Card } from "../components/ui/card/Card"
 import { Button } from "../components/ui/button/Button"
 import "../styles/home-page.css"
@@ -50,24 +50,25 @@ const HomePage = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="destacados">
-          <TabsList>
-            <TabsTrigger value="destacados">Destacados</TabsTrigger>
-            <TabsTrigger value="recientes">Actualizaciones</TabsTrigger>
-            <TabsTrigger value="herramientas">Herramientas</TabsTrigger>
-          </TabsList>
+        {/* 2. ESTRUCTURA DE TABS ACTUALIZADA */}
+        <Tabs defaultActiveId="destacados" orientation="horizontal">
+          <Tabs.List>
+            <Tabs.Trigger tabId="destacados">Destacados</Tabs.Trigger>
+            <Tabs.Trigger tabId="recientes">Actualizaciones</Tabs.Trigger>
+            <Tabs.Trigger tabId="herramientas">Herramientas</Tabs.Trigger>
+          </Tabs.List>
 
-          <TabsContent value="destacados">
-            <FeaturedComponents />
-          </TabsContent>
-
-          <TabsContent value="recientes">
-            <RecentUpdates />
-          </TabsContent>
-
-          <TabsContent value="herramientas">
-            <PopularTools />
-          </TabsContent>
+          <Tabs.Panels>
+            <Tabs.Panel tabId="destacados">
+              <FeaturedComponents />
+            </Tabs.Panel>
+            <Tabs.Panel tabId="recientes">
+              <RecentUpdates />
+            </Tabs.Panel>
+            <Tabs.Panel tabId="herramientas">
+              <PopularTools />
+            </Tabs.Panel>
+          </Tabs.Panels>
         </Tabs>
       </motion.div>
 

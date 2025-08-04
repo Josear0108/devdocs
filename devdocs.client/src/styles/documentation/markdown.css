@@ -1,0 +1,189 @@
+/* Estilos para contenido Markdown y documentación */
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+  text-align: center;
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.component-preview {
+  background-color: var(--background);
+  padding: 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+/* Estilos para el contenido Markdown */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.markdown-content code {
+  background-color: var(--muted);
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 3px;
+}
+
+.markdown-content pre {
+  background-color: #2d2d2d; /* Un fondo oscuro estándar para código */
+  color: #f8f8f2; /* Texto claro */
+  padding: 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Copy Button */
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+  z-index: 10;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.copy-button:hover {
+  background: var(--accent);
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.copy-button.copied {
+  background: #22c55e;
+  color: white;
+  border-color: #22c55e;
+}
+
+/* Code block with copy button */
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block, .code-block-sm {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--muted);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.code-block-sm {
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Doc sections */
+.doc-section {
+  margin-bottom: 2rem;
+}
+
+.doc-section:last-child {
+  margin-bottom: 0;
+}
+
+.doc-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.doc-text {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.doc-list {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.doc-list li {
+  margin-bottom: 0.5rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.doc-table-wrapper {
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.doc-table th {
+  background: var(--muted);
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  vertical-align: top;
+}
+
+.doc-table tr:last-child td {
+  border-bottom: none;
+}
+
+.doc-table tr:hover {
+  background: var(--accent);
+}

@@ -8,6 +8,7 @@ export const componentsData: ComponentItem[] = [
     name: "Cargue de archivos",
     component: FileUploadContainer,
     category: "Básico",
+    type: "component",
     description: "Componente React ligero y personalizable para subir archivos con validación, drag & drop y feedback visual, ideal para flujos documentales empresariales.",
     lastUpdate: "2025-07-11",
     tabs: [
