@@ -60,10 +60,10 @@ export const Tabs = (({
 
 const TabsList: React.FC<PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
     const { orientation } = useTabs();
-    
+
     return (
-        <div 
-            role="tablist" 
+        <div
+            role="tablist"
             className={cn(
                 'tabs-header',
                 orientation === 'horizontal' ? 'tabs-header-horizontal' : 'tabs-header-vertical',
@@ -77,7 +77,7 @@ const TabsList: React.FC<PropsWithChildren<{ className?: string }>> = ({ childre
 
 const TabsTrigger: React.FC<PropsWithChildren<TabTriggerProps>> = ({ tabId, children }) => {
     const { activeId, setActiveId } = useTabs();
-    
+
     return (
         <button
             role="tab"
@@ -100,14 +100,14 @@ const defaultAnimation: Variants = {
     visible: { opacity: 1, y: 0 },
 };
 
-const TabsPanel: React.FC<PropsWithChildren<TabPanelProps>> = ({ 
-    tabId, 
-    children, 
+const TabsPanel: React.FC<PropsWithChildren<TabPanelProps>> = ({
+    tabId,
+    children,
     animationVariants = defaultAnimation,
-    className 
+    className
 }) => {
     const { activeId } = useTabs();
-    
+
     if (activeId !== tabId) return null;
 
     return (

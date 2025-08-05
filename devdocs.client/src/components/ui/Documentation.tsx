@@ -1,10 +1,10 @@
 import React from 'react';
 import Playground from '../../pages/components/PlaygroundControl';
 import { Tabs } from './TabsEdesk';
-import { BlockRenderer } from './BlockRenderer';
-import type { ComponentItem, Recipe } from '../../types/component';
-import { horizontalTabAnimation, verticalTabAnimation } from '../../lib/animations';
 import { CopyButton } from './CopyButton';
+import { BlockRenderer } from './BlockRenderer';
+import { horizontalTabAnimation, verticalTabAnimation } from '../../lib/animations';
+import type { ComponentItem, Recipe } from '../../types/component';
 
 // --- Componente interno para renderizar las recetas ---
 const ComponentRecipes: React.FC<{ recipes: Recipe[]; onApplyRecipe: (props: Record<string, unknown>) => void }> = ({ recipes, onApplyRecipe }) => (
@@ -30,7 +30,6 @@ const ComponentRecipes: React.FC<{ recipes: Recipe[]; onApplyRecipe: (props: Rec
   </div>
 );
 
-
 interface DocumentationProps {
   componentItem: ComponentItem;
   playgroundProps?: Record<string, unknown>;
@@ -42,9 +41,9 @@ export const Documentation: React.FC<DocumentationProps> = ({
   playgroundProps = {},
   onPlaygroundPropsChange = () => { }
 }) => {
+
   const { tabs, playground, recipes, component: PlaygroundComponent } = componentItem;
   const defaultTabId = tabs.length > 0 ? tabs[0].id : '';
-
   const orientation = componentItem.type === 'guide' ? 'vertical' : 'horizontal';
   const animation = orientation === 'vertical' ? verticalTabAnimation : horizontalTabAnimation;
 
@@ -65,11 +64,12 @@ export const Documentation: React.FC<DocumentationProps> = ({
         </>
       );
     }
-    
+
     const currentTab = tabs.find(t => t.id === tabId);
     return currentTab?.sections.map((section, si) => (
       <div key={si} className="doc-section">
-        <h2 className="doc-section-title">{section.title}</h2>
+        {section.title && section.title.trim() !== '' && (
+          <h2 className="doc-section-title">{section.title}</h2>)}
         {section.blocks.map((block, bi) => (
           <BlockRenderer key={bi} block={block} />
         ))}

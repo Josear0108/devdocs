@@ -120,7 +120,7 @@ export interface ArchNode {
 export interface ComponentItem {
   id: string
   name: string,
-  component: React.ComponentType<any>,
+  component?: React.ComponentType<any>,
   category: string
   description: string
   lastUpdate: string

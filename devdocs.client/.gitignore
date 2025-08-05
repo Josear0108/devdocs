@@ -29,3 +29,5 @@ DevDocs.Server/obj/
 
 # Cache de assets
 DevDocs.Server.assets.cache
+
+.vs/

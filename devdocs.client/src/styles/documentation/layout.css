@@ -2,9 +2,12 @@
 .documentation-layout {
   display: flex;
   /* Ocupa el espacio disponible menos la altura del header */
-  height: calc(100vh - var(--header-height)); 
+  height: calc(100vh - var(--header-height));
   background: var(--card);
-  overflow: hidden; /* Evita que los hijos se desborden */
+  overflow: hidden;
+  /* Evita que los hijos se desborden */
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .documentation-layout-horizontal {
@@ -19,5 +22,5 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; 
+  overflow: hidden;
 }

@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { Documentation } from "../../components/ui/Documentation";
 import { PageHeader } from "../../components/ui/PageHeader";
-import { componentsData } from "../../data/components";
+import { dataPlantillaLegacy } from "../../data/plantilla-legacy";
 
 const PlantillaLegacy: React.FC = () => {
     const { slug } = useParams<{ slug: 'file-upload' }>();
-    const componentItem = componentsData.find(c => c.id === 'file-upload');
+    const componentItem = dataPlantillaLegacy
 
     // Si no lo encontramos, mostramos un mensaje de “no encontrado”
     if (!componentItem) {

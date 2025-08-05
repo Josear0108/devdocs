@@ -5,7 +5,7 @@ import {
     PenTool,
     Code,
     BookOpen,
-    FileText,
+    FileText
 } from "react-feather"
 
 export interface MenuItem {
@@ -30,8 +30,8 @@ export const mainMenu: MenuItem[] = [
 
 export const docMenu: MenuItem[] = [
     {
-        label: "Plantilla Legacy",
-        to: "/plantilla-legacy",
+        label: "Plantilla Vintage",
+        to: "/plantilla-vintage",
         icon: BookOpen,
     },
     {

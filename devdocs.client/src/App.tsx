@@ -35,7 +35,7 @@ function App() {
           <Route path="componentes/:slug" element={<ComponentDetailPage />} />
           <Route path="modulos" element={<ModulesPage />} />
           <Route path="modulos/:slug" element={<ModuleDetailPage />} />
-          <Route path="plantilla-legacy" element={<PlantillaLegacy />} />
+          <Route path="plantilla-vintage" element={<PlantillaLegacy />} />
           <Route path="herramientas" element={<ToolsPage />} />
           <Route path="herramientas/generador-qr" element={<QrGeneratorPage />} />
           <Route path="noticias" element={<NewsPage />} />

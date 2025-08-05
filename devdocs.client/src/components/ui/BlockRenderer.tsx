@@ -1,10 +1,21 @@
 import React from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import type { Block } from '../../types/component';
 import { CopyButton } from './CopyButton';
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export const BlockRenderer: React.FC<{ block: Block }> = ({ block }) => {
+
+    const unindent = (s: string) => {
+        const lines = s.replace(/\t/g, '  ').split('\n')
+        const minIndent = Math.min(
+            ...lines
+                .filter(l => l.trim())
+                .map(l => l.match(/^ */)![0].length)
+        )
+        return lines.map(l => l.slice(minIndent)).join('\n').trim()
+    }
+
     switch (block.type) {
         case 'text':
             return <p className="doc-text">{block.content}</p>;
@@ -22,7 +33,7 @@ export const BlockRenderer: React.FC<{ block: Block }> = ({ block }) => {
                             padding: '1rem'
                         }}
                     >
-                        {block.code}
+                       {unindent(block.code)}
                     </SyntaxHighlighter>
                     <CopyButton text={block.code} />
                 </div>
