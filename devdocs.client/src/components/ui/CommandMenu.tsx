@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Search, X, Home, FileText, Grid, Layers, PenTool, Code, Package } from "react-feather"
+import { Search, X, Home, Grid, PenTool, Code } from "react-feather"
 import "../../styles/ui/command-menu.css"
 
 const CommandMenu: React.FC = () => {
@@ -68,18 +68,18 @@ const CommandMenu: React.FC = () => {
                 <Home size={16} />
                 <span>Inicio</span>
               </button>
-              <button className="command-item" onClick={() => handleNavigate("/noticias")}>
+              {/* <button className="command-item" onClick={() => handleNavigate("/noticias")}>
                 <FileText size={16} />
                 <span>Noticias</span>
-              </button>
+              </button> */}
               <button className="command-item" onClick={() => handleNavigate("/componentes")}>
                 <Grid size={16} />
                 <span>Componentes</span>
               </button>
-              <button className="command-item" onClick={() => handleNavigate("/modulos")}>
+              {/* <button className="command-item" onClick={() => handleNavigate("/modulos")}>
                 <Layers size={16} />
                 <span>Módulos</span>
-              </button>
+              </button> */}
               <button className="command-item" onClick={() => handleNavigate("/herramientas")}>
                 <PenTool size={16} />
                 <span>Herramientas</span>
@@ -94,10 +94,10 @@ const CommandMenu: React.FC = () => {
                 <Code size={16} />
                 <span>Generador de Códigos QR</span>
               </button>
-              <button className="command-item" onClick={() => handleNavigate("/herramientas/generador-plantillas")}>
+              {/* <button className="command-item" onClick={() => handleNavigate("/herramientas/generador-plantillas")}>
                 <Package size={16} />
                 <span>Generador de Plantillas</span>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

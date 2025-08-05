@@ -2,7 +2,7 @@ import type { ComponentItem } from "../types/component";
 
 export const dataPlantillaLegacy: ComponentItem = {
     id: "plantilla-legacy",
-    name: "Plantilla Edesk Vintage",
+    name: "Plantilla EdeskWeb 5",
     description: "Versión estable: 5.2025.804.1045",
     category: "Servicio",
     lastUpdate: "2025-08-01",
@@ -38,7 +38,7 @@ export const dataPlantillaLegacy: ComponentItem = {
             ]
         },
         {
-            id: 'configuratipn',
+            id: 'visual-configuration',
             label: 'Configuración visual',
             sections: [
                 {
@@ -106,7 +106,6 @@ export const dataPlantillaLegacy: ComponentItem = {
                         }
                     ]
                 },
-
                 {
                     title: 'Tabla de propiedades',
                     blocks: [
@@ -138,6 +137,123 @@ export const dataPlantillaLegacy: ComponentItem = {
                         },
                     ]
                 },
+            ]
+        },
+        {
+            id: 'multiple-authentications',
+            label: 'Autenticación múltiple',
+            sections: [
+                {
+                    title: '',
+                    blocks: [
+                        {
+                            type: 'text',
+                            content: 'Este bloque define y registra los servicios de autenticación (login) que estarán disponibles en la plantilla Edesk. Permite que la aplicación soporte diferentes métodos de autenticación, como autenticación por tipo de documento y autenticación por clave dinámica (OTP).'
+                        }
+                    ]
+                },
+                {
+                    title: 'Explicación paso a paso',
+                    blocks: [
+                        {
+                            type: 'text',
+                            content: 'Paso 1: Definición de servicios de login'
+                        },
+                        {
+                            type: 'code',
+                            language: 'csharp',
+                            code: `
+                            EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new Edesk.Login.General.LoginServices
+                            {
+                                Services = new List<Edesk.Login.General.ILoginService>
+                                {
+                                    new Edesk.Login.UserPasswordService(),
+                                    new Edesk.Login.DocumentTypeLoginService(),
+                                    new Edesk.Login.DynamicPasswordService(721, "ef10adbf-c9ec-42")
+                                    {
+                                        Type = Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
+                                    }
+                                }
+                            };
+                            `
+                        },
+                        {
+                            type: 'text',
+                            content: 'Se crea una instancia de LoginServices, que es una colección de servicios de autenticación (ILoginService). En la lista Services se agregan los métodos de autenticación disponibles:'
+                        },
+                        {
+                            type: 'list',
+                            items: [
+                                'UserPasswordService: Permite autenticación usando usuario y contraseña.',
+                                'DocumentTypeLoginService: Permite autenticación usando tipo y número de documento.',
+                                'DynamicPasswordService: Permite autenticación usando un código dinámico (OTP) enviado por correo o SMS. Para su correcto funcionamiento, debe configurarse con el identificador de la cuenta de correo y el token del servicio de envío de SMS. Además, al instanciarlo se especifica el tipo de autenticación que se utilizará (por ejemplo, DocumentNumber) para determinar qué dato del usuario servirá como credencial en el envío y validación del OTP.'
+                            ]
+                        },
+                        {
+                            type: 'text',
+                            content: 'Paso 2: Registro de los servicios en el contenedor de dependencias'
+                        },
+                        {
+                            type: 'code',
+                            language: 'csharp',
+                            code: `
+                            services.AddSingleton(defaultLoginServices);
+                            `
+                        },
+                        {
+                            type: 'text',
+                            content: 'Se registra la instancia de defaultLoginServices como un servicio singleton. Esto permite que la plantilla Edesk acceda a los métodos de autenticación configurados desde cualquier parte de la aplicación.'
+                        },
+                        {
+                            type: 'text',
+                            content: 'Paso 3: Inicialización de la plantilla Edesk'
+                        },
+                        {
+                            type: 'code',
+                            language: 'csharp',
+                            code: `
+                            Edesk.EdeskInit edeskInit = new Edesk.EdeskInit(services) { };
+                            edeskInit.Start();
+                            `
+                        },
+                        {
+                            type: 'text',
+                            content: 'Se crea e inicia la instancia principal de la plantilla Edesk, pasando la colección de servicios configurados. Esto habilita los métodos de autenticación definidos para ser usados en el login.'
+                        }
+                    ]
+                },
+                {
+                    title: 'Código completo',
+                    blocks: [
+                        {
+                            type: 'text',
+                            content: 'A continuación, un ejemplo completo de la configuración de múltiples métodos de autenticación.'
+                        },
+                        {
+                            type: 'code',
+                            language: 'csharp',
+                            code: `
+                             EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new Edesk.Login.General.LoginServices
+                            {
+                                Services = new List<Edesk.Login.General.ILoginService>
+                                {
+                                    new Edesk.Login.UserPasswordService(),
+                                    new Edesk.Login.DocumentTypeLoginService(),
+                                    new Edesk.Login.DynamicPasswordService(123, "token-sms")
+                                    {
+                                        Type = Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
+                                    }
+                                }
+                            };
+
+                            services.AddSingleton(defaultLoginServices);
+
+                            Edesk.EdeskInit edeskInit = new Edesk.EdeskInit(services) { };
+                            edeskInit.Start();
+                            `
+                        }
+                    ]
+                }
             ]
         }
     ]

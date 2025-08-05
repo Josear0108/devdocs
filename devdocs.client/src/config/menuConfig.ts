@@ -4,8 +4,7 @@ import {
     Grid,
     PenTool,
     Code,
-    BookOpen,
-    FileText
+    BookOpen
 } from "react-feather"
 
 export interface MenuItem {
@@ -21,17 +20,17 @@ export const mainMenu: MenuItem[] = [
         to: "/",
         icon: Home,
     },
-    {
-        label: "Noticias",
-        to: "/noticias",
-        icon: FileText,
-    },
+    // {
+    //     label: "Noticias",
+    //     to: "/noticias",
+    //     icon: FileText,
+    // },
 ]
 
 export const docMenu: MenuItem[] = [
     {
-        label: "Plantilla Vintage",
-        to: "/plantilla-vintage",
+        label: "EdeskWeb 5",
+        to: "/plantilla-legacy",
         icon: BookOpen,
     },
     {
@@ -60,5 +59,5 @@ export const docMenu: MenuItem[] = [
             //     icon: Package,
             // },
         ]
-    },
+    }
 ]

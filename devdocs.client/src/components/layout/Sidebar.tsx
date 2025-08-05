@@ -28,6 +28,7 @@ const sidebarAnimation = {
 
 const Sidebar = () => {
   const [searchQuery, setSearchQuery] = useState("")
+  const TEAMS_LINK = 'https://teams.microsoft.com/l/channel/19%3Adba96811f6294111bc98f6888b21c6c7%40thread.tacv2/General?groupId=8764bf80-eb87-433b-bc3f-62d32bd83223&tenantId=6966a3f2-5bcd-4b61-8466-99780e489b42';
 
   return (
     <motion.aside className="sidebar" initial="hidden" animate="visible" variants={sidebarAnimation}>
@@ -98,7 +99,9 @@ const Sidebar = () => {
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="sidebar-icon-button">
           <GitHub size={16} />
         </a>
-        <button className="sidebar-icon-button">
+        <button className="sidebar-icon-button" onClick={() => {
+          window.open(TEAMS_LINK, '_blank', 'noopener,noreferrer');
+        }}>
           <HelpCircle size={16} />
         </button>
         <button className="sidebar-icon-button">

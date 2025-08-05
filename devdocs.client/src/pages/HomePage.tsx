@@ -1,15 +1,9 @@
 "use client"
-
-import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Search } from "react-feather"
 import HeroSection from "../components/sections/HeroSection"
 import FeaturedComponents from "../components/sections/FeaturedComponents"
-import RecentUpdates from "../components/sections/RecentUpdates"
-import PopularTools from "../components/sections/PopularTools"
 import { Tabs } from "../components/ui/TabsEdesk"
-import { Card } from "../components/ui/card/Card"
-import { Button } from "../components/ui/button/Button"
 import "../styles/home-page.css"
 
 // Animación para la entrada de la página
@@ -54,25 +48,25 @@ const HomePage = () => {
         <Tabs defaultActiveId="destacados" orientation="horizontal">
           <Tabs.List>
             <Tabs.Trigger tabId="destacados">Destacados</Tabs.Trigger>
-            <Tabs.Trigger tabId="recientes">Actualizaciones</Tabs.Trigger>
-            <Tabs.Trigger tabId="herramientas">Herramientas</Tabs.Trigger>
+            {/* <Tabs.Trigger tabId="recientes">Actualizaciones</Tabs.Trigger>
+            <Tabs.Trigger tabId="herramientas">Herramientas</Tabs.Trigger> */}
           </Tabs.List>
 
           <Tabs.Panels>
             <Tabs.Panel tabId="destacados">
               <FeaturedComponents />
             </Tabs.Panel>
-            <Tabs.Panel tabId="recientes">
+            {/* <Tabs.Panel tabId="recientes">
               <RecentUpdates />
             </Tabs.Panel>
             <Tabs.Panel tabId="herramientas">
               <PopularTools />
-            </Tabs.Panel>
+            </Tabs.Panel> */}
           </Tabs.Panels>
         </Tabs>
       </motion.div>
 
-      <motion.div className="cards-grid" variants={itemAnimation}>
+      {/* <motion.div className="cards-grid" variants={itemAnimation}>
         <Card className="card card-purple">
           <div className="card-header">
             <h3>Componentes</h3>
@@ -117,7 +111,7 @@ const HomePage = () => {
             </Link>
           </div>
         </Card>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   )
 }

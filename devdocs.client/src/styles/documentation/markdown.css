@@ -96,6 +96,7 @@
 /* Code block with copy button */
 .code-block-wrapper {
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .code-block, .code-block-sm {
