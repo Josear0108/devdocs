@@ -61,7 +61,7 @@ export const dataPlantillaLegacy: ComponentItem = {
                             type: 'code',
                             language: 'csharp',
                             code: `
-                            GlobalUIConfiguration.Initialize(cfg =>
+                            EdeskWeb.Edesk.Login.General.Settings.GlobalUIConfiguration.Initialize(cfg =>
                             {
                                 cfg.Style = UIStyle.Glassmorphism;
                                 cfg.Position = LoginPosition.Center;
@@ -89,7 +89,7 @@ export const dataPlantillaLegacy: ComponentItem = {
                             type: 'code',
                             language: 'csharp',
                             code: `
-                            var custom = new CustomUIConfiguration
+                            var custom = new EdeskWeb.Edesk.Login.General.Settings.CustomUIConfiguration
                             {
                                 Style = UIStyle.Compact,
                                 Title = "Acceso VIP",
@@ -157,21 +157,36 @@ export const dataPlantillaLegacy: ComponentItem = {
                     blocks: [
                         {
                             type: 'text',
-                            content: 'Paso 1: Definición de servicios de login'
+                            content: 'Paso 1: Registro servicio cifrado de credenciales'
                         },
                         {
                             type: 'code',
                             language: 'csharp',
                             code: `
-                            EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new Edesk.Login.General.LoginServices
+                            services.AddSingleton<Edesk.CryptoClient.ICryptoClientService, Edesk.CryptoClient.DefaultCryptoClientService>();
+                            `
+                        },
+                        {
+                            type: 'text',
+                            content: 'Se registra e implementa este servicio para proteger la información de los usuarios, cumplir con estándares de seguridad y mantener una arquitectura robusta y fácil de mantener en la aplicación.'
+                        },
+                        {
+                            type: 'text',
+                            content: 'Paso 2: Definición de servicios de login'
+                        },
+                        {
+                            type: 'code',
+                            language: 'csharp',
+                            code: `
+                            EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new EdeskWeb.Edesk.Login.General.LoginServices
                             {
-                                Services = new List<Edesk.Login.General.ILoginService>
+                                Services = new List<EdeskWeb.Edesk.Login.General.ILoginService>
                                 {
-                                    new Edesk.Login.UserPasswordService(),
-                                    new Edesk.Login.DocumentTypeLoginService(),
-                                    new Edesk.Login.DynamicPasswordService(721, "ef10adbf-c9ec-42")
+                                    new EdeskWeb.Edesk.Login.UserPasswordService(),
+                                    new EdeskWeb.Edesk.Login.DocumentTypeLoginService(),
+                                    new EdeskWeb.Edesk.Login.DynamicPasswordService(721, "ef10adbf-c9ec-42")
                                     {
-                                        Type = Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
+                                        Type = EdeskWeb.Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
                                     }
                                 }
                             };
@@ -191,7 +206,7 @@ export const dataPlantillaLegacy: ComponentItem = {
                         },
                         {
                             type: 'text',
-                            content: 'Paso 2: Registro de los servicios en el contenedor de dependencias'
+                            content: 'Paso 3: Registro de los servicios en el contenedor de dependencias'
                         },
                         {
                             type: 'code',
@@ -206,7 +221,7 @@ export const dataPlantillaLegacy: ComponentItem = {
                         },
                         {
                             type: 'text',
-                            content: 'Paso 3: Inicialización de la plantilla Edesk'
+                            content: 'Paso 4: Inicialización de la plantilla Edesk'
                         },
                         {
                             type: 'code',
@@ -233,15 +248,18 @@ export const dataPlantillaLegacy: ComponentItem = {
                             type: 'code',
                             language: 'csharp',
                             code: `
-                             EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new Edesk.Login.General.LoginServices
+                            IServiceCollection services = new ServiceCollection();
+                            services.AddSingleton<Edesk.CryptoClient.ICryptoClientService, Edesk.CryptoClient.DefaultCryptoClientService>();
+
+                            EdeskWeb.Edesk.Login.General.ILoginServices defaultLoginServices = new EdeskWeb.Edesk.Login.General.LoginServices
                             {
-                                Services = new List<Edesk.Login.General.ILoginService>
+                                Services = new List<EdeskWeb.Edesk.Login.General.ILoginService>
                                 {
-                                    new Edesk.Login.UserPasswordService(),
-                                    new Edesk.Login.DocumentTypeLoginService(),
-                                    new Edesk.Login.DynamicPasswordService(123, "token-sms")
+                                    new EdeskWeb.Edesk.Login.UserPasswordService(),
+                                    new EdeskWeb.Edesk.Login.DocumentTypeLoginService(),
+                                    new EdeskWeb.Edesk.Login.DynamicPasswordService(123, "token-sms")
                                     {
-                                        Type = Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
+                                        Type = EdeskWeb.Edesk.Login.DynamicPasswordService.DynamicPasswordType.DocumentNumber
                                     }
                                 }
                             };

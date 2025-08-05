@@ -96,7 +96,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="sidebar-icon-button">
+        <a  target="_blank" rel="noopener noreferrer" className="sidebar-icon-button">
           <GitHub size={16} />
         </a>
         <button className="sidebar-icon-button" onClick={() => {
