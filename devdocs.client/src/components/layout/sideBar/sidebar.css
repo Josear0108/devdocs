@@ -77,6 +77,12 @@
   margin-bottom: 0.25rem;
 }
 
+.sidebar-label{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .sidebar-nav-list a {
   display: flex;
   align-items: center;

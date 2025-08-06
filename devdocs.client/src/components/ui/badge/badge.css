@@ -6,7 +6,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1;
-  border-radius: var(--radius);
+  border-radius: 30px;
   background-color: var(--accent);
   color: var(--accent-foreground);
   transition: background-color 0.2s ease;
@@ -17,8 +17,8 @@
 }
 
 .badge-default {
-  background-color: var(--muted);
-  color: var(--muted-foreground);
+  background-color: var(--primary);
+  color: white;
 }
 
 .badge-outline {

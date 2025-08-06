@@ -3,7 +3,7 @@ import type { ComponentItem } from "../types/component";
 export const dataPlantillaLegacy: ComponentItem = {
     id: "plantilla-legacy",
     name: "Plantilla EdeskWeb 5",
-    description: "Versión estable: 5.2025.804.1045",
+    description: "Versión: EdeskWeb 5.2025.805.1658-prerelease",
     category: "Servicio",
     lastUpdate: "2025-08-01",
     type: "guide",

@@ -10,10 +10,10 @@ import {
   GitHub,
   Search,
 } from "react-feather"
-import ThemeToggle from "../ui/ThemeToggle"
-import "../../styles/sidebar.css"
-import { docMenu, mainMenu } from "../../config/menuConfig"
-
+import ThemeToggle from "../../ui/ThemeToggle"
+import "../../../components/layout/sideBar/sidebar.css"
+import { docMenu, mainMenu } from "../../../config/menuConfig"
+import { Badge } from "../../ui/badge/Badge"
 const sidebarAnimation = {
   hidden: { x: -280 },
   visible: {
@@ -65,19 +65,29 @@ const Sidebar = () => {
         <div className="sidebar-group">
           <h3 className="sidebar-group-title">Documentación</h3>
           <ul className="sidebar-nav-list">
-            {docMenu.map(({ label, to, icon: Icon, submenu }) =>
+            {docMenu.map(({ label, to, icon: Icon, badge, submenu }) =>
               submenu ? (
                 <li className="has-submenu" key={to}>
                   <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
                     <Icon size={16} />
-                    <span>{label}</span>
+                    <div className="sidebar-label">
+                      <span>
+                        {label}
+                      </span>
+                      {badge && <Badge>{badge.toUpperCase()}</Badge>}
+                    </div>
                   </NavLink>
                   <ul className="sidebar-submenu">
                     {submenu.map(({ label, to, icon: SubIcon }) => (
                       <li key={to}>
                         <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
                           <SubIcon size={14} />
-                          <span>{label}</span>
+                          <div className="sidebar-label">
+                            <span>
+                              {label}
+                            </span>
+                            {badge && <Badge>{badge.toUpperCase()}</Badge>}
+                          </div>
                         </NavLink>
                       </li>
                     ))}
@@ -87,7 +97,12 @@ const Sidebar = () => {
                 <li key={to}>
                   <NavLink to={to} className={({ isActive }) => (isActive ? "active" : "")}>
                     <Icon size={16} />
-                    <span>{label}</span>
+                    <div className="sidebar-label">
+                      <span>
+                        {label}
+                      </span>
+                      {badge && <Badge>{badge.toUpperCase()}</Badge>}
+                    </div>
                   </NavLink>
                 </li>
               ))}
@@ -96,7 +111,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <a  target="_blank" rel="noopener noreferrer" className="sidebar-icon-button">
+        <a target="_blank" rel="noopener noreferrer" className="sidebar-icon-button">
           <GitHub size={16} />
         </a>
         <button className="sidebar-icon-button" onClick={() => {

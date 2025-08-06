@@ -7,9 +7,12 @@ import {
     BookOpen
 } from "react-feather"
 
+export type BadgeType = 'new' | 'warning' | 'deprecated';
+
 export interface MenuItem {
     label: string
     to: string
+    badge?: BadgeType;
     icon: FC<any>
     submenu?: MenuItem[]
 }
@@ -31,6 +34,7 @@ export const docMenu: MenuItem[] = [
     {
         label: "EdeskWeb 5",
         to: "/plantilla-legacy",
+        badge: 'new',
         icon: BookOpen,
     },
     {

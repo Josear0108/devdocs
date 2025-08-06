@@ -2,7 +2,7 @@
 
 import { Outlet } from "react-router-dom"
 import { motion } from "framer-motion"
-import Sidebar from "./Sidebar"
+import Sidebar from "./sideBar/Sidebar"
 import MobileNav from "./MobileNav"
 import CommandMenu from "../ui/CommandMenu"
 import "../../styles/layout.css"
