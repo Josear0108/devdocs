@@ -1,25 +1,122 @@
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .not-found-container {
   min-height: calc(100vh - 4rem);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating background elements */
+.floating-element {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.1;
+  animation: spin 10s linear infinite;
+  pointer-events: none;
+}
+
+.floating-element-1 {
+  top: -5rem;
+  left: -5rem;
+  background: linear-gradient(45deg, var(--purple), var(--blue));
+}
+
+.floating-element-2 {
+  bottom: -5rem;
+  right: -5rem;
+  background: linear-gradient(45deg, var(--blue), var(--teal));
 }
 
 .not-found-content {
   text-align: center;
   max-width: 32rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Edesk branding */
+.edesk-branding {
+  margin-bottom: 2rem;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background-color: var(--muted);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+}
+
+.brand-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.brand-text {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+/* Main content */
+.main-content {
+  position: relative;
+}
+
+.error-icon {
+  margin-bottom: 1.5rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+.alert-icon {
+  color: var(--purple);
+  filter: drop-shadow(0 0 10px rgba(147, 51, 234, 0.3));
 }
 
 .not-found-title {
   font-size: 8rem;
   font-weight: 700;
   line-height: 1;
-  background: linear-gradient(90deg, var(--purple) 0%, var(--blue) 50%, var(--teal) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+  animation: pulse 3s ease-in-out infinite;
 }
 
 .not-found-subtitle {
@@ -32,9 +129,46 @@
 .not-found-description {
   color: var(--muted-foreground);
   margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
-.not-found-button {
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .action-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  border: none;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, var(--purple-dark), var(--blue-dark));
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(147, 51, 234, 0.3);
+}
+
+.secondary-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -42,12 +176,56 @@
   font-size: 1rem;
   font-weight: 500;
   color: var(--foreground);
-  background-color: var(--primary);
-  border-radius: var(--radius);
-  transition: all 0.2s ease;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.not-found-button:hover {
-  background-color: var(--primary-dark);
+.secondary-button:hover {
+  background: var(--muted);
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .not-found-title {
+    font-size: 6rem;
+  }
+  
+  .not-found-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .floating-element {
+    width: 6rem;
+    height: 6rem;
+  }
+  
+  .error-icon svg {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    padding: 1rem;
+  }
+  
+  .not-found-title {
+    font-size: 4rem;
+  }
+  
+  .not-found-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+    justify-content: center;
+  }
 } 

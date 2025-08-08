@@ -34,6 +34,22 @@
   color: white;
 }
 
+/* Estilos para el nuevo icono con fondo circular y gradiente */
+.brand-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .sidebar-search {
   position: relative;
   display: flex;
