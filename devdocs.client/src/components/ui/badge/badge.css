@@ -12,10 +12,6 @@
   transition: background-color 0.2s ease;
 }
 
-.badge:hover {
-  background-color: var(--accent-hover);
-}
-
 .badge-default {
   background-color: var(--primary);
   color: white;

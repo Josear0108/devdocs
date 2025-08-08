@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DevDocs.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e58983314155cbe7b3713ea79fc8c614ffabe9a1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f3b6c455be8ca1e6062ccb341855c3c4f6a8189")]
 [assembly: System.Reflection.AssemblyProductAttribute("DevDocs.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DevDocs.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
