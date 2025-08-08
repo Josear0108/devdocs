@@ -1,6 +1,8 @@
 import React from "react";
-import { FileUploadContainer } from "edesk-components";
-import { cssVars, defaultProps as componentDefaultProps, maxFileSizeUnit, acceptedFileTypesPlaceholder, getMaxFileSizeValue, propSerializers } from '../../config/playgrounds/file-upload.config';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { EdeskFileUpload } from "edesk-components";
+import { cssVars, cssVarsDefaults, defaultProps as componentDefaultProps, maxFileSizeUnit, acceptedFileTypesPlaceholder, getMaxFileSizeValue, propSerializers } from '../../config/playgrounds/file-upload.config';
 import { useState, useEffect } from "react";
 import { CopyButton } from "../../components/ui/CopyButton";
 import type { PlaygroundControl } from "../../types/component";
@@ -81,7 +83,34 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
      */
     const isControlVisible = (control: PlaygroundControl): boolean => {
         if (!control.showWhen) return true;
-        return props[control.showWhen.prop] === control.showWhen.value;
+        
+        // Si showWhen es un array de condiciones, todas deben cumplirse (AND)
+        if (Array.isArray(control.showWhen)) {
+            return control.showWhen.every(condition => {
+                const currentValue = props[condition.prop];
+                const expectedValue = condition.value;
+                
+                // Si expectedValue es un array, verificar si currentValue está incluido
+                if (Array.isArray(expectedValue)) {
+                    return expectedValue.includes(currentValue as string);
+                }
+                
+                // Comparación directa para valores únicos
+                return currentValue === expectedValue;
+            });
+        }
+        
+        // Condición única
+        const currentValue = props[control.showWhen.prop];
+        const expectedValue = control.showWhen.value;
+        
+        // Si expectedValue es un array, verificar si currentValue está incluido
+        if (Array.isArray(expectedValue)) {
+            return expectedValue.includes(currentValue as string);
+        }
+        
+        // Comparación directa para valores únicos
+        return currentValue === expectedValue;
     };
 
     /**
@@ -91,7 +120,73 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
         // Si el control es minFiles o maxFiles, siempre está habilitado
         if (control.prop === 'minSelectFile' || control.prop === 'maxFiles') return true;
         if (!control.enableWhen) return true;
-        return props[control.enableWhen.prop] === control.enableWhen.value;
+        
+        // Si enableWhen es un array de condiciones, todas deben cumplirse (AND)
+        if (Array.isArray(control.enableWhen)) {
+            return control.enableWhen.every(condition => {
+                const currentValue = props[condition.prop];
+                const expectedValue = condition.value;
+                
+                // Si expectedValue es un array, verificar si currentValue está incluido
+                if (Array.isArray(expectedValue)) {
+                    return expectedValue.includes(currentValue as string);
+                }
+                
+                // Comparación directa para valores únicos
+                return currentValue === expectedValue;
+            });
+        }
+        
+        // Condición única
+        const currentValue = props[control.enableWhen.prop];
+        const expectedValue = control.enableWhen.value;
+        
+        // Si expectedValue es un array, verificar si currentValue está incluido
+        if (Array.isArray(expectedValue)) {
+            return expectedValue.includes(currentValue as string);
+        }
+        
+        // Comparación directa para valores únicos
+        return currentValue === expectedValue;
+    };
+
+    /**
+     * Función auxiliar para verificar si una prop debe incluirse en el código generado
+     * basándose en las condiciones showWhen del control correspondiente
+     */
+    const shouldIncludePropInCode = (propName: string): boolean => {
+        // Buscar el control correspondiente a esta prop
+        const control = controls.find((c: PlaygroundControl) => c.prop === propName);
+        
+        // Si no hay control definido, incluir la prop
+        if (!control) return true;
+        
+        // Si el control no tiene condiciones showWhen, incluirlo
+        if (!control.showWhen) return true;
+        
+        // Aplicar la misma lógica de visibilidad que en isControlVisible
+        if (Array.isArray(control.showWhen)) {
+            return control.showWhen.every(condition => {
+                const currentValue = props[condition.prop];
+                const expectedValue = condition.value;
+                
+                if (Array.isArray(expectedValue)) {
+                    return expectedValue.includes(currentValue as string);
+                }
+                
+                return currentValue === expectedValue;
+            });
+        }
+        
+        // Condición única
+        const currentValue = props[control.showWhen.prop];
+        const expectedValue = control.showWhen.value;
+        
+        if (Array.isArray(expectedValue)) {
+            return expectedValue.includes(currentValue as string);
+        }
+        
+        return currentValue === expectedValue;
     };
 
     /**
@@ -101,6 +196,7 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
     const generateCodeString = (): string => {
         // Incluir props obligatorias que no están en los controles
         const allProps = { ...props };
+        
         // Solo incluir acceptedFileTypes obligatoria si el input está vacío
         const acceptedFileTypesInput = typeof allProps.acceptedFileTypes === 'string'
             ? allProps.acceptedFileTypes.split(',').map(v => v.trim()).filter(Boolean)
@@ -117,23 +213,12 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
             allProps.maxFileSize = `${converted} // ${original}${maxFileSizeUnit}`;
         }
 
-        // Solo incluir variables CSS modificadas
-        const styleVars = Object.entries(cssVarsState)
-            .filter(([, value]) => value && value.trim() !== '')
-            .reduce((acc, [key, value]) => {
-                // Convertir --primary-color => primaryColor
-                const jsKey = key.replace(/^--/, '').replace(/-([a-z])/g, (_, l) => l.toUpperCase());
-                acc[jsKey] = value;
-                return acc;
-            }, {} as Record<string, string>);
-
-        let styleProp = '';
-        if (Object.keys(styleVars).length > 0) {
-            styleProp = `  style={${JSON.stringify(styleVars)}}`;
-        }
-
         const propsString = [
             ...Object.entries(allProps)
+                .filter(([key, value]) => {
+                    // Aplicar condiciones de visibilidad antes de procesar la prop
+                    return shouldIncludePropInCode(key) && value !== undefined && value !== null && value !== '';
+                })
                 .map(([key, value]) => {
                     if (propSerializers[key]) {
                         return propSerializers[key](value, allProps);
@@ -150,20 +235,37 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
                     return '';
                 })
                 .filter(Boolean),
-            ...Object.entries(requiredProps).map(([key, value]) => `  ${key}=${value}`),
-            styleProp
+            ...Object.entries(requiredProps).map(([key, value]) => `  ${key}=${value}`)
         ].filter(Boolean).join('\n');
 
-        return `<FileUploadContainer\n${propsString}\n/>`;
+        return `<EdeskFileUpload\n${propsString}\n/>`;
     };
     // Variables globales de CSS a mostrar y editar (importadas)
 
+    // Función para calcular variables CSS dependientes automáticamente
+    const calculateDependentVariables = (baseVariables: Record<string, string>) => {
+        const dependentVars: Record<string, string> = {};
+        
+        // Si hay un accent color definido, calcular variables dependientes
+        const accentColor = baseVariables['--edeskFileUpload-accent'];
+        const borderWidth = baseVariables['--edeskFileUpload-border-width'] || '2px';
+        
+        if (accentColor) {
+            dependentVars['--edeskFileUpload-border-dashed'] = `${borderWidth} dashed ${accentColor}`;
+            dependentVars['--edeskFileUpload-border-solid'] = `${borderWidth} solid ${accentColor}`;
+        }
+        
+        return { ...baseVariables, ...dependentVars };
+    };
+
     // Estado para las variables CSS editables
     const [cssVarsState, setCssVarsState] = useState<Record<string, string>>(() => {
-        if (typeof window === 'undefined') return {};
+        if (typeof window === 'undefined') return cssVarsDefaults;
         const initial: Record<string, string> = {};
         cssVars.forEach((name) => {
-            initial[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            const computedValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            // Usar valor computado si existe, sino usar el valor por defecto
+            initial[name] = computedValue || cssVarsDefaults[name] || '';
         });
         return initial;
     });
@@ -172,10 +274,16 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
     const handleCssVarChange = (name: string, value: string) => {
         setCssVarsState((prev) => {
             const updated = { ...prev, [name]: value };
+            // Calcular variables dependientes automáticamente
+            const finalVariables = calculateDependentVariables(updated);
+            
             if (typeof window !== 'undefined') {
-                document.documentElement.style.setProperty(name, value);
+                // Aplicar todas las variables CSS calculadas
+                Object.entries(finalVariables).forEach(([varName, varValue]) => {
+                    document.documentElement.style.setProperty(varName, varValue);
+                });
             }
-            return updated;
+            return finalVariables;
         });
     };
 
@@ -184,7 +292,9 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
         if (typeof window === 'undefined') return;
         const updated: Record<string, string> = {};
         cssVars.forEach((name) => {
-            updated[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            const computedValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            // Usar valor computado si existe, sino usar el valor por defecto
+            updated[name] = computedValue || cssVarsDefaults[name] || '';
         });
         setCssVarsState(updated);
     }, []);
@@ -205,8 +315,9 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
                             .map((v: string) => v.trim())
                             .filter(Boolean);
                     }
+                    
                     return (
-                        <FileUploadContainer
+                        <EdeskFileUpload
                             uploadUrl={componentDefaultProps.uploadUrl}
                             encryptedPath={componentDefaultProps.encryptedPath}
                             acceptedFileTypes={visualProps.acceptedFileTypes && Array.isArray(visualProps.acceptedFileTypes) && visualProps.acceptedFileTypes.length > 0
@@ -393,9 +504,19 @@ const Playground: React.FC<PlaygroundProps> = ({ controls, onPropsChange = () =>
             <div className="playground-code-panel">
                 <h3 className="panel-title">Código en Vivo</h3>
                 <div className="code-block-wrapper">
-                    <pre className="code-block">
-                        <code>{generateCodeString()}</code>
-                    </pre>
+                    <SyntaxHighlighter
+                        language="jsx"
+                        style={atomOneDark}
+                        showLineNumbers
+                        wrapLongLines
+                        customStyle={{
+                            background: '#282c34',
+                            borderRadius: '6px',
+                            padding: '1rem'
+                        }}
+                    >
+                        {generateCodeString()}
+                    </SyntaxHighlighter>
                     <CopyButton text={generateCodeString()} />
                 </div>
             </div>

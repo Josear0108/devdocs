@@ -10,13 +10,16 @@
     <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint .</PackageJsonScriptsLint>
     <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">vite preview</PackageJsonScriptsPreview>
     <PackageJsonDependenciesTypesReactSyntaxHighlighter Condition="$(PackageJsonDependenciesTypesReactSyntaxHighlighter) == ''">^15.5.13</PackageJsonDependenciesTypesReactSyntaxHighlighter>
+    <PackageJsonDependenciesEdeskComponents Condition="$(PackageJsonDependenciesEdeskComponents) == ''">^0.0.8</PackageJsonDependenciesEdeskComponents>
     <PackageJsonDependenciesFramerMotion Condition="$(PackageJsonDependenciesFramerMotion) == ''">^12.11.0</PackageJsonDependenciesFramerMotion>
     <PackageJsonDependenciesLucideReact Condition="$(PackageJsonDependenciesLucideReact) == ''">^0.510.0</PackageJsonDependenciesLucideReact>
+    <PackageJsonDependenciesQrCodeStyling Condition="$(PackageJsonDependenciesQrCodeStyling) == ''">^1.9.2</PackageJsonDependenciesQrCodeStyling>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.0</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.0</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReactFeather Condition="$(PackageJsonDependenciesReactFeather) == ''">^2.0.10</PackageJsonDependenciesReactFeather>
     <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">^7.6.0</PackageJsonDependenciesReactRouterDom>
     <PackageJsonDependenciesReactSyntaxHighlighter Condition="$(PackageJsonDependenciesReactSyntaxHighlighter) == ''">^15.6.1</PackageJsonDependenciesReactSyntaxHighlighter>
+    <PackageJsonDependenciesZustand Condition="$(PackageJsonDependenciesZustand) == ''">^5.0.6</PackageJsonDependenciesZustand>
     <PackageJsonDevdependenciesEslintJs Condition="$(PackageJsonDevdependenciesEslintJs) == ''">^9.25.0</PackageJsonDevdependenciesEslintJs>
     <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^20.9.0</PackageJsonDevdependenciesTypesNode>
     <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">^19.1.2</PackageJsonDevdependenciesTypesReact>

@@ -23,22 +23,53 @@ export function getMaxFileSizeValue(input: number | string | undefined): number 
   return maxFileSizeUnit === 'MB' ? value * 1024 * 1024 : value;
 }
 
-// Variables globales de CSS específicas de FileUploadContainer
+// Variables globales de CSS específicas de EdeskFileUpload
 export const cssVars = [
-    '--edesk-primary',
-    '--edesk-primary-light',
-    '--edesk-bg-file',
-    '--edesk-border-radius',
-    '--edesk-border-radius-pill',
-    '--edesk-border-width',
-    '--edesk-bg-error',
-    '--edesk-text-error',
-    '--edesk-font-main',
-    '--edesk-button-type-width',
-    '--edesk-container-width',
+    '--edeskFileUpload-accent',
+    '--edeskFileUpload-accent-bg',
+    '--edeskFileUpload-bg',
+    '--edeskFileUpload-bg-file',
+    '--edeskFileUpload-text',
+    '--edeskFileUpload-text-extensions',
+    '--edeskFileUpload-bg-error',
+    '--edeskFileUpload-text-error',
+    '--edeskFileUpload-border-radius',
+    '--edeskFileUpload-border-radius-pill',
+    '--edeskFileUpload-border-width',
+    '--edeskFileUpload-padding',
+    '--edeskFileUpload-min-height',
+    '--edeskFileUpload-font-size',
+    '--edeskFileUpload-font-weight',
+    '--edeskFileUpload-font-main',
+    '--edeskFileUpload-button-type-width',
+    '--edeskFileUpload-container-width',
+    // Nota: --edeskFileUpload-border-dashed y --edeskFileUpload-border-solid 
+    // se calculan automáticamente basadas en accent y border-width
 ];
 
-// Props obligatorias y valores por defecto para FileUploadContainer
+// Valores por defecto para las variables CSS
+export const cssVarsDefaults: Record<string, string> = {
+    '--edeskFileUpload-accent': '#007FFF',
+    '--edeskFileUpload-accent-bg': '#f3f9ff',
+    '--edeskFileUpload-bg': '#f3f9ff',
+    '--edeskFileUpload-bg-file': '#CEE3F9',
+    '--edeskFileUpload-text': '#000000',
+    '--edeskFileUpload-text-extensions': '#747474',
+    '--edeskFileUpload-bg-error': '#ffeaea',
+    '--edeskFileUpload-text-error': '#d32f2f',
+    '--edeskFileUpload-border-radius': '8px',
+    '--edeskFileUpload-border-radius-pill': '30px',
+    '--edeskFileUpload-border-width': '2px',
+    '--edeskFileUpload-padding': '2rem',
+    '--edeskFileUpload-min-height': '200px',
+    '--edeskFileUpload-font-size': '16px',
+    '--edeskFileUpload-font-weight': '400',
+    '--edeskFileUpload-font-main': 'Roboto, sans-serif',
+    '--edeskFileUpload-button-type-width': '300px',
+    '--edeskFileUpload-container-width': '650px',
+};
+
+// Props obligatorias y valores por defecto para EdeskFileUpload
 export const defaultProps = {
   uploadUrl: 'https://cargue.sycpruebas.com/servicioweb.svc',
   encryptedPath: 'ruta-cifrada-de-ejemplo',
@@ -60,7 +91,7 @@ export const maxFileSizeUnit = 'MB';
 // Placeholder para acceptedFileTypes
 export const acceptedFileTypesPlaceholder = 'Ej: pdf, jpg, png, docx';
 
-// Estructura de controles para el playground de FileUploadContainer
+// Estructura de controles para el playground de EdeskFileUpload
 import type { PlaygroundControl } from '../../types/component';
 export const controls: PlaygroundControl[] = [
   {
