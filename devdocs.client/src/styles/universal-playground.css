@@ -11,6 +11,8 @@
   gap: 2rem;
   height: 100%;
   min-height: 600px;
+  max-width: 100%;
+  overflow: hidden; /* Evita que el contenedor se expanda fuera del viewport */
 }
 
 /* Panel de Controles */
@@ -364,6 +366,8 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 100%;
+  overflow: hidden; /* Evita que se expanda más allá del contenedor padre */
 }
 
 .preview-header {
@@ -388,13 +392,16 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
+  overflow: auto; /* Permite scroll si el contenido es muy ancho */
 }
 
 /* Código generado */
 .code-preview {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  max-width: 100%;
+  overflow: hidden; /* Evita que el código se salga del contenedor */
 }
 
 .code-header {
@@ -444,6 +451,19 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   padding: 0;
   font-size: inherit;
   color: inherit;
+}
+
+/* Estilos específicos para SyntaxHighlighter */
+.code-preview pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  margin: 0 !important;
+}
+
+.code-preview .hljs {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
 }
 
 /* Responsive */
@@ -543,14 +563,6 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.props-panel {
-  /* Estilos específicos para el panel de props */
-}
-
-.css-panel {
-  /* Estilos específicos para el panel de CSS */
 }
 
 .no-css-controls {

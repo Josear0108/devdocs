@@ -1,6 +1,5 @@
-import React from 'react';
-import Playground from '../../pages/components/PlaygroundControl';
-import { UniversalPlayground } from './UniversalPlayground';
+import React, { useState } from 'react';
+import { PlaygroundRenderer } from '../Playground/PlaygroundRenderer';
 import { Tabs } from './TabsEdesk';
 import { CopyButton } from './CopyButton';
 import { BlockRenderer } from './BlockRenderer';
@@ -34,62 +33,50 @@ const ComponentRecipes: React.FC<{ recipes: Recipe[]; onApplyRecipe: (props: Rec
 
 interface DocumentationProps {
   componentItem: ComponentItem;
-  playgroundProps?: Record<string, unknown>;
   onPlaygroundPropsChange?: (props: Record<string, unknown>) => void;
 }
 
 export const Documentation: React.FC<DocumentationProps> = ({
   componentItem,
-  playgroundProps = {},
   onPlaygroundPropsChange = () => { }
 }) => {
 
-  const { tabs, playground, playgroundConfig, recipes, component: PlaygroundComponent } = componentItem;
+  const { tabs, recipes } = componentItem;
   const defaultTabId = tabs.length > 0 ? tabs[0].id : '';
   const orientation = componentItem.type === 'guide' ? 'vertical' : 'horizontal';
   const animation = orientation === 'vertical' ? verticalTabAnimation : horizontalTabAnimation;
 
+  // Estado para props externas que vienen de los recipes
+  const [externalProps, setExternalProps] = useState<Record<string, unknown> | undefined>(undefined);
+
+  // Función para manejar aplicación de recipes
+  // Función para manejar aplicación directa de props desde las cards
+  const handleApplyProps = (props: Record<string, unknown>) => {
+    console.log('📚 [Documentation] Aplicando props de recipe:', props);
+    setExternalProps(props);
+    onPlaygroundPropsChange(props);
+    
+    // Resetear las props externas después de un breve delay para permitir que se apliquen
+    setTimeout(() => {
+      setExternalProps(undefined);
+    }, 100);
+  };
+
   const renderContent = (tabId: string) => {
-    if (tabId === 'playground' && PlaygroundComponent) {
-      // Usar el nuevo sistema universal si hay playgroundConfig
-      if (playgroundConfig && PlaygroundComponent) {
-        const fullConfig = {
-          ...playgroundConfig,
-          component: PlaygroundComponent,
-          componentName: componentItem.name // Agregar el nombre del componente
-        };
-        
-        return (
-          <>
-            <UniversalPlayground
-              config={fullConfig}
-              onPropsChange={onPlaygroundPropsChange}
-            />
-            {/* Si hay recetas, las mostramos debajo del playground */}
-            {recipes && recipes.length > 0 && (
-              <ComponentRecipes recipes={recipes} onApplyRecipe={onPlaygroundPropsChange} />
-            )}
-          </>
-        );
-      }
-      
-      // Fallback al sistema anterior si no hay playgroundConfig pero sí playground
-      if (playground) {
-        return (
-          <>
-            <Playground
-              component={PlaygroundComponent}
-              controls={playground.controls}
-              initialProps={playgroundProps as Record<string, string | number | boolean | string[]>}
-              onPropsChange={onPlaygroundPropsChange}
-            />
-            {/* Si hay recetas, las mostramos debajo del playground */}
-            {recipes && recipes.length > 0 && (
-              <ComponentRecipes recipes={recipes} onApplyRecipe={onPlaygroundPropsChange} />
-            )}
-          </>
-        );
-      }
+    if (tabId === 'playground') {
+      return (
+        <>
+          <PlaygroundRenderer 
+            componentItem={componentItem}
+            onPropsChange={onPlaygroundPropsChange}
+            externalProps={externalProps}
+          />
+          {/* Si hay recetas, las mostramos debajo del playground */}
+          {recipes && recipes.length > 0 && (
+            <ComponentRecipes recipes={recipes} onApplyRecipe={handleApplyProps} />
+          )}
+        </>
+      );
     }
 
     const currentTab = tabs.find(t => t.id === tabId);

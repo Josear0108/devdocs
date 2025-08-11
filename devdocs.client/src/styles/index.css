@@ -1,3 +1,6 @@
+/* Import universal playground styles */
+@import './universal-playground.css';
+
 /* Base styles and CSS variables */
 :root {
   --background: #0a0a0a;
@@ -136,6 +139,3 @@ textarea {
   background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
   color: white;
 }
-
-/* Import universal playground styles at the end to ensure proper override */
-@import './universal-playground.css';

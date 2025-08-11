@@ -1,5 +1,9 @@
+import { Children } from "react";
 import type { ComponentItem } from "../types/component"
-import { EdeskFileUpload, EdeskLayout, EdeskViewerPDF } from "edesk-components";
+import { EdeskFileUpload, EdeskLayout, EdeskViewerPDF, PdfViewerMode, PdfViewerOption } from "edesk-components";
+
+// Exportar enums para uso en playground
+export { PdfViewerMode, PdfViewerOption };
 
 export const componentsData: ComponentItem[] = [
   //FILEUPLOAD
@@ -11,14 +15,13 @@ export const componentsData: ComponentItem[] = [
     type: "component",
     description: "Componente React ligero y personalizable para subir archivos con validación, drag & drop y feedback visual, ideal para flujos documentales empresariales.",
     lastUpdate: "2025-08-11",
-    // Nueva configuración transversal del playground
-        //CONTROLS
-
+    
     playgroundConfig: {
+      componentName: 'EdeskFileUpload',
       mockData: {
         uploadUrl: "https://cargue.sycpruebas.com/servicioweb.svc",
         encryptedPath: "demo-encrypted-path",
-        acceptedFileTypes: ['pdf', 'jpg', 'png']
+        //acceptedFileTypes: ['pdf', 'jpg', 'png']
       },
       excludeProps: [], // Ocultar props técnicas
       
@@ -32,23 +35,18 @@ export const componentsData: ComponentItem[] = [
           defaultValue: 'Large'
         },
         acceptedFileTypes: {
-          type: 'select',
-          options: ['pdf', 'svg', 'png'],
-          defaultValue: 'pdf'
-        },
-        uploadUrl: {
-          type: 'text',
-          defaultValue: 'https://cargue.sycpruebas.com/servicioweb.svc'
-        },
-        encryptedPath: {
-          type: 'text',
-          defaultValue: 'ruta-cifrada-de-ejemplo'
+          type: 'select-check',
+          options: [
+            'pdf', 'svg', 'png', 'jpg', 'csv', 'psd', 'zip', 's01', 'mid', 'midi', 'mpga', 'mp2', 'mp3', 'wav', 'bmp', 'gif', 'jpeg', 'jfif', 'jpe', 'tiff', 'tif', 'txt', 'text', 'dat', 'rtx', 'rtf', 'xml', 'xsl', 'mpeg', 'mpg', 'mpe', 'mp4', 'webm', 'qt', 'mov', 'avi', 'movie', 'doc', 'xls', 'docx', 'xlsx', 'xlsm', 'xltm', 'xlam', 'xlsb', 'word', 'xl', 'ppt', 'pptx', 'eml', 'msg', 'i01', 'p8', 'key', 'p10', 'csr', 'cer', 'crl', 'p7c', 'crt', 'der', 'pem', 'p12', 'pfx', 'p7b', 'spc', 'p7r', 'i00', 'r00', 'r000', 's00', 'e00', 'm4a', 'aac'
+          ],
+          defaultValue: ['pdf'],
         },
         title: {
           defaultValue: 'Documento de identificación'
         },
         subtitle: {
-          defaultValue: 'Arrastra y suelta archivos PDF aquí o haz clic para seleccionar'
+          defaultValue: 'Arrastra y suelta archivos PDF aquí o haz clic para seleccionar',
+          showWhen: { prop: 'type', value: ['Large', 'DragOff'] }
         },
         disabled: {
           type: 'switch',
@@ -68,7 +66,8 @@ export const componentsData: ComponentItem[] = [
         },
         showCloseButton: {
           type: 'switch',
-          defaultValue: false
+          defaultValue: false,
+          showWhen: { prop: 'type', value: ['Large', 'DragOff'] }
         },
         hideIcon: {
           type: 'switch',
@@ -102,6 +101,7 @@ export const componentsData: ComponentItem[] = [
       },
       // Nueva configuración de controles CSS
       cssControls: [
+        //colors
         {
           id: 'colors',
           label: 'Colores',
@@ -161,6 +161,7 @@ export const componentsData: ComponentItem[] = [
             }
           ]
         },
+        // Espaciado
         {
           id: 'spacing',
           label: 'Espaciado',
@@ -222,6 +223,7 @@ export const componentsData: ComponentItem[] = [
             },
           ]
         },
+        // Tipografía
         {
           id: 'typography',
           label: 'Tipografía',
@@ -250,20 +252,18 @@ export const componentsData: ComponentItem[] = [
           maxFiles: 1,
           multiSelectFile: false,
           showExtensions: true,
-          allowedExtensionsText: 'Formatos permitidos: JPG, PNG'
+          allowedExtensionsText: 'Formatos permitidos: JPG, PNG',
+          acceptedFileTypes: ['jpg', 'jpeg', 'png'],
+          maxFileSize: 5242880
         },
         code: `<EdeskFileUpload
-                type="Button"
-                title="Sube tu foto de perfil"
-                subtitle="Solo imágenes JPG o PNG"
-                maxFiles={1}
-                multiSelectFile={false}
-                showExtensions={true}
-                allowedExtensionsText="Formatos permitidos: JPG, PNG"
                 uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
                 encryptedPath="ruta-cifrada-de-ejemplo"
-                maxFileSize={5242880} // 5MB
+                type="Button"
                 acceptedFileTypes={['jpg', 'jpeg', 'png']}
+                title="Sube tu foto de perfil"
+                maxFiles={1}
+                maxFileSize={5242880}
               />`
       },
       {
@@ -277,19 +277,22 @@ export const componentsData: ComponentItem[] = [
           subtitle: 'Arrastra y suelta archivos aquí o haz clic para seleccionar',
           maxFiles: 10,
           showExtensions: true,
+          maxFileSize: 10485760,
+          acceptedFileTypes: ['pdf', 'doc', 'docx'],
           allowedExtensionsText: 'Formatos permitidos: PDF, DOC, DOCX'
         },
         code: `<EdeskFileUpload
+                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+                encryptedPath="demo-encrypted-path"
                 type="Large"
+                acceptedFileTypes={["pdf","doc","docx"]}
                 title="Sube tus documentos"
                 subtitle="Arrastra y suelta archivos aquí o haz clic para seleccionar"
-                maxFiles={10}
-                showExtensions={true}
+                showExtensions
                 allowedExtensionsText="Formatos permitidos: PDF, DOC, DOCX"
-                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-                encryptedPath="ruta-cifrada-de-ejemplo"
-                maxFileSize={10485760} // 10MB
-                acceptedFileTypes={['pdf', 'doc', 'docx']}
+                maxFiles={10}
+                minSelectFile={1}
+                maxFileSize={10485760}
               />`
       },
       {
@@ -302,22 +305,27 @@ export const componentsData: ComponentItem[] = [
           title: 'Seleccionar documentos',
           subtitle: 'Haz clic para seleccionar archivos',
           maxFiles: 3,
+          minSelectFile: 1,
           showExtensions: true,
           allowedExtensionsText: 'Formatos permitidos: PDF, DOCX',
-          minSelectFile: 1
+          acceptedFileTypes: ['pdf', 'docx'],
+          showCloseButton: true,
+          hideIcon: true
         },
         code: `<EdeskFileUpload
+                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
+                encryptedPath="demo-encrypted-path"
                 type="DragOff"
+                acceptedFileTypes={["pdf","docx"]}
                 title="Seleccionar documentos"
                 subtitle="Haz clic para seleccionar archivos"
-                maxFiles={3}
-                showExtensions={true}
+                showExtensions
                 allowedExtensionsText="Formatos permitidos: PDF, DOCX"
+                showCloseButton
+                hideIcon
+                maxFiles={3}
                 minSelectFile={1}
-                uploadUrl="https://cargue.sycpruebas.com/servicioweb.svc"
-                encryptedPath="ruta-cifrada-de-ejemplo"
-                maxFileSize={10485760} // 10MB
-                acceptedFileTypes={['pdf', 'docx']}
+                maxFileSize={10485760}
               />`
       }
     ],
@@ -344,7 +352,7 @@ export const componentsData: ComponentItem[] = [
               {
                 type: 'code',
                 language: 'bash',
-                code: 'npm install edesk-components@0.0.8'
+                code: 'npm install edesk-components@0.0.14'
               }
             ]
           },
@@ -562,12 +570,14 @@ export const componentsData: ComponentItem[] = [
     type: "component",
     description: "Contenedor layout animado con dos estados; abierto: con un título y subtítulo, cerrado: contenido",
     lastUpdate: "2025-08-11",
-    // Nueva configuración transversal del playground
+    
     playgroundConfig: {
+      componentName: 'EdeskLayout',
       mockData: {
         title: 'Demo Layout 1',
         subtitle: 'Puedes mostrar u ocultar el body con el botón.',
         open: true,
+        children: 'Contenido opcional aquí'
       },
       
       // Desactivar agrupamiento con array vacío
@@ -575,9 +585,11 @@ export const componentsData: ComponentItem[] = [
       
       customControls: {
         title: {
+          type: 'text',
           defaultValue: 'Demo Layout 1'
         },
         subtitle: {
+          type: 'text',
           defaultValue: 'Puedes mostrar u ocultar el body con el botón.'
         },
         open: {
@@ -595,7 +607,7 @@ export const componentsData: ComponentItem[] = [
         children: {
           type: 'textarea',
           defaultValue: 'Contenido opcional aquí'
-        },
+        }
       },
       // Configuración de controles CSS para EdeskLayout
       cssControls: [
@@ -605,39 +617,34 @@ export const componentsData: ComponentItem[] = [
           description: 'Personaliza los colores del layout',
           controls: [
             {
-              variable: '--edeskLayout-bg-color',
-              label: 'Color de fondo',
+              variable: '--edeskLayout-bg-svg-color',
+              label: 'Color del svg',
               type: 'color',
-              defaultValue: '#ffffff',
-              description: 'Color de fondo del layout'
+              defaultValue: '#1877d7'
             },
             {
-              variable: '--edeskLayout-border-color',
-              label: 'Color del borde',
+              variable: '--edeskLayout-header-bg',
+              label: 'Color de fondo para el header',
               type: 'color',
-              defaultValue: '#e0e0e0',
-              description: 'Color del borde del layout'
+              defaultValue: 'linear-gradient(90deg, #1877d7 0%, #0a2e5c 100%)'
             },
             {
-              variable: '--edeskLayout-title-color',
+              variable: '--edeskLayout-container-bg',
+              label: 'Color de fondo del contenedor',
+              type: 'color',
+              defaultValue: '#ffffff'
+            },
+            {
+              variable: '--edeskLayout-text-title',
               label: 'Color del título',
               type: 'color',
-              defaultValue: '#1a1a1a',
-              description: 'Color del texto del título'
+              defaultValue: '#ffffff'
             },
             {
-              variable: '--edeskLayout-subtitle-color',
-              label: 'Color del subtítulo',
+              variable: '--edeskLayout-text-subtitle',
+              label: 'Color del subtitulo',
               type: 'color',
-              defaultValue: '#666666',
-              description: 'Color del texto del subtítulo'
-            },
-            {
-              variable: '--edeskLayout-accent-color',
-              label: 'Color de acento',
-              type: 'color',
-              defaultValue: '#007bff',
-              description: 'Color de acento para botones y elementos interactivos'
+              defaultValue: '#e0e7ef'
             }
           ]
         },
@@ -647,66 +654,60 @@ export const componentsData: ComponentItem[] = [
           description: 'Ajusta el espaciado y dimensiones',
           controls: [
             {
+              variable: '--edeskLayout-container-height',
+              label: 'Alto del contenedor',
+              type: 'range',
+              defaultValue: '600px',
+              min: 400,
+              max: 1200,
+              step: 100,
+              unit: 'px'
+            },
+            {
+              variable: '--edeskLayout-container-width',
+              label: 'Ancho del contenedor',
+              type: 'range',
+              defaultValue: '1200px',
+              min: 400,
+              max: 1500,
+              step: 100,
+              unit: 'px'
+            },
+            {
               variable: '--edeskLayout-border-radius',
               label: 'Radio del borde',
               type: 'range',
-              defaultValue: '12px',
+              defaultValue: '8px',
               min: 0,
-              max: 24,
-              step: 2,
+              max: 60,
+              step: 8,
               unit: 'px',
-              description: 'Radio de las esquinas del layout'
             },
             {
-              variable: '--edeskLayout-padding',
-              label: 'Espaciado interno',
+              variable: '--edeskLayout-padding-header',
+              label: 'Padding del header',
               type: 'range',
-              defaultValue: '1.5rem',
-              min: 0.5,
-              max: 3,
-              step: 0.25,
-              unit: 'rem',
-              description: 'Espaciado interno del layout'
+              defaultValue: '16px',
+              min: 0,
+              max: 60,
+              step: 8,
+              unit: 'px',
             },
             {
-              variable: '--edeskLayout-gap',
-              label: 'Espacio entre elementos',
+              variable: '--edeskLayout-padding-body',
+              label: 'Padding del body',
               type: 'range',
-              defaultValue: '1rem',
-              min: 0.25,
-              max: 2,
-              step: 0.25,
-              unit: 'rem',
-              description: 'Espacio entre título, subtítulo y contenido'
-            }
-          ]
-        },
-        {
-          id: 'animation',
-          label: 'Animación',
-          description: 'Controla las transiciones y animaciones',
-          controls: [
-            {
-              variable: '--edeskLayout-transition-duration',
-              label: 'Duración de transición',
-              type: 'select',
-              defaultValue: '0.3s',
-              options: ['0.1s', '0.2s', '0.3s', '0.4s', '0.5s', '0.8s'],
-              description: 'Duración de las animaciones de apertura/cierre'
+              defaultValue: '20px',
+              min: 0,
+              max: 60,
+              step: 8,
+              unit: 'px',
             },
             {
-              variable: '--edeskLayout-shadow',
-              label: 'Sombra',
-              type: 'select',
-              defaultValue: '0 2px 8px rgba(0,0,0,0.1)',
-              options: [
-                'none',
-                '0 1px 3px rgba(0,0,0,0.1)',
-                '0 2px 8px rgba(0,0,0,0.1)',
-                '0 4px 16px rgba(0,0,0,0.1)',
-                '0 8px 32px rgba(0,0,0,0.15)'
-              ],
-              description: 'Sombra del layout'
+              variable: '--edeskLayout-font-main',
+              label: 'tipo de fuente principal',
+              type: 'text',
+              defaultValue: 'Inter, sans-serif',
             }
           ]
         }
@@ -720,6 +721,7 @@ export const componentsData: ComponentItem[] = [
 
         ]
       },
+      //instalación
       {
         id: 'installation',
         label: 'Instalación',
@@ -746,6 +748,7 @@ export const componentsData: ComponentItem[] = [
           },
         ]
       },
+      //API
       {
         id: 'api',
         label: 'API de Propiedades',
@@ -805,6 +808,7 @@ export const componentsData: ComponentItem[] = [
           }
         ]
       },
+      //IMPLEMENTAION
       {
         id: 'implementation',
         label: 'Guía de Implementación',
@@ -901,28 +905,41 @@ export const componentsData: ComponentItem[] = [
       {
         id: 'recipe-1',
         icon: 'user-circle',
-        title: 'Imagen de perfil única',
+        title: 'Layout example',
+        description: 'layout abierto sin svg',
+        props: {
+          title:'Layout 1',
+          subtitle:'Subtitulo de ejemplo',
+          open: true,
+          content:'content del header',
+          hiddenSVG: true,
+        },
+        code: `<EdeskLayout
+                title="Layout 1"
+                subtitle="Subtitulo de ejemplo"
+                open
+                hiddenSVG
+                content="content del header"
+              />`
+      },
+        
+      {
+        id: 'recipe-2',
+        icon: 'user-circle',
+        title: 'Layout cerrado',
         description: 'Configuración para subir una única imagen de perfil con validación de tipo y tamaño.',
         props: {
-          title:'Demo Layout 1',
-          subtitle:'Puedes mostrar u ocultar el body con el botón.',
-          open:'{open}',
-          content:'content del header'
+          title:'Layout 2',
+          subtitle:'Subtitulo de ejemplo',
+          open:false,
         },
-        code: `<div>
-                <EdeskLayout
-                  title="Demo Layout 1"
-                  subtitle="Puedes mostrar u ocultar el body con el botón."
-                  open={open}
-                  content={
-                    <button onClick={() => setOpen((o) => !o)} style={{ marginLeft: 16 }}>
-                      {open ? 'Cerrar body' : 'Abrir body'}
-                    </button>
-                  }
-                >
-                  <div>Children opcional aquí</div>
-                </EdeskLayout>
-              </div>`
+        code: `<EdeskLayout
+                title="Layout 2"
+                subtitle="Subtitulo de ejemplo"
+                children="Contenido opcional aquí"
+                hiddenSVG
+                content="content del header"
+              />`
       },
     ],
     architecture: {
@@ -953,35 +970,15 @@ export const componentsData: ComponentItem[] = [
     lastUpdate: "2025-08-11",
     
     playgroundConfig: {
+      componentName: 'EdeskViewerPDF',
       mockData: {
         id: "pdf-viewer-example",
-        pdfUrl: "//c:/archivo-pdf",
-        mode: "PdfViewerMode.Light",
-        width: "100%",
-        height: "600px",
-        title: "hola",
-        enabledOptions: "PdfViewerOption.EditorFreeText,PdfViewerOption.EditorStamp,PdfViewerOption.Download,PdfViewerOption.Print"
+        pdfUrl: "..\\..\\public\\sample.pdf",
       },
       
       groups: [],
       
       customControls: {
-        id: {
-          type: 'text',
-          defaultValue: 'pdf-viewer-example',
-          description: 'ID único del visor PDF'
-        },
-        pdfUrl: {
-          type: 'text',
-          defaultValue: '//c:/archivo-pdf',
-          description: 'URL del archivo PDF a visualizar'
-        },
-        mode: {
-          type: 'select',
-          options: ['PdfViewerMode.Basic','PdfViewerMode.Light', 'PdfViewerMode.Dark'],
-          defaultValue: 'PdfViewerMode.Light',
-          description: 'Modo de visualización del PDF'
-        },
         width: {
           type: 'text',
           defaultValue: '100%',
@@ -994,14 +991,21 @@ export const componentsData: ComponentItem[] = [
         },
         title: {
           type: 'text',
-          defaultValue: 'viewerPDF-Gestión documental',
+          defaultValue: 'ViewerPDF - Gestión documental',
           description: 'Título del documento PDF'
         },
+        mode: {
+          type: 'select',
+          options: ['PdfViewerMode.Basic', 'PdfViewerMode.Dark', 'PdfViewerMode.Light'],
+          defaultValue: 'PdfViewerMode.Light',
+          description: 'Modo de apariencia del viewerPDF'
+        },
         enabledOptions: {
-          type: 'textarea',
-          defaultValue: 'PdfViewerOption.EditorFreeText,PdfViewerOption.EditorStamp,PdfViewerOption.Download,PdfViewerOption.Print',
-          description: 'Opciones habilitadas en el visor (separadas por comas)'
-        }
+          type: 'select-check',
+          options: ['PdfViewerOption.Print', 'PdfViewerOption.Download', 'PdfViewerOption.EditorHighlight', 'PdfViewerOption.EditorFreeText', 'PdfViewerOption.EditorInk', 'PdfViewerOption.EditorStamp'],
+          defaultValue: [],
+          description: 'Opciones habilitadas del viewerPDF'
+        },
       },
     },
 
@@ -1012,101 +1016,29 @@ export const componentsData: ComponentItem[] = [
         title: 'Visor básico',
         description: 'Configuración básica para visualizar un PDF con controles mínimos.',
         props: {
-          showToolbar: true,
-          showPageNav: true,
-          showZoomControls: false,
-          showDownload: false,
-          showPrint: false,
-          initialZoom: 'page-fit'
+          mode: 'PdfViewerMode.Light',
+          enabledOptions: ['PdfViewerOption.Download', 'PdfViewerOption.Print', 'PdfViewerOption.EditorHighlight', 'PdfViewerOption.EditorFreeText', 'PdfViewerOption.EditorInk', 'PdfViewerOption.EditorStamp'],
+          width: '80%',
+          height: '550px',
+          title: 'hola',
+          
         },
         code: `<EdeskViewerPDF
-          pdfUrl="https://example.com/document.pdf"
-          showToolbar={true}
-          showPageNav={true}
-          showZoomControls={false}
-          showDownload={false}
-          showPrint={false}
-          initialZoom="page-fit"
-          width="100%"
-          height="500px"
-        />`
+                id="pdf-viewer-example"
+                pdfUrl={"..\\..\\public\\sample.pdf"}
+                mode={PdfViewerMode.Light}
+                width="80%"
+                height="550px"
+                title="hola"
+                enabledOptions={[
+                  PdfViewerOption.EditorFreeText,
+                  PdfViewerOption.EditorStamp,
+                  PdfViewerOption.Download,
+                  PdfViewerOption.Print,
+                ]}
+                />`
       },
-      {
-        id: 'recipe-2',
-        icon: 'tools',
-        title: 'Visor completo',
-        description: 'Visor con todas las funcionalidades habilitadas para máxima interactividad.',
-        props: {
-          showToolbar: true,
-          showPageNav: true,
-          showZoomControls: true,
-          showDownload: true,
-          showPrint: true,
-          initialZoom: 'auto',
-          theme: 'light'
-        },
-        code: `<EdeskViewerPDF
-          pdfUrl="https://example.com/document.pdf"
-          showToolbar={true}
-          showPageNav={true}
-          showZoomControls={true}
-          showDownload={true}
-          showPrint={true}
-          initialZoom="auto"
-          theme="light"
-          width="100%"
-          height="600px"
-        />`
-      },
-      {
-        id: 'recipe-3',
-        icon: 'moon',
-        title: 'Modo oscuro',
-        description: 'Visor configurado para tema oscuro con controles esenciales.',
-        props: {
-          theme: 'dark',
-          showToolbar: true,
-          showPageNav: true,
-          showZoomControls: true,
-          initialZoom: '100%'
-        },
-        code: `<EdeskViewerPDF
-          pdfUrl="https://example.com/document.pdf"
-          theme="dark"
-          showToolbar={true}
-          showPageNav={true}
-          showZoomControls={true}
-          initialZoom="100%"
-          width="100%"
-          height="600px"
-        />`
-      },
-      {
-        id: 'recipe-4',
-        icon: 'mobile',
-        title: 'Optimizado móvil',
-        description: 'Configuración optimizada para dispositivos móviles con controles simplificados.',
-        props: {
-          showToolbar: true,
-          showPageNav: true,
-          showZoomControls: false,
-          showDownload: true,
-          showPrint: false,
-          initialZoom: 'page-width',
-          height: '400px'
-        },
-        code: `<EdeskViewerPDF
-          pdfUrl="https://example.com/document.pdf"
-          showToolbar={true}
-          showPageNav={true}
-          showZoomControls={false}
-          showDownload={true}
-          showPrint={false}
-          initialZoom="page-width"
-          width="100%"
-          height="400px"
-        />`
-      }
+      
     ],
 
     tabs: [
@@ -1135,8 +1067,8 @@ export const componentsData: ComponentItem[] = [
               {
                 type: 'code',
                 language: 'javascript',
-                code: 'import { EdeskViewerPDF } from "edesk-components";'
-              }
+                code: 'import { EdeskViewerPDF, PdfViewerOption, PdfViewerMode } from "edesk-components";'
+              },
             ]
           }
         ]

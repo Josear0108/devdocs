@@ -86,7 +86,7 @@ export type ControlValue = string | number | boolean | string[];
 export interface PlaygroundControl {
   prop: string; // Nombre de la prop que controla
   label: string;
-  type: 'radio' | 'text' | 'boolean' | 'switch' | 'number' | 'select' | 'textarea' | 'color' | 'range';
+  type: 'radio' | 'text' | 'boolean' | 'switch' | 'number' | 'select' | 'select-check' | 'textarea' | 'color' | 'range';
   options?: string[] | number[]; // Para 'radio' y 'select'
   defaultValue: ControlValue | null;
   min?: number; // Para 'number' y 'range'
@@ -171,7 +171,7 @@ export interface Recipe {
   title: string;
   description: string;
   code: string;
-  props: Record<string, string | number | boolean>; // Valores de las props para esta receta
+  props: Record<string, string | number | boolean | string[]>; // Valores de las props para esta receta
 }
 
 /** Define un nodo para el diagrama de arquitectura */

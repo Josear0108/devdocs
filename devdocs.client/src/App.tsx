@@ -30,6 +30,8 @@ function App() {
     <AnimatePresence mode="wait">
       <Routes>
         <Route path="/" element={<Layout />}>
+        
+          
           <Route index element={<HomePage />} />
           <Route path="componentes" element={<ComponentsPage />} />
           <Route path="componentes/:slug" element={<ComponentDetailPage />} />

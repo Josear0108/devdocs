@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj": {}
+    "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj": {}
   },
   "projects": {
-    "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj": {
+    "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
+        "projectUniqueName": "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
         "projectName": "DevDocs.Server",
-        "projectPath": "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
+        "projectPath": "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
         "packagesPath": "C:\\Users\\j.prada\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\obj\\",
+        "outputPath": "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

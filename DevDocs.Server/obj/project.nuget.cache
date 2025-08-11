@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mF04NsJxJVo=",
+  "dgSpecHash": "OIyrTqwWT/s=",
   "success": true,
-  "projectFilePath": "c:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
+  "projectFilePath": "C:\\Users\\j.prada\\Downloads\\devdocs\\devdocs\\DevDocs.Server\\DevDocs.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\j.prada\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\8.0.19\\microsoft.aspnetcore.spaproxy.8.0.19.nupkg.sha512",
     "C:\\Users\\j.prada\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

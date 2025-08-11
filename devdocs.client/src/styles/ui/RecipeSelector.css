@@ -1,0 +1,125 @@
+/* Recipe Selector Styles */
+.recipe-selector {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--card);
+}
+
+.recipe-header {
+  margin-bottom: 1.5rem;
+}
+
+.recipe-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recipe-description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.recipe-card {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--background);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.recipe-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.15);
+  transform: translateY(-2px);
+}
+
+.recipe-card:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+.recipe-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.recipe-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--primary-muted, rgba(147, 51, 234, 0.1));
+  border-radius: var(--radius);
+}
+
+.recipe-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.recipe-card-description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  margin: 0 0 1rem 0;
+}
+
+.recipe-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.recipe-apply-text {
+  flex: 1;
+}
+
+.recipe-arrow {
+  font-size: 1rem;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.recipe-card:hover .recipe-arrow {
+  transform: translateX(4px);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .recipe-selector {
+    padding: 1rem;
+  }
+}

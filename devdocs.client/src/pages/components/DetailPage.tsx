@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { componentsData } from "../../data/components";
@@ -18,14 +18,11 @@ const ComponentDetailPage = () => {
         [slug]
     );
 
-    // Estado para manejar las props del Playground 
-    const [playgroundProps, setPlaygroundProps] = useState<Record<string, unknown>>(() => {
-        if (!componentItem?.playground) return {};
-        return componentItem.playground.controls.reduce((acc, control) => {
-            acc[control.prop] = control.defaultValue;
-            return acc;
-        }, {} as Record<string, unknown>);
-    });
+    // Función para manejar las props del Playground 
+    const handlePlaygroundPropsChange = (props: Record<string, unknown>) => {
+        // Aquí puedes manejar los cambios de props si necesitas hacer algo específico
+        console.log('🎮 [DetailPage] Playground props changed:', props);
+    };
 
     if (!componentItem) {
         return (
@@ -61,8 +58,7 @@ const ComponentDetailPage = () => {
             <div className="documentation-container">
                 <Documentation
                     componentItem={componentItem}
-                    playgroundProps={playgroundProps}
-                    onPlaygroundPropsChange={setPlaygroundProps}
+                    onPlaygroundPropsChange={handlePlaygroundPropsChange}
                 />
             </div>
         </motion.div>
