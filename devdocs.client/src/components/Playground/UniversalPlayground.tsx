@@ -399,65 +399,6 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
   return (
     <div className="universal-playground">
       <div className="playground-layout">
-        {/* Panel de Controles con Tabs */}
-        <div className="playground-controls">
-          <PlaygroundTabs
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            propsContent={
-              <div className="props-controls">
-                {playgroundGroups.map(group => {
-                  const visibleControls = getVisibleControls(group.controls);
-                  if (visibleControls.length === 0) return null;
-
-                  return (
-                    <div key={group.id} className="control-group">
-                      {group.label && (
-                        <h4 className="group-title">{group.label}</h4>
-                      )}
-                      {group.description && (
-                        <p className="group-description">{group.description}</p>
-                      )}
-                      
-                      <div className="controls-list">
-                        {visibleControls.map(control => (
-                          <ControlRenderer
-                            key={control.prop}
-                            control={control}
-                            value={props[control.prop] as ControlValue}
-                            onChange={(value) => updateProp(control.prop, value)}
-                            disabled={!isControlEnabled(control)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            }
-            cssContent={
-              <div className="css-controls">
-                {cssControls && cssControls.length > 0 ? (
-                  cssControls.map(group => (
-                    <CSSControlRenderer
-                      key={group.id}
-                      group={group}
-                      values={cssVariables}
-                      onChange={handleCSSVariableChange}
-                      componentProps={props}
-                    />
-                  ))
-                ) : (
-                  <div className="no-css-controls">
-                    <p>No hay controles CSS configurados para este componente.</p>
-                    <p>Puedes agregar controles CSS en la configuración del playground.</p>
-                  </div>
-                )}
-              </div>
-            }
-          />
-        </div>
-
         {/* Panel de Preview */}
         <div className="playground-preview">
           <div className="preview-header">
@@ -534,6 +475,65 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
               </SyntaxHighlighter>
             </div>
           </div>
+        </div>
+
+        {/* Panel de Controles con Tabs */}
+        <div className="playground-controls">
+          <PlaygroundTabs
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            propsContent={
+              <div className="props-controls">
+                {playgroundGroups.map(group => {
+                  const visibleControls = getVisibleControls(group.controls);
+                  if (visibleControls.length === 0) return null;
+
+                  return (
+                    <div key={group.id} className="control-group">
+                      {group.label && (
+                        <h4 className="group-title">{group.label}</h4>
+                      )}
+                      {group.description && (
+                        <p className="group-description">{group.description}</p>
+                      )}
+                      
+                      <div className="controls-list">
+                        {visibleControls.map(control => (
+                          <ControlRenderer
+                            key={control.prop}
+                            control={control}
+                            value={props[control.prop] as ControlValue}
+                            onChange={(value) => updateProp(control.prop, value)}
+                            disabled={!isControlEnabled(control)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            }
+            cssContent={
+              <div className="css-controls">
+                {cssControls && cssControls.length > 0 ? (
+                  cssControls.map(group => (
+                    <CSSControlRenderer
+                      key={group.id}
+                      group={group}
+                      values={cssVariables}
+                      onChange={handleCSSVariableChange}
+                      componentProps={props}
+                    />
+                  ))
+                ) : (
+                  <div className="no-css-controls">
+                    <p>No hay controles CSS configurados para este componente.</p>
+                    <p>Puedes agregar controles CSS en la configuración del playground.</p>
+                  </div>
+                )}
+              </div>
+            }
+          />
         </div>
       </div>
     </div>
