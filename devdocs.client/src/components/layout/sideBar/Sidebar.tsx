@@ -12,7 +12,7 @@ import {
 import ThemeToggle from "../../ui/ThemeToggle"
 import "../../../components/layout/sideBar/sidebar.css"
 import { docMenu, mainMenu } from "../../../config/menuConfig"
-import { Badge } from "../../ui/badge/Badge"
+import { Badge } from "../../ui/Badge"
 const sidebarAnimation = {
   hidden: { x: -280 },
   visible: {

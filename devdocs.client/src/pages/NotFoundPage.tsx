@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Home, AlertCircle, Mail } from "react-feather"
-import { Button } from "../components/ui/button/Button"
+import { Button } from "../components/ui/Button"
 import { useState, useEffect } from "react"
 import "../styles/not-found.css"
 
