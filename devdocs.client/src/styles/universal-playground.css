@@ -8,7 +8,7 @@
 
 .playground-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1fr 300px;
   gap: 2rem;
   height: 100%;
   min-height: 600px;
@@ -18,10 +18,31 @@
 
 /* Panel de Controles */
 .playground-controls {
-  border-right: 1px solid var(--border);
-  padding-right: 1.5rem;
   overflow-y: auto;
   max-height: 80vh;
+  border-radius: var(--radius);
+}
+
+/* Estilos específicos para el scroll del panel de controles */
+.playground-controls::-webkit-scrollbar {
+  width: 8px;
+}
+
+.playground-controls::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: var(--radius);
+  margin-top: var(--radius);
+  margin-bottom: var(--radius);
+}
+
+.playground-controls::-webkit-scrollbar-thumb {
+  background: var(--playground-primary);
+  border-radius: var(--radius);
+  border: 1px solid var(--muted);
+}
+
+.playground-controls::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--playground-primary) 80%, black);
 }
 
 .controls-title {
@@ -33,6 +54,10 @@
 
 .control-group {
   margin-bottom: 2rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
 }
 
 .group-title {
@@ -282,15 +307,15 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   display: inline-block;
   width: 48px;
   height: 24px;
-  background-color: #e2e8f0;
-  border: 1px solid #cbd5e1;
+  background-color: var(--muted-foreground);
+  border: 1px solid var(--border);
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .switch-slider:hover {
-  background-color: #cbd5e1;
+  background-color: var(--muted-foreground);
 }
 
 .switch-slider-inner {
@@ -299,15 +324,15 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   left: 2px;
   width: 18px;
   height: 18px;
-  background-color: #ffffff;
+  background-color: var(--background);
   border-radius: 50%;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .switch-input:checked + .switch-slider {
-  background-color: #9333ea;
-  border-color: #9333ea;
+  background-color: var(--playground-primary);
+  border-color: var(--playground-primary);
 }
 
 .switch-input:checked + .switch-slider .switch-slider-inner {
@@ -317,6 +342,12 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
 
 .switch-input:disabled + .switch-slider {
   cursor: not-allowed;
+  opacity: 0.4;
+  background-color: var(--muted);
+}
+
+.switch-input:disabled + .switch-slider .switch-slider-inner {
+  background-color: var(--muted-foreground);
   opacity: 0.6;
 }
 
@@ -471,14 +502,14 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
 @media (max-width: 1024px) {
   .playground-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr auto;
   }
 
   .playground-controls {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding-right: 0;
-    padding-bottom: 1.5rem;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    padding-left: 0;
+    padding-top: 1.5rem;
     max-height: none;
     overflow-y: visible;
   }
@@ -663,4 +694,67 @@ div.universal-playground input[type="range"].control-range::-moz-range-thumb {
   font-size: 0.75rem;
   color: var(--muted-foreground);
   text-align: right;
+}
+
+/* === ESTILOS PERSONALIZADOS PARA SCROLL === */
+
+/* Estilos para WebKit (Chrome, Safari, Edge) - Excepto controles */
+.preview-container::-webkit-scrollbar,
+.code-block-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.preview-container::-webkit-scrollbar-track,
+.code-block-wrapper::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.preview-container::-webkit-scrollbar-thumb,
+.code-block-wrapper::-webkit-scrollbar-thumb {
+  background: var(--playground-primary);
+  border-radius: 4px;
+  border: 1px solid var(--muted);
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover,
+.code-block-wrapper::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--playground-primary) 80%, black);
+}
+
+.preview-container::-webkit-scrollbar-corner,
+.code-block-wrapper::-webkit-scrollbar-corner {
+  background: var(--muted);
+}
+
+/* Estilos para Firefox - Excepto controles */
+.preview-container,
+.code-block-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: var(--playground-primary) var(--muted);
+}
+
+/* Estilos globales más sutiles para toda la aplicación */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--playground-primary) 60%, transparent) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--playground-primary) 60%, transparent);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--playground-primary);
 }
