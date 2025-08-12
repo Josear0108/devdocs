@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import '../../styles/ui/SelectCheck.css';
 
 export interface SelectCheckProps {
@@ -25,61 +24,65 @@ const SelectCheck: React.FC<SelectCheckProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (
-        ref.current && !ref.current.contains(e.target as Node) &&
-        dropdownRef.current && !dropdownRef.current.contains(e.target as Node)
-      ) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        setOpen(false);
+      }
+    };
+    
     document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open]);
 
-  const renderChips = () => (
-    <div className="selectcheck-chips">
-      {value.slice(0, 2).map((v) => (
-        <span key={v} className="selectcheck-chip">
-          {v}
-          <button
-            type="button"
-            className="selectcheck-chip-remove"
-            onClick={e => {
-              e.stopPropagation();
-              onChange(value.filter(val => val !== v));
-            }}
-            tabIndex={-1}
-            aria-label={`Quitar ${v}`}
-          >×</button>
-        </span>
-      ))}
-      {value.length > 2 && (
-        <span className="selectcheck-chip selectcheck-chip-count">
-          +{value.length - 2}
-        </span>
-      )}
-    </div>
-  );
+  const renderChips = () => {
+    // Mostrar solo las primeras opciones que quepan, el resto se indica con el contador
+    const maxVisibleChips = Math.max(1, Math.min(value.length, 3)); // Máximo 3 chips visibles
+    const visibleValues = value.slice(0, maxVisibleChips);
+    const remainingCount = value.length - visibleValues.length;
+    
+    return (
+      <div className="selectcheck-chips">
+        {visibleValues.map((v) => (
+          <span key={v} className="selectcheck-chip" title={v}>
+            <span className="selectcheck-chip-text">{v}</span>
+            <button
+              type="button"
+              className="selectcheck-chip-remove"
+              onClick={e => {
+                e.stopPropagation();
+                onChange(value.filter(val => val !== v));
+              }}
+              tabIndex={-1}
+              aria-label={`Quitar ${v}`}
+            >×</button>
+          </span>
+        ))}
+        {remainingCount > 0 && (
+          <span className="selectcheck-chip selectcheck-chip-count">
+            +{remainingCount}
+          </span>
+        )}
+      </div>
+    );
+  };
 
   const renderDropdown = () => {
-    if (!open || !ref.current) return null;
+    if (!open) return null;
     
-    const rect = ref.current.getBoundingClientRect();
-    
-    return createPortal(
-      <div
-        ref={dropdownRef}
-        className="selectcheck-dropdown"
-        style={{
-          top: `${rect.bottom + 4}px`,
-          left: `${rect.left}px`,
-          width: `${rect.width}px`,
-        }}
-      >
+    return (
+      <div className="selectcheck-dropdown">
         <div className="selectcheck-options">
           {options.length === 0 && (
             <div className="selectcheck-no-options">Sin opciones</div>
@@ -87,19 +90,18 @@ const SelectCheck: React.FC<SelectCheckProps> = ({
           {options.map((option) => {
             const optionStr = String(option);
             const checked = value.includes(optionStr);
-            const onlyOneSelected = value.length === 1 && checked;
             return (
               <label key={optionStr} className="selectcheck-option">
                 <input
                   type="checkbox"
                   checked={checked}
-                  disabled={disabled || onlyOneSelected}
+                  disabled={disabled}
                   onChange={() => {
+                    if (disabled) return;
+                    
                     let newValue = [...value];
                     if (checked) {
-                      if (newValue.length > 1) {
-                        newValue = newValue.filter((v) => v !== optionStr);
-                      }
+                      newValue = newValue.filter((v) => v !== optionStr);
                     } else {
                       newValue.push(optionStr);
                     }
@@ -111,8 +113,7 @@ const SelectCheck: React.FC<SelectCheckProps> = ({
             );
           })}
         </div>
-      </div>,
-      document.body
+      </div>
     );
   };
 

@@ -7,17 +7,63 @@ import { ControlRenderer } from './ControlRenderer';
 import { CSSControlRenderer } from './CSSControlRenderer';
 import { PlaygroundTabs } from './PlaygroundTabs';
 import { CopyButton } from '../ui/CopyButton';
-import { PdfViewerMode, PdfViewerOption } from 'edesk-components';
-
-// Debug: verificar que los enums se importen correctamente
-console.log('[UniversalPlayground] PdfViewerMode:', PdfViewerMode);
-console.log('[UniversalPlayground] PdfViewerOption:', PdfViewerOption);
 
 interface UniversalPlaygroundProps {
   config: PlaygroundConfig;
   onPropsChange?: (props: Record<string, unknown>) => void;
   externalProps?: Record<string, unknown>;
 }
+
+// Función genérica para procesar props con enums
+const processEnumProps = (props: Record<string, unknown>, enumConfigs: PlaygroundConfig['enumConfigs']) => {
+  if (!enumConfigs || enumConfigs.length === 0) {
+    return props;
+  }
+
+  const processed = { ...props };
+  
+  enumConfigs.forEach(enumConfig => {
+    const { prop, enumObject, conversionMap } = enumConfig;
+    const propValue = processed[prop];
+    
+    if (!propValue) return;
+    
+    // Si es un array (para enabledOptions), convertir cada elemento
+    if (Array.isArray(propValue)) {
+      processed[prop] = propValue.map((item: string) => {
+        if (typeof item === 'string' && conversionMap?.[item]) {
+          const enumKey = conversionMap[item];
+          const convertedValue = enumObject[enumKey];
+          return convertedValue;
+        }
+        return item;
+      });
+    }
+    
+    // Si es un string con comas (desde select-check), convertir a array y luego procesar
+    else if (typeof propValue === 'string' && propValue.includes(',')) {
+      const itemsArray = propValue.split(',').map(item => item.trim()).filter(Boolean);
+      processed[prop] = itemsArray.map((item: string) => {
+        if (conversionMap?.[item]) {
+          const enumKey = conversionMap[item];
+          const convertedValue = enumObject[enumKey];
+          return convertedValue;
+        }
+        return item;
+      });
+    }
+    
+    // Si es un string simple, convertir a valor enum
+    else if (typeof propValue === 'string') {
+      if (conversionMap?.[propValue]) {
+        const enumKey = conversionMap[propValue];
+        processed[prop] = enumObject[enumKey];
+      }
+    }
+  });
+  
+  return processed;
+};
 
 export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({ 
   config,
@@ -31,7 +77,8 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
     mockData = {}, 
     excludeProps = [], 
     customControls = {},
-    cssControls = [] 
+    cssControls = [],
+    enumConfigs = [] // Nueva propiedad para configuración de enums
   } = config;
 
   // Ref para la función callback para evitar recreaciones innecesarias
@@ -102,14 +149,12 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
       });
     });
 
-    console.log('🎯 [UniversalPlayground] Props iniciales:', initialProps);
     return initialProps;
   });
 
   // Aplicar props externas cuando cambien (para recipes)
   useEffect(() => {
     if (externalProps && Object.keys(externalProps).length > 0) {
-      console.log('🎯 [UniversalPlayground] Aplicando props externas:', externalProps);
       setProps(currentProps => {
         const newProps = { ...currentProps, ...externalProps };
         onPropsChangeRef.current?.(newProps);
@@ -121,8 +166,6 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
   // Actualizar prop y notificar cambios
   const updateProp = (propName: string, value: ControlValue | null) => {
     const newProps = { ...props };
-    
-    console.log('🎮 [UniversalPlayground] Actualizando prop:', propName, '=', value, typeof value);
     
     if (value === null || value === '' || value === undefined) {
       delete newProps[propName];
@@ -136,27 +179,24 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
         newProps[propName] = value;
       }
     } else if (propName === 'enabledOptions') {
-      // Para enabledOptions, siempre mantener como string para que se procese después
-      if (typeof value === 'string') {
-        newProps[propName] = value;
-      } else if (Array.isArray(value)) {
-        // Si viene un array (desde recipes), convertir a string separado por comas
-        newProps[propName] = value.join(', ');
+      // Para enabledOptions, mantener como array para que SelectCheck funcione correctamente
+      if (Array.isArray(value)) {
+        newProps[propName] = value; // Mantener como array
+      } else if (typeof value === 'string') {
+        // Si viene como string (desde entrada de usuario), convertir a array
+        newProps[propName] = value.split(',').map(opt => opt.trim()).filter(Boolean);
       } else {
         newProps[propName] = value;
       }
-      console.log('🎮 [UniversalPlayground] enabledOptions actualizado a:', newProps[propName]);
     } else if (propName === 'mode') {
       // Para mode, mantener como string para que se procese después
       newProps[propName] = value;
-      console.log('🎮 [UniversalPlayground] mode actualizado a:', newProps[propName]);
     } else if (propName === 'children' && typeof value === 'string') {
       newProps[propName] = value || 'Contenido de ejemplo';
     } else {
       newProps[propName] = value;
     }
     
-    console.log('🎮 [UniversalPlayground] Props actualizadas:', newProps);
     setProps(newProps);
     onPropsChangeRef.current?.(newProps);
   };
@@ -271,17 +311,62 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
 
   // Función auxiliar para formatear props del ViewerPDF
   const formatViewerPDFProp = (key: string, value: unknown): string => {
-    if (key === 'enabledOptions' && typeof value === 'string') {
-      const options = value.split(',').map(opt => opt.trim()).filter(Boolean);
-      const formattedOptions = options.map(opt => `       ${opt},`).join('\n');
-      return `     ${key}={[\n${formattedOptions}\n     ]}`;
+    if (key === 'enabledOptions') {
+      // Si es string con comas, convertir a array
+      let optionsArray: string[] = [];
+      if (typeof value === 'string') {
+        optionsArray = value.split(',').map(opt => opt.trim()).filter(Boolean);
+      } else if (Array.isArray(value)) {
+        optionsArray = value.map(opt => String(opt));
+      }
+      
+      // Convertir números de enum de vuelta a nombres si es necesario
+      const formattedOptions = optionsArray.map(opt => {
+        // Si es un número, convertir de vuelta a nombre de enum
+        if (/^\d+$/.test(opt)) {
+          const enumConfig = enumConfigs?.find(config => config.prop === 'enabledOptions');
+          if (enumConfig) {
+            // Buscar en el enum object por valor numérico
+            const enumEntries = Object.entries(enumConfig.enumObject);
+            const matchingEntry = enumEntries.find(([, enumValue]) => String(enumValue) === opt);
+            if (matchingEntry) {
+              return `PdfViewerOption.${matchingEntry[0]}`;
+            }
+          }
+        }
+        // Si ya tiene el formato correcto, mantenerlo
+        if (opt.startsWith('PdfViewerOption.')) {
+          return opt;
+        }
+        // Si no tiene el prefijo pero es un nombre válido, agregarlo
+        return `PdfViewerOption.${opt}`;
+      });
+      
+      const formattedOptionsString = formattedOptions.map(opt => `       ${opt},`).join('\n');
+      return `     ${key}={[\n${formattedOptionsString}\n     ]}`;
+    }
+    
+    if (key === 'mode') {
+      let modeValue = String(value);
+      // Si es un número, convertir de vuelta a nombre de enum
+      if (/^\d+$/.test(modeValue)) {
+        const enumConfig = enumConfigs?.find(config => config.prop === 'mode');
+        if (enumConfig) {
+          const enumEntries = Object.entries(enumConfig.enumObject);
+          const matchingEntry = enumEntries.find(([, enumValue]) => String(enumValue) === modeValue);
+          if (matchingEntry) {
+            modeValue = `PdfViewerMode.${matchingEntry[0]}`;
+          }
+        }
+      }
+      // Si ya tiene el formato correcto, mantenerlo
+      if (!modeValue.startsWith('PdfViewerMode.')) {
+        modeValue = `PdfViewerMode.${modeValue}`;
+      }
+      return `     ${key}={${modeValue}}`;
     }
     
     if (typeof value === 'string') {
-      // Para props como mode que son enums, no usar comillas
-      if (key === 'mode' && value.startsWith('PdfViewerMode.')) {
-        return `     ${key}={${value}}`;
-      }
       // Para URLs y strings normales
       return `     ${key}={"${value}"}`;
     }
@@ -342,110 +427,27 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
     return `<${finalComponentName}${propsString ? '\n' + propsString + '\n' : ''} />`;
   };
 
-  // Función auxiliar para procesar props de ViewerPDF
-  const processViewerPDFProps = (props: Record<string, unknown>) => {
-    const processed = { ...props };
-    
-    console.log('🔍 [UniversalPlayground] Procesando props de ViewerPDF:', processed);
-    console.log('🔍 [UniversalPlayground] PdfViewerMode disponible:', PdfViewerMode);
-    console.log('🔍 [UniversalPlayground] PdfViewerOption disponible:', PdfViewerOption);
-    
-    // Convertir mode string a enum value
-    if (processed.mode && typeof processed.mode === 'string') {
-      console.log('🔍 [UniversalPlayground] Convirtiendo mode:', processed.mode, typeof processed.mode);
-      const originalMode = processed.mode;
-      
-      if (processed.mode === 'PdfViewerMode.Light') {
-        processed.mode = PdfViewerMode.Light;
-        console.log('✅ [UniversalPlayground] Mode convertido de', originalMode, 'a:', processed.mode, typeof processed.mode);
-      } else if (processed.mode === 'PdfViewerMode.Dark') {
-        processed.mode = PdfViewerMode.Dark;
-        console.log('✅ [UniversalPlayground] Mode convertido de', originalMode, 'a:', processed.mode, typeof processed.mode);
-      } else if (processed.mode === 'PdfViewerMode.Basic') {
-        processed.mode = PdfViewerMode.Basic;
-        console.log('✅ [UniversalPlayground] Mode convertido de', originalMode, 'a:', processed.mode, typeof processed.mode);
-      } else {
-        console.log('❌ [UniversalPlayground] Mode no reconocido:', processed.mode);
-      }
-    }
-    
-    // Convertir enabledOptions strings a enum values  
-    if (processed.enabledOptions) {
-      console.log('🔍 [UniversalPlayground] EnabledOptions antes:', processed.enabledOptions, typeof processed.enabledOptions);
-      
-      // Si es un string, convertir a array
-      if (typeof processed.enabledOptions === 'string') {
-        const optionsArray = processed.enabledOptions.split(',').map(opt => opt.trim()).filter(Boolean);
-        processed.enabledOptions = optionsArray;
-        console.log('🔍 [UniversalPlayground] EnabledOptions convertido a array:', processed.enabledOptions);
-      }
-      
-      // Si es un array, convertir cada elemento
-      if (Array.isArray(processed.enabledOptions)) {
-        processed.enabledOptions = processed.enabledOptions.map((option: string) => {
-          console.log('🔍 [UniversalPlayground] Convirtiendo opción:', option);
-          switch (option) {
-            case 'PdfViewerOption.Print': 
-              console.log('✅ [UniversalPlayground] → Print enum:', PdfViewerOption.Print);
-              return PdfViewerOption.Print;
-            case 'PdfViewerOption.Download': 
-              console.log('✅ [UniversalPlayground] → Download enum:', PdfViewerOption.Download);
-              return PdfViewerOption.Download;
-            case 'PdfViewerOption.EditorHighlight': 
-              console.log('✅ [UniversalPlayground] → EditorHighlight enum:', PdfViewerOption.EditorHighlight);
-              return PdfViewerOption.EditorHighlight;
-            case 'PdfViewerOption.EditorFreeText': 
-              console.log('✅ [UniversalPlayground] → EditorFreeText enum:', PdfViewerOption.EditorFreeText);
-              return PdfViewerOption.EditorFreeText;
-            case 'PdfViewerOption.EditorInk': 
-              console.log('✅ [UniversalPlayground] → EditorInk enum:', PdfViewerOption.EditorInk);
-              return PdfViewerOption.EditorInk;
-            case 'PdfViewerOption.EditorStamp': 
-              console.log('✅ [UniversalPlayground] → EditorStamp enum:', PdfViewerOption.EditorStamp);
-              return PdfViewerOption.EditorStamp;
-            default: 
-              console.log('❌ [UniversalPlayground] → Opción no reconocida, mantener como string:', option);
-              return option;
-          }
-        });
-        console.log('✅ [UniversalPlayground] EnabledOptions finales:', processed.enabledOptions);
-      }
-    }
-    
-    console.log('🎯 [UniversalPlayground] Props procesadas finales para ViewerPDF:', processed);
-    return processed;
-  };
-
   // Preparar props finales para el componente (incluyendo mockData)
   const finalProps = useMemo(() => {
     const merged = { ...mockData, ...props };
-    const currentComponentName = Component.displayName || Component.name || '';
     
-    console.log('🔍 [UniversalPlayground] Nombre del componente detectado:', currentComponentName);
-    console.log('🔍 [UniversalPlayground] Comparando con "EdeskViewerPDF":', currentComponentName === 'EdeskViewerPDF');
-    
-    // Procesar enums para ViewerPDF - Verificar múltiples nombres posibles
-    if (currentComponentName === 'EdeskViewerPDF' || currentComponentName === 'ViewerPDF' || currentComponentName.includes('ViewerPDF')) {
-      console.log('✅ [UniversalPlayground] Detectado componente ViewerPDF, procesando enums...');
-      const processedProps = processViewerPDFProps(merged);
+    // Procesar enums usando configuración genérica
+    if (enumConfigs && enumConfigs.length > 0) {
+      const processedProps = processEnumProps(merged, enumConfigs);
       Object.assign(merged, processedProps);
-    } else {
-      console.log('❌ [UniversalPlayground] Componente NO es ViewerPDF, saltando procesamiento de enums');
     }
     
     // Procesar children especialmente
     if (merged.children && typeof merged.children === 'string' && merged.children.trim()) {
       // Crear un elemento div con el contenido string para componentes que esperan React nodes
+      const currentComponentName = Component.displayName || Component.name || '';
       if (currentComponentName === 'EdeskLayout') {
         merged.children = React.createElement('div', {}, merged.children);
       }
     }
 
-    // Debug: log de las props finales para diagnosticar problemas
-    console.log(`[UniversalPlayground] ${currentComponentName} - Props finales:`, merged);
-    
     return merged;
-  }, [mockData, props, Component]);
+  }, [mockData, props, Component, enumConfigs]);
 
   // Función para manejar cambios en CSS variables
   const handleCSSVariableChange = (variable: string, value: string) => {
@@ -541,14 +543,6 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
             {(() => {
               try {
                 const componentName = Component.displayName || Component.name || '';
-                console.log(`🎯 [UniversalPlayground] Renderizando ${componentName} con props:`, finalProps);
-                
-                // Debug específico para ViewerPDF
-                if (componentName === 'EdeskViewerPDF' || componentName === 'ViewerPDF' || componentName.includes('ViewerPDF')) {
-                  console.log('🔍 [ViewerPDF Debug] Mode final:', finalProps.mode, typeof finalProps.mode);
-                  console.log('🔍 [ViewerPDF Debug] EnabledOptions final:', finalProps.enabledOptions, typeof finalProps.enabledOptions);
-                  console.log('🔍 [ViewerPDF Debug] Todas las props finales:', JSON.stringify(finalProps, null, 2));
-                }
                 
                 // Crear una key única basada en las props para forzar re-render
                 const componentKey = `${componentName}-${JSON.stringify(finalProps.mode)}-${JSON.stringify(finalProps.enabledOptions)}`;

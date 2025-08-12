@@ -1,4 +1,3 @@
-import { Children } from "react";
 import type { ComponentItem } from "../types/component"
 import { EdeskFileUpload, EdeskLayout, EdeskViewerPDF, PdfViewerMode, PdfViewerOption } from "edesk-components";
 
@@ -33,13 +32,6 @@ export const componentsData: ComponentItem[] = [
           type: 'select',
           options: ['Large', 'DragOff', 'Button'],
           defaultValue: 'Large'
-        },
-        acceptedFileTypes: {
-          type: 'select-check',
-          options: [
-            'pdf', 'svg', 'png', 'jpg', 'csv', 'psd', 'zip', 's01', 'mid', 'midi', 'mpga', 'mp2', 'mp3', 'wav', 'bmp', 'gif', 'jpeg', 'jfif', 'jpe', 'tiff', 'tif', 'txt', 'text', 'dat', 'rtx', 'rtf', 'xml', 'xsl', 'mpeg', 'mpg', 'mpe', 'mp4', 'webm', 'qt', 'mov', 'avi', 'movie', 'doc', 'xls', 'docx', 'xlsx', 'xlsm', 'xltm', 'xlam', 'xlsb', 'word', 'xl', 'ppt', 'pptx', 'eml', 'msg', 'i01', 'p8', 'key', 'p10', 'csr', 'cer', 'crl', 'p7c', 'crt', 'der', 'pem', 'p12', 'pfx', 'p7b', 'spc', 'p7r', 'i00', 'r00', 'r000', 's00', 'e00', 'm4a', 'aac'
-          ],
-          defaultValue: ['pdf'],
         },
         title: {
           defaultValue: 'Documento de identificación'
@@ -97,6 +89,13 @@ export const componentsData: ComponentItem[] = [
           type: 'select',
           options: [1048576, 5242880, 10485760, 52428800], // 1MB, 5MB, 10MB, 50MB
           defaultValue: 10485760
+        },
+        acceptedFileTypes: {
+          type: 'select-check',
+          options: [
+            'pdf', 'svg', 'png', 'jpg', 'csv', 'psd', 'zip', 's01', 'mid', 'midi', 'mpga', 'mp2', 'mp3', 'wav', 'bmp', 'gif', 'jpeg', 'jfif', 'jpe', 'tiff', 'tif', 'txt', 'text', 'dat', 'rtx', 'rtf', 'xml', 'xsl', 'mpeg', 'mpg', 'mpe', 'mp4', 'webm', 'qt', 'mov', 'avi', 'movie', 'doc', 'xls', 'docx', 'xlsx', 'xlsm', 'xltm', 'xlam', 'xlsb', 'word', 'xl', 'ppt', 'pptx', 'eml', 'msg', 'i01', 'p8', 'key', 'p10', 'csr', 'cer', 'crl', 'p7c', 'crt', 'der', 'pem', 'p12', 'pfx', 'p7b', 'spc', 'p7r', 'i00', 'r00', 'r000', 's00', 'e00', 'm4a', 'aac'
+          ],
+          defaultValue: ['pdf'],
         }
       },
       // Nueva configuración de controles CSS
@@ -978,6 +977,31 @@ export const componentsData: ComponentItem[] = [
       
       groups: [],
       
+      // Configuración de enums para conversión automática
+      enumConfigs: [
+        {
+          prop: 'mode',
+          enumObject: PdfViewerMode,
+          conversionMap: {
+            'PdfViewerMode.Light': 'Light',
+            'PdfViewerMode.Dark': 'Dark',
+            'PdfViewerMode.Basic': 'Basic'
+          }
+        },
+        {
+          prop: 'enabledOptions',
+          enumObject: PdfViewerOption,
+          conversionMap: {
+            'PdfViewerOption.Print': 'Print',
+            'PdfViewerOption.Download': 'Download',
+            'PdfViewerOption.EditorHighlight': 'EditorHighlight',
+            'PdfViewerOption.EditorFreeText': 'EditorFreeText',
+            'PdfViewerOption.EditorInk': 'EditorInk',
+            'PdfViewerOption.EditorStamp': 'EditorStamp'
+          }
+        }
+      ],
+      
       customControls: {
         width: {
           type: 'text',
@@ -1003,7 +1027,7 @@ export const componentsData: ComponentItem[] = [
         enabledOptions: {
           type: 'select-check',
           options: ['PdfViewerOption.Print', 'PdfViewerOption.Download', 'PdfViewerOption.EditorHighlight', 'PdfViewerOption.EditorFreeText', 'PdfViewerOption.EditorInk', 'PdfViewerOption.EditorStamp'],
-          defaultValue: [],
+          defaultValue: ['PdfViewerOption.Print', 'PdfViewerOption.Download'],
           description: 'Opciones habilitadas del viewerPDF'
         },
       },
@@ -1047,6 +1071,7 @@ export const componentsData: ComponentItem[] = [
         label: 'Playground',
         sections: []
       },
+      //INSTALACIÓN
       {
         id: 'installation',
         label: 'Instalación',
@@ -1057,7 +1082,7 @@ export const componentsData: ComponentItem[] = [
               {
                 type: 'code',
                 language: 'bash',
-                code: 'npm install edesk-components@0.0.8'
+                code: 'npm install edesk-components@0.0.14'
               }
             ]
           },
@@ -1073,6 +1098,7 @@ export const componentsData: ComponentItem[] = [
           }
         ]
       },
+      //API
       {
         id: 'api',
         label: 'API de Propiedades',
@@ -1130,6 +1156,7 @@ export const componentsData: ComponentItem[] = [
           }
         ]
       },
+      //IMPLEMENTACIÓN
       {
         id: 'implementation',
         label: 'Guía de Implementación',
@@ -1144,92 +1171,40 @@ export const componentsData: ComponentItem[] = [
               {
                 type: 'code',
                 language: 'typescript',
-                code: `import React, { useState } from 'react';
-import { EdeskViewerPDF } from 'edesk-components';
+                code: `
+                import React from 'react';
+                import { EdeskViewerPDF, PdfViewerOption, PdfViewerMode } from "edesk-components";
 
-const DocumentViewer = () => {
-  const [pdfUrl, setPdfUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+                const ViewerPDF = () => {
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      const url = URL.createObjectURL(file);
-      setPdfUrl(url);
-    }
-  };
+                  return (
+                      <div style={{ maxWidth: '650px', margin: 'auto' }}>
+                          <h2>Carga de Facturas y Documentos</h2>
+                          <p>Por favor, adjunte los documentos requeridos. Los archivos no deben exceder los 10 MB.</p>
 
-  const handleLoad = () => {
-    setIsLoading(false);
-    console.log('PDF cargado exitosamente');
-  };
+                          <EdeskViewerPDF
+                          id={"pdf-viewer-example"}
+                          pdfUrl={"..\..\public\sample.pdf"}
+                          width={"100%"}
+                          height={"600px"}
+                          title={"ViewerPDF - Gestión documental"}
+                          mode={PdfViewerMode.Light}
+                          enabledOptions={[
+                            PdfViewerOption.Print,
+                            PdfViewerOption.Download,
+                          ]}
+                          />
+                      </div>
+                  );
+                };
 
-  const handleError = (error: Error) => {
-    setIsLoading(false);
-    console.error('Error al cargar PDF:', error);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    console.log('Página actual:', page);
-  };
-
-  return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h2>Visor de Documentos PDF</h2>
-      
-      {/* Control de carga de archivo */}
-      <div style={{ marginBottom: '20px' }}>
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={handleFileUpload}
-          style={{ marginBottom: '10px' }}
-        />
-        <p>O usar URL de ejemplo:</p>
-        <button 
-          onClick={() => setPdfUrl('https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf')}
-        >
-          Cargar PDF de ejemplo
-        </button>
-      </div>
-
-      {/* Visor PDF */}
-      {pdfUrl && (
-        <EdeskViewerPDF
-          pdfUrl={pdfUrl}
-          width="100%"
-          height="600px"
-          showToolbar={true}
-          showPageNav={true}
-          showZoomControls={true}
-          showDownload={true}
-          showPrint={true}
-          initialZoom="page-fit"
-          theme="light"
-          loading={isLoading}
-          onLoad={handleLoad}
-          onError={handleError}
-          onPageChange={handlePageChange}
-        />
-      )}
-      
-      {currentPage > 0 && (
-        <p style={{ marginTop: '10px', textAlign: 'center' }}>
-          Página actual: {currentPage}
-        </p>
-      )}
-    </div>
-  );
-};
-
-export default DocumentViewer;`
+                export default ViewerPDF;`
               }
             ]
           }
         ]
       },
+      //FEATURES
       {
         id: 'features',
         label: 'Características',
@@ -1284,6 +1259,7 @@ export default DocumentViewer;`
           }
         ]
       },
+      //TROUBLESHOOTING
       {
         id: 'troubleshooting',
         label: 'Solución de Problemas',

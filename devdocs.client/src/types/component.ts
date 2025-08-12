@@ -152,9 +152,16 @@ export interface CSSGroup {
   controls: CSSControl[];
 }
 
+/** Configuración de enum para conversión automática */
+export interface EnumConfig {
+  prop: string; // Nombre de la prop
+  enumObject: Record<string, unknown>; // El objeto enum
+  conversionMap?: Record<string, string>; // Mapeo personalizado de string a valor enum
+}
+
 /** Configuración completa del Playground */
 export interface PlaygroundConfig {
-  component: React.ComponentType<any>;
+  component: React.ComponentType<Record<string, unknown>>;
   componentName?: string; // Nombre del componente para el código generado
   groups?: PlaygroundGroup[]; // Si no se especifica, se agrupará automáticamente
   mockData?: Record<string, unknown>; // Datos mock para props técnicas
@@ -162,6 +169,7 @@ export interface PlaygroundConfig {
   customControls?: Record<string, Partial<PlaygroundControl>>; // Configuraciones personalizadas
   cssControls?: CSSGroup[]; // Grupos de variables CSS (nueva propiedad)
   customCSSControls?: Record<string, Partial<CSSControl>>; // Configuraciones CSS personalizadas
+  enumConfigs?: EnumConfig[]; // Configuración de enums para conversión automática
 }
 
 /** Define una receta para un caso de uso */

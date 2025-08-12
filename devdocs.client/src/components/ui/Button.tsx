@@ -1,6 +1,6 @@
 import { forwardRef } from "react"
 import { motion, type HTMLMotionProps } from "framer-motion"
-import "./button.css"
+import "../../styles/ui/button.css"
 
 /** Define aqu� tus variantes y tama�os */
 type Variant = "default" | "outline" | "ghost"

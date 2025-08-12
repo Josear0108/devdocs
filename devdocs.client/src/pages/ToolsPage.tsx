@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
-import { Card } from "../components/ui/card/Card"
-import { Badge } from "../components/ui/badge/Badge"
+import { Card } from "../components/ui/Card"
+import { Badge } from "../components/ui/Badge"
 import { PageHeader } from "../components/ui/PageHeader"
 import { toolsData } from "../data/tools"
 import "../styles/tools-page.css"

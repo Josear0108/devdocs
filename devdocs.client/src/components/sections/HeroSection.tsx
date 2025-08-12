@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ArrowRight, FileText, Grid, Layers, PenTool } from "react-feather"
-import { Button } from "../ui/button/Button"
+import { Button } from "../ui/Button"
 import "../../styles/hero-section.css"
 
 // Animaciones para los elementos del hero

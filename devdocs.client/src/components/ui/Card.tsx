@@ -2,7 +2,7 @@
 
 import {  forwardRef } from "react"
 import { motion, type HTMLMotionProps } from "framer-motion"
-import "./card.css"
+import "../../styles/ui/card.css"
 
 interface CardProps extends HTMLMotionProps<"div"> {
   variant?: "default" | "bordered" | "elevated"

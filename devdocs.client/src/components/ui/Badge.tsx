@@ -1,7 +1,7 @@
 "use client"
 
 import { forwardRef } from "react"
-import "./badge.css"
+import "../../styles/ui/badge.css"
 
 type Variant = "default" | "secondary" | "outline";
 

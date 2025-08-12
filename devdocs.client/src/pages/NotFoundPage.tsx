@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Home } from "react-feather"
-import { Button } from "../components/ui/button/Button"
+import { Button } from "../components/ui/Button"
 import "../styles/not-found.css"
 
 const NotFoundPage = () => {

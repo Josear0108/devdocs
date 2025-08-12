@@ -1,6 +1,7 @@
 /* Estilos para el Playground Universal */
 
 .universal-playground {
+  --playground-primary: #9333ea;
   width: 100%;
   height: 100%;
 }

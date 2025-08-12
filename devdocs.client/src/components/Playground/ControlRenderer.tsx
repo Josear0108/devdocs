@@ -184,7 +184,7 @@ export const ControlRenderer: React.FC<ControlRendererProps> = ({
           <SelectCheck
             options={options || []}
             value={Array.isArray(value) ? value : []}
-            onChange={onChange}
+            onChange={(newValue: string[]) => onChange(newValue)}
             label={label}
             description={description}
             required={required}
