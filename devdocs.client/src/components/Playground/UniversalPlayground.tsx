@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import type { PlaygroundConfig, PlaygroundControl, ControlValue } from '../../types/component';
@@ -7,6 +7,7 @@ import { ControlRenderer } from './ControlRenderer';
 import { CSSControlRenderer } from './CSSControlRenderer';
 import { PlaygroundTabs } from './PlaygroundTabs';
 import { CopyButton } from '../ui/CopyButton';
+import { getComponentSpecificConfig } from '../../config/playground-specific';
 
 interface UniversalPlaygroundProps {
   config: PlaygroundConfig;
@@ -99,31 +100,39 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
   });
 
   // Función para calcular variables CSS dependientes automáticamente
-  const calculateDependentVariables = (baseVariables: Record<string, string>) => {
-    const dependentVars: Record<string, string> = {};
+  const calculateDependentVariables = useCallback((baseVariables: Record<string, string>) => {
+    const componentName = Component.displayName || Component.name || '';
+    const specificConfig = getComponentSpecificConfig(componentName);
     
-    // Si hay un accent color definido, calcular variables dependientes
-    const accentColor = baseVariables['--edeskFileUpload-accent'];
-    const borderWidth = baseVariables['--edeskFileUpload-border-width'] || '2px';
+    let dependentVars: Record<string, string> = { ...baseVariables };
     
-    if (accentColor) {
-      dependentVars['--edeskFileUpload-border-dashed'] = `${borderWidth} dashed ${accentColor}`;
-      dependentVars['--edeskFileUpload-border-solid'] = `${borderWidth} solid ${accentColor}`;
+    // Aplicar dependencias específicas del componente si existen
+    if (specificConfig?.cssVariableDependencies) {
+      specificConfig.cssVariableDependencies.forEach(dependency => {
+        // Verificar si todas las variables fuente están presentes
+        const hasAllSourceVars = dependency.sourceVariables.every(varName => 
+          baseVariables[varName] !== undefined
+        );
+        
+        if (hasAllSourceVars) {
+          const calculatedVars = dependency.calculator(baseVariables);
+          dependentVars = { ...dependentVars, ...calculatedVars };
+        }
+      });
     }
     
-    return { ...baseVariables, ...dependentVars };
-  };
+    return dependentVars;
+  }, [Component]);
 
   // Generar controles automáticamente si no se proporcionan grupos
   const playgroundGroups = useMemo(() => {
     if (groups.length > 0) return groups;
 
     // Crear controles basados en props comunes y configuraciones personalizadas
-    const componentName = Component.displayName || Component.name || 'Unknown';
-    const edeskControls = PlaygroundControlFactory.createEdeskComponentControls(componentName);
+    const componentControls = PlaygroundControlFactory.createComponentControls(customControls);
     
-    // Combinar controles personalizados con los específicos de edesk
-    const allCustomControls = { ...edeskControls, ...customControls };
+    // Combinar controles personalizados con los específicos del componente
+    const allCustomControls = { ...componentControls, ...customControls };
     
     // Crear controles para todas las props personalizadas
     const autoControls: PlaygroundControl[] = Object.keys(allCustomControls)
@@ -134,7 +143,7 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
 
     // Agrupar controles automáticamente, respetando la configuración explícita
     return PlaygroundControlFactory.groupControlsAutomatically(autoControls, groups);
-  }, [Component, groups, customControls, excludeProps]);
+  }, [groups, customControls, excludeProps]);
 
   // Estado inicial de props
   const [props, setProps] = useState<Record<string, unknown>>(() => {
@@ -165,36 +174,26 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
 
   // Actualizar prop y notificar cambios
   const updateProp = (propName: string, value: ControlValue | null) => {
+    const componentName = Component.displayName || Component.name || '';
+    const specificConfig = getComponentSpecificConfig(componentName);
     const newProps = { ...props };
     
     if (value === null || value === '' || value === undefined) {
       delete newProps[propName];
-    } else if (propName === 'acceptedFileTypes') {
-      // Manejar tanto strings (desde controles) como arrays (desde recipes)
-      if (typeof value === 'string') {
-        newProps[propName] = value.split(',').map(ext => ext.trim());
-      } else if (Array.isArray(value)) {
-        newProps[propName] = value; // Ya es un array, usarlo directamente
-      } else {
-        newProps[propName] = value;
-      }
-    } else if (propName === 'enabledOptions') {
-      // Para enabledOptions, mantener como array para que SelectCheck funcione correctamente
-      if (Array.isArray(value)) {
-        newProps[propName] = value; // Mantener como array
-      } else if (typeof value === 'string') {
-        // Si viene como string (desde entrada de usuario), convertir a array
-        newProps[propName] = value.split(',').map(opt => opt.trim()).filter(Boolean);
-      } else {
-        newProps[propName] = value;
-      }
-    } else if (propName === 'mode') {
-      // Para mode, mantener como string para que se procese después
-      newProps[propName] = value;
-    } else if (propName === 'children' && typeof value === 'string') {
-      newProps[propName] = value || 'Contenido de ejemplo';
     } else {
-      newProps[propName] = value;
+      // Buscar procesador específico para esta prop
+      const processor = specificConfig?.propProcessors?.find(p => p.prop === propName);
+      
+      if (processor) {
+        // Usar procesador específico
+        newProps[propName] = processor.processor(value, newProps);
+      } else if (propName === 'children' && typeof value === 'string') {
+        // Procesamiento genérico para children
+        newProps[propName] = value || 'Contenido de ejemplo';
+      } else {
+        // Procesamiento estándar
+        newProps[propName] = value;
+      }
     }
     
     setProps(newProps);
@@ -309,77 +308,18 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
     return currentValue === expectedValue;
   };
 
-  // Función auxiliar para formatear props del ViewerPDF
-  const formatViewerPDFProp = (key: string, value: unknown): string => {
-    if (key === 'enabledOptions') {
-      // Si es string con comas, convertir a array
-      let optionsArray: string[] = [];
-      if (typeof value === 'string') {
-        optionsArray = value.split(',').map(opt => opt.trim()).filter(Boolean);
-      } else if (Array.isArray(value)) {
-        optionsArray = value.map(opt => String(opt));
-      }
-      
-      // Convertir números de enum de vuelta a nombres si es necesario
-      const formattedOptions = optionsArray.map(opt => {
-        // Si es un número, convertir de vuelta a nombre de enum
-        if (/^\d+$/.test(opt)) {
-          const enumConfig = enumConfigs?.find(config => config.prop === 'enabledOptions');
-          if (enumConfig) {
-            // Buscar en el enum object por valor numérico
-            const enumEntries = Object.entries(enumConfig.enumObject);
-            const matchingEntry = enumEntries.find(([, enumValue]) => String(enumValue) === opt);
-            if (matchingEntry) {
-              return `PdfViewerOption.${matchingEntry[0]}`;
-            }
-          }
-        }
-        // Si ya tiene el formato correcto, mantenerlo
-        if (opt.startsWith('PdfViewerOption.')) {
-          return opt;
-        }
-        // Si no tiene el prefijo pero es un nombre válido, agregarlo
-        return `PdfViewerOption.${opt}`;
-      });
-      
-      const formattedOptionsString = formattedOptions.map(opt => `       ${opt},`).join('\n');
-      return `     ${key}={[\n${formattedOptionsString}\n     ]}`;
+  // Función auxiliar para formatear props usando configuraciones específicas
+  const formatPropWithSpecificConfig = (key: string, value: unknown, allProps: Record<string, unknown>, componentName: string): string => {
+    const specificConfig = getComponentSpecificConfig(componentName);
+    
+    // Buscar formateador específico para esta prop
+    const formatter = specificConfig?.propFormatters?.find(f => f.prop === key);
+    
+    if (formatter) {
+      return formatter.formatter(value, allProps);
     }
     
-    if (key === 'mode') {
-      let modeValue = String(value);
-      // Si es un número, convertir de vuelta a nombre de enum
-      if (/^\d+$/.test(modeValue)) {
-        const enumConfig = enumConfigs?.find(config => config.prop === 'mode');
-        if (enumConfig) {
-          const enumEntries = Object.entries(enumConfig.enumObject);
-          const matchingEntry = enumEntries.find(([, enumValue]) => String(enumValue) === modeValue);
-          if (matchingEntry) {
-            modeValue = `PdfViewerMode.${matchingEntry[0]}`;
-          }
-        }
-      }
-      // Si ya tiene el formato correcto, mantenerlo
-      if (!modeValue.startsWith('PdfViewerMode.')) {
-        modeValue = `PdfViewerMode.${modeValue}`;
-      }
-      return `     ${key}={${modeValue}}`;
-    }
-    
-    if (typeof value === 'string') {
-      // Para URLs y strings normales
-      return `     ${key}={"${value}"}`;
-    }
-    
-    if (typeof value === 'boolean') {
-      return value ? `     ${key}` : '';
-    }
-    
-    return `     ${key}={${JSON.stringify(value)}}`;
-  };
-
-  // Función auxiliar para formatear props estándar
-  const formatStandardProp = (key: string, value: unknown): string => {
+    // Formateo estándar si no hay formateador específico
     if (typeof value === 'string') {
       return `  ${key}="${value}"`;
     }
@@ -394,15 +334,8 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
 
   // Generar código de preview
   const generateCodePreview = (componentName: string, componentProps: Record<string, unknown>): string => {
-    // Mapear nombres de componentes para asegurar nombres correctos
-    const componentNameMap: Record<string, string> = {
-      'EdeskFileUpload': 'EdeskFileUpload',
-      'EdeskLayout': 'EdeskLayout',
-      'EdeskViewerPDF': 'EdeskViewerPDF'
-    };
-    
-    const finalComponentName = componentNameMap[componentName] || componentName;
-    const isViewerPDF = finalComponentName === 'EdeskViewerPDF';
+    const specificConfig = getComponentSpecificConfig(componentName);
+    const finalComponentName = specificConfig?.componentName || componentName;
     
     const propsString = Object.entries(componentProps)
       .filter(([key, value]) => {
@@ -411,24 +344,18 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
         return true;
       })
       .map(([key, value]) => {
-        return isViewerPDF 
-          ? formatViewerPDFProp(key, value)
-          : formatStandardProp(key, value);
+        return formatPropWithSpecificConfig(key, value, componentProps, componentName);
       })
       .filter(Boolean)
       .join('\n');
 
-    // Formato especial para ViewerPDF
-    if (isViewerPDF) {
-      return `<${finalComponentName}${propsString ? '\n' + propsString + '\n   ' : ''} />`;
-    }
-    
-    // Formato estándar para otros componentes
     return `<${finalComponentName}${propsString ? '\n' + propsString + '\n' : ''} />`;
   };
 
   // Preparar props finales para el componente (incluyendo mockData)
   const finalProps = useMemo(() => {
+    const componentName = Component.displayName || Component.name || '';
+    const specificConfig = getComponentSpecificConfig(componentName);
     const merged = { ...mockData, ...props };
     
     // Procesar enums usando configuración genérica
@@ -437,12 +364,10 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
       Object.assign(merged, processedProps);
     }
     
-    // Procesar children especialmente
+    // Procesar children usando configuración específica si existe
     if (merged.children && typeof merged.children === 'string' && merged.children.trim()) {
-      // Crear un elemento div con el contenido string para componentes que esperan React nodes
-      const currentComponentName = Component.displayName || Component.name || '';
-      if (currentComponentName === 'EdeskLayout') {
-        merged.children = React.createElement('div', {}, merged.children);
+      if (specificConfig?.childrenProcessor) {
+        merged.children = specificConfig.childrenProcessor(merged.children, componentName);
       }
     }
 
@@ -469,7 +394,7 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
       style[variable] = value;
     });
     return style;
-  }, [cssVariables]);
+  }, [cssVariables, calculateDependentVariables]);
 
   return (
     <div className="universal-playground">
@@ -543,21 +468,31 @@ export const UniversalPlayground: React.FC<UniversalPlaygroundProps> = ({
             {(() => {
               try {
                 const componentName = Component.displayName || Component.name || '';
+                const specificConfig = getComponentSpecificConfig(componentName);
                 
                 // Crear una key única basada en las props para forzar re-render
                 const componentKey = `${componentName}-${JSON.stringify(finalProps.mode)}-${JSON.stringify(finalProps.enabledOptions)}`;
                 
-                // Para componentes que no requieren children como prop separada
-                if (componentName === 'EdeskViewerPDF' || componentName === 'ViewerPDF' || componentName.includes('ViewerPDF')) {
-                  return <Component key={componentKey} {...finalProps} />;
+                // Usar renderizador personalizado si existe
+                if (specificConfig?.customRenderer) {
+                  return specificConfig.customRenderer(Component, finalProps, componentKey);
                 }
                 
-                // Para componentes que esperan children como prop separada
-                return (
-                  <Component key={componentKey} {...finalProps}>
-                    {finalProps.children}
-                  </Component>
-                );
+                // Usar estrategia de renderizado definida
+                const renderStrategy = specificConfig?.renderStrategy || 'standard';
+                
+                switch (renderStrategy) {
+                  case 'children-as-prop':
+                    return <Component key={componentKey} {...finalProps} />;
+                  
+                  case 'standard':
+                  default:
+                    return (
+                      <Component key={componentKey} {...finalProps}>
+                        {finalProps.children}
+                      </Component>
+                    );
+                }
               } catch (error) {
                 console.error('[UniversalPlayground] Error al renderizar componente:', error);
                 const errorMessage = error instanceof Error ? error.message : 'Error desconocido';

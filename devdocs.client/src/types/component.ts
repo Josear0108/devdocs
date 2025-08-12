@@ -159,6 +159,35 @@ export interface EnumConfig {
   conversionMap?: Record<string, string>; // Mapeo personalizado de string a valor enum
 }
 
+/** Configurador específico para formateo de props en código generado */
+export interface PropFormatter {
+  prop: string;
+  formatter: (value: unknown, allProps: Record<string, unknown>) => string;
+}
+
+/** Configurador específico para procesamiento de props */
+export interface PropProcessor {
+  prop: string;
+  processor: (value: unknown, allProps: Record<string, unknown>) => unknown;
+}
+
+/** Configurador específico para CSS variables dependientes */
+export interface CSSVariableDependency {
+  sourceVariables: string[]; // Variables que activan el cálculo
+  calculator: (variables: Record<string, string>) => Record<string, string>; // Función que calcula las variables dependientes
+}
+
+/** Configuración específica por componente */
+export interface ComponentSpecificConfig {
+  componentName: string;
+  propFormatters?: PropFormatter[]; // Formateadores específicos para props
+  propProcessors?: PropProcessor[]; // Procesadores específicos para props
+  cssVariableDependencies?: CSSVariableDependency[]; // Dependencias de CSS variables
+  childrenProcessor?: (children: unknown, componentName: string) => React.ReactNode; // Procesador de children
+  renderStrategy?: 'standard' | 'children-as-prop' | 'custom'; // Estrategia de renderizado
+  customRenderer?: (Component: React.ComponentType<Record<string, unknown>>, props: Record<string, unknown>, key: string) => React.ReactNode; // Renderizador customizado
+}
+
 /** Configuración completa del Playground */
 export interface PlaygroundConfig {
   component: React.ComponentType<Record<string, unknown>>;
@@ -170,6 +199,7 @@ export interface PlaygroundConfig {
   cssControls?: CSSGroup[]; // Grupos de variables CSS (nueva propiedad)
   customCSSControls?: Record<string, Partial<CSSControl>>; // Configuraciones CSS personalizadas
   enumConfigs?: EnumConfig[]; // Configuración de enums para conversión automática
+  componentSpecificConfig?: ComponentSpecificConfig; // Configuración específica por componente
 }
 
 /** Define una receta para un caso de uso */

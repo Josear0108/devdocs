@@ -169,10 +169,7 @@ export const ControlRenderer: React.FC<ControlRendererProps> = ({
             >
               {options?.map((option: string | number) => (
                 <option key={String(option)} value={String(option)}>
-                  {control.prop === 'maxFileSize' && typeof option === 'number' 
-                    ? `${Math.round(option / 1048576)} MB`
-                    : String(option)
-                  }
+                  {String(option)}
                 </option>
               ))}
             </Select>

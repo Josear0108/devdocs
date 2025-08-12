@@ -211,66 +211,12 @@ export class PlaygroundControlFactory {
   }
 
   /**
-   * Crea controles específicos para componentes de edesk-components
+   * Crea controles específicos para componentes basándose en una configuración externa
+   * Esta función reemplaza las configuraciones hardcodeadas anteriores
    */
-  static createEdeskComponentControls(componentName: string): Record<string, Partial<PlaygroundControl>> {
-    const configs: Record<string, Record<string, Partial<PlaygroundControl>>> = {
-      'EdeskFileUpload': {
-        type: {
-          type: 'radio',
-          options: ['Large', 'DragOff', 'Button'],
-          defaultValue: 'Large'
-        },
-        acceptedFileTypes: {
-          type: 'text',
-          defaultValue: 'pdf,jpg,png',
-          description: 'Tipos de archivo separados por comas'
-        },
-        maxFileSize: {
-          label: 'Tamaño Máximo (MB)',
-          type: 'select',
-          options: [1, 5, 10, 50],
-          defaultValue: 10
-        }
-      },
-      'EdeskLayout': {
-        open: {
-          type: 'boolean',
-          defaultValue: true
-        },
-        autofill: {
-          type: 'boolean',
-          defaultValue: false
-        },
-        hiddenSVG: {
-          type: 'boolean',
-          defaultValue: false
-        }
-      },
-      'EdeskViewerPDF': {
-        id: {
-          type: 'text',
-          defaultValue: 'pdf-viewer-example'
-        },
-        pdfUrl: {
-          type: 'text',
-          defaultValue: 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf'
-        },
-        width: {
-          type: 'text',
-          defaultValue: '100%'
-        },
-        height: {
-          type: 'text',
-          defaultValue: '600px'
-        },
-        title: {
-          type: 'text',
-          defaultValue: 'ViewerPDF - Gestión documental'
-        }
-      }
-    };
-
-    return configs[componentName] || {};
+  static createComponentControls(
+    externalConfig?: Record<string, Partial<PlaygroundControl>>
+  ): Record<string, Partial<PlaygroundControl>> {
+    return externalConfig || {};
   }
 }

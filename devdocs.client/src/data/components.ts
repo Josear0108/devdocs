@@ -1,5 +1,8 @@
 import type { ComponentItem } from "../types/component"
 import { EdeskFileUpload, EdeskLayout, EdeskViewerPDF, PdfViewerMode, PdfViewerOption } from "edesk-components";
+import { edeskFileUploadConfig } from "../config/playground-specific/edesk-file-upload.config";
+import { edeskViewerPDFConfig } from "../config/playground-specific/edesk-viewer-pdf.config";
+import { edeskLayoutConfig } from "../config/playground-specific/edesk-layout.config";
 
 // Exportar enums para uso en playground
 export { PdfViewerMode, PdfViewerOption };
@@ -17,6 +20,7 @@ export const componentsData: ComponentItem[] = [
     
     playgroundConfig: {
       componentName: 'EdeskFileUpload',
+      componentSpecificConfig: edeskFileUploadConfig,
       mockData: {
         uploadUrl: "https://cargue.sycpruebas.com/servicioweb.svc",
         encryptedPath: "demo-encrypted-path",
@@ -572,6 +576,7 @@ export const componentsData: ComponentItem[] = [
     
     playgroundConfig: {
       componentName: 'EdeskLayout',
+      componentSpecificConfig: edeskLayoutConfig,
       mockData: {
         title: 'Demo Layout 1',
         subtitle: 'Puedes mostrar u ocultar el body con el botón.',
@@ -970,6 +975,7 @@ export const componentsData: ComponentItem[] = [
     
     playgroundConfig: {
       componentName: 'EdeskViewerPDF',
+      componentSpecificConfig: edeskViewerPDFConfig,
       mockData: {
         id: "pdf-viewer-example",
         pdfUrl: "..\\..\\public\\sample.pdf",
