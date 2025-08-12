@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { NewsFilter } from "../components/news/NewsFilter"
 import { NewsList } from "../components/news/NewsList"
 import { PageHeader } from "../components/ui/PageHeader"
-import "../styles/news-page.css"
+import "../styles/news/news-page.css"
 
 // Animaciones para la página
 const pageAnimation = {

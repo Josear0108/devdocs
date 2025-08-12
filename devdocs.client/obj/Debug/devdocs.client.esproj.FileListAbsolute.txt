@@ -1,1 +1,2 @@
 D:\SYC\React-repositories\Publicaciones\Tests\devdocs\devdocs.client\obj\Debug\devdocs.client.esproj.CoreCompileInputs.cache
+c:\Users\j.prada\Downloads\devdocs\devdocs\devdocs.client\obj\Debug\devdocs.client.esproj.CoreCompileInputs.cache

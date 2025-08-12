@@ -1,9 +1,9 @@
 import type React from "react"
 import { Calendar, Share2, ThumbsUp, MessageSquare, Bookmark } from "react-feather"
-import { Badge } from "../ui/badge/Badge"
-import { Button } from "../ui/button/Button"
+import { Badge } from "../ui/Badge"
+import { Button } from "../ui/Button"
 import type { NewsItem } from "../../types/news"
-import "../../styles/news-article.css"
+import "../../styles/news/news-article.css"
 
 interface NewsArticleProps {
   news: NewsItem

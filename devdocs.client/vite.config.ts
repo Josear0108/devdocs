@@ -42,7 +42,8 @@ export default defineConfig({
     plugins: [plugin()],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+            'edesk-components': fileURLToPath(new URL('./node_modules/edesk-components/dist/index.es.js', import.meta.url))
         }
     },
     build: { 

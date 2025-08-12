@@ -5,9 +5,9 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search } from "react-feather"
-import { Button } from "../ui/button/Button"
+import { Button } from "../ui/Button"
 import { Select } from "../ui/Select"
-import "../../styles/news-filter.css"
+import "../../styles/news/news-filter.css"
 
 export const NewsFilter = () => {
   const [category, setCategory] = useState("all")

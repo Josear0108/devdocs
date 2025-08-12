@@ -1,9 +1,9 @@
 import type React from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, ArrowRight } from "react-feather"
-import { Button } from "../ui/button/Button"
+import { Button } from "../ui/Button"
 import { newsData } from "../../data/news"
-import "../../styles/news-navigation.css"
+import "../../styles/news/news-navigation.css"
 
 interface NewsNavigationProps {
   currentSlug: string

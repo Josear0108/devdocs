@@ -8,7 +8,7 @@ import { NewsRelated } from "../components/news/NewsRelated"
 import { PageHeader } from "../components/ui/PageHeader"
 import { Separator } from "../components/ui/Separator"
 import { newsData } from "../data/news"
-import "../styles/news-detail.css"
+import "../styles/news/news-detail.css"
 
 const NewsDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()

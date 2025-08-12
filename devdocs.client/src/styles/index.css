@@ -1,3 +1,6 @@
+/* Import universal playground styles */
+@import './universal-playground.css';
+
 /* Base styles and CSS variables */
 :root {
   --background: #0a0a0a;

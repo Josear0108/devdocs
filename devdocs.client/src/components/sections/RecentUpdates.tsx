@@ -3,8 +3,8 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Calendar, FileText, Zap, Code } from "react-feather"
-import { Card } from "../ui/card/Card"
-import { Badge } from "../ui/badge/Badge"
+import { Card } from "../ui/Card"
+import { Badge } from "../ui/Badge"
 import { newsData } from "../../data/news"
 import "../../styles/recent-updates.css"
 
